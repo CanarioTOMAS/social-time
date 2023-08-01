@@ -1,5 +1,6 @@
 import Business from "../schema/business";
 import Client from "../schema/client";
+import Rol from "../schema/rol";
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
@@ -58,10 +59,24 @@ module.exports = {
         phone: _args.phone,
       });
 
-      return business.save().catch((error) => {
+      let createdbusiness = business.save().catch((error) => {
         throw new GraphQLError("Error creando el negocio. " + error, {
           extensions: {
             code: "ERROR_CREATING_BUSINESS",
+          },
+        });
+      });
+
+      let newrolassigned = new Rol({
+        user: user,
+        business: (await createdbusiness)._id,
+        roltype: "Owner"
+      })
+
+      newrolassigned.save().catch((error) => {
+        throw new GraphQLError("Error creando algo. " + error, {
+          extensions: {
+            code: "ERROR_CREATING_SOME",
           },
         });
       });

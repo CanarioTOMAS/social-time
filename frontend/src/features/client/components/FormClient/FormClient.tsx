@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -60,26 +60,24 @@ export default function FormClient(props: Props) {
   }, [props.client]);
 
   //const [createClient] = useMutation(
-    //ClientServices.ClientMutationServices.createClient
+  //ClientServices.ClientMutationServices.createClient
   //);
   //const [updateClient] = useMutation(
-    //ClientServices.ClientMutationServices.UpdateClient
+  //ClientServices.ClientMutationServices.UpdateClient
   //);
-
   //useEffect(() => {
-    //setIdBusiness(getSessionServices("business"));
+  //setIdBusiness(getSessionServices("business"));
   //}, []);
-
   //const navigate = useNavigate();
-  const { toastShow } = useToast();
+  //const { toastShow } = useToast();
   const onSubmit = handleSubmit(async (values) => {
     console.log(values);
     //navigate("/Clients");
-    toastShow({
-      message: "El cliente ha sido creado correctamente",
-      severity: "success",
-      duration: 5000,
-    });
+    // toastShow({
+    //   message: "El cliente ha sido creado correctamente",
+    //   severity: "success",
+    //   duration: 5000,
+    // });
   });
 
   const [showAlert, setShowAlert] = useState(false);
@@ -89,9 +87,9 @@ export default function FormClient(props: Props) {
     if (props.onClose) props.onClose();
     setShowAlert(true);
     //toastShow({
-      //message: "El cliente ha sido editado correctamente",
-      //severity: "success",
-      //duration: 5000,
+    //message: "El cliente ha sido editado correctamente",
+    //severity: "success",
+    //duration: 5000,
     //});
   });
 
@@ -109,6 +107,8 @@ export default function FormClient(props: Props) {
         alignItems: "center",
         minHeight: "100vh",
       }}
+      ref={formRef}
+      alignContent={"center"} /*onSubmit={handleSubmit(type)}*/
     >
       <Card sx={{ pb: 1 }}>
         <FormControl>
@@ -120,6 +120,7 @@ export default function FormClient(props: Props) {
             defaultImage={props.client?.image ? props.client.image : ""}
           />
           <TextField
+            id="Name"
             label="Name"
             sx={{ m: 1 }}
             type="text"
@@ -137,6 +138,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="Surname"
             label="Surname"
             sx={{ m: 1 }}
             type="text"
@@ -159,10 +161,8 @@ export default function FormClient(props: Props) {
               type="text"
               label="documentType"
               sx={{ m: 1, width: "37.7ch" }}
-              defaultValue={
-                props.client ? props.client.documentType : selectedDocumentType
-              }
-              onChange={handleInputChange}
+              value={props.client ? props.client.documentType : selectedDocumentType}
+              onChange={(e) => setSelectedDocumentType(e.target.value)}
             >
               <MenuItem value="cuit">CUIT</MenuItem>
               <MenuItem value="cuil">CUIL</MenuItem>
@@ -170,6 +170,7 @@ export default function FormClient(props: Props) {
             </Select>
           </FormControl>
           <TextField
+            id="N°"
             label="N°"
             sx={{ m: 1 }}
             type="text"
@@ -187,6 +188,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="Adress"
             label="Address"
             sx={{ m: 1 }}
             type="text"
@@ -204,6 +206,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="Email"
             label="Email"
             sx={{ m: 1 }}
             type="email"
@@ -221,6 +224,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="Phone"
             label="Phone"
             sx={{ m: 1 }}
             type="phone"
@@ -238,6 +242,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="City"
             label="City"
             sx={{ m: 1 }}
             type="text"
@@ -255,6 +260,7 @@ export default function FormClient(props: Props) {
             })}
           />
           <TextField
+            id="Post Code"
             label="Post Code"
             sx={{ m: 1 }}
             type="text"
@@ -271,31 +277,25 @@ export default function FormClient(props: Props) {
               error: true,
             })}
           />
-          <Box
-            component="form"
-            ref={formRef}
-            alignContent={"center"} /*onSubmit={handleSubmit(type)}*/
-          >
-            {!isEditing ? (
-              <Button
-                sx={{ m: 1, width: "43ch" }}
-                type="submit"
-                onClick={onSubmit}
-                variant="contained"
-              >
-                Register
-              </Button>
-            ) : (
-              <Button
-                sx={{ m: 1, width: "43ch" }}
-                type="submit"
-                onClick={onUpdate}
-                variant="contained"
-              >
-                Guardar
-              </Button>
-            )}
-          </Box>
+          {!isEditing ? (
+            <Button
+              sx={{ m: 1, width: "43ch" }}
+              type="submit"
+              onClick={onSubmit}
+              variant="contained"
+            >
+              Register
+            </Button>
+          ) : (
+            <Button
+              sx={{ m: 1, width: "43ch" }}
+              type="submit"
+              onClick={onUpdate}
+              variant="contained"
+            >
+              Guardar
+            </Button>
+          )}
         </FormControl>
       </Card>
     </Box>

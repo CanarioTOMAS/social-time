@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import {
   Avatar,
@@ -16,28 +18,19 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AvatarEditor from "react-avatar-editor";
 
+type AvatarType = "user" | "business" | "product" | "box" | "client";
+
 interface IProfileFormProps {
   onChange: (data: any) => void;
-}
-interface formValue {
+  avatarType: AvatarType;
   defaultImage: string;
-}
-
-interface AvatarType {
-  user: "user";
-  business: "business";
-  product: "product";
-  box: "box";
-  client: "client";
 }
 
 function ProfileForm({
   onChange,
   avatarType,
   defaultImage,
-}: IProfileFormProps & {
-  avatarType: AvatarType[keyof AvatarType];
-} & formValue) {
+}: IProfileFormProps) {
   const [avatarSrc, setAvatarSrc] = useState<File | null>(null);
   const [image, setImage] = useState("");
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -70,10 +63,8 @@ function ProfileForm({
   const handleSave = () => {
     if (editor) {
       const canvas = editor.getImage();
-
       canvas.toBlob((blob) => {
         console.log(blob);
-
         if (blob) {
           let reader = new FileReader();
           reader.readAsDataURL(blob);
@@ -87,14 +78,6 @@ function ProfileForm({
         }
       }, "image/png");
     }
-  };
-
-  const avatarIcons: Record<AvatarType[keyof AvatarType], JSX.Element> = {
-    user: <PersonIcon sx={{ color: "white" }} />,
-    business: <BusinessIcon sx={{ color: "white" }} />,
-    product: <LocalMallIcon sx={{ color: "white" }} />,
-    box: <CheckBoxIcon sx={{ color: "white" }} />,
-    client: <AssignmentIndIcon sx={{ color: "white" }} />,
   };
 
   return (
@@ -119,9 +102,19 @@ function ProfileForm({
               opacity: 1,
             },
           }}
-          {...(avatarSrc ? { key: avatarSrc.name } : {})}
+          key={avatarSrc?.name}
         >
-          {avatarType && avatarIcons[avatarType]}
+          {avatarType === "user" && <PersonIcon sx={{ color: "white" }} />}
+          {avatarType === "business" && (
+            <BusinessIcon sx={{ color: "white" }} />
+          )}
+          {avatarType === "product" && (
+            <LocalMallIcon sx={{ color: "white" }} />
+          )}
+          {avatarType === "box" && <CheckBoxIcon sx={{ color: "white" }} />}
+          {avatarType === "client" && (
+            <AssignmentIndIcon sx={{ color: "white" }} />
+          )}
         </Avatar>
         <input
           type="file"
@@ -143,15 +136,7 @@ function ProfileForm({
           }}
           ref={inputFileRef}
         />
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Dialog open={open} onClose={handleClose}>
           <DialogContent>
             {avatarSrc && (
               <AvatarEditor
@@ -167,12 +152,7 @@ function ProfileForm({
               />
             )}
           </DialogContent>
-          <DialogActions
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+          <DialogActions>
             <Box
               sx={{
                 display: "flex",
@@ -193,8 +173,6 @@ function ProfileForm({
                 />
               </Box>
             </Box>
-          </DialogActions>
-          <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>
             <Button onClick={handleSave}>Guardar</Button>
           </DialogActions>

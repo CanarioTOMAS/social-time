@@ -1,4 +1,6 @@
-module.exports = `#graphql
+import { gql } from "apollo-server-core";
+
+module.exports = gql`
   type Rol {
     user: User
     business: Business

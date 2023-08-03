@@ -39,5 +39,10 @@ module.exports = `#graphql
     deleteBusiness(
       _id: String!
     ): String
+    addUserToBusiness(
+      idBusiness: String!
+      idUser: String!
+      roltype: String
+    ): String
   }
 `;

@@ -19,11 +19,6 @@ module.exports = {
       return await Business.find({ user: context.user.id });
     },
   },
-  // Business: {
-  //   products: async (business: any) => {
-  //     return await Product.find({ business: business._id });
-  //   },
-  // },
   Mutation: {
     //create our mutation:
     createUser: async (root: any, args: any) => {
@@ -61,7 +56,7 @@ module.exports = {
         email: user.email,
         id: user._id,
       };
-      console.log(userForToken);
+
       return {
         value: jwt.sign(userForToken, "SOCIALUP"),
         id: user._id,

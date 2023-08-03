@@ -1,13 +1,13 @@
 import Business from "../schema/business";
+import User from "../schema/user";
 import Client from "../schema/client";
+import Rol from "../schema/rol";
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
 module.exports = {
   Query: {
     findOneBusiness: async (_: any, _args: any, context: any) => {
-      console.log("user: ", context.user.id);
-      console.log("business: ", _args._id);
       const business = await Business.findOne({
         user: context.user.id,
         _id: _args._id,
@@ -58,13 +58,28 @@ module.exports = {
         phone: _args.phone,
       });
 
-      return business.save().catch((error) => {
+      let createdbusiness = business.save().catch((error) => {
         throw new GraphQLError("Error creando el negocio. " + error, {
           extensions: {
             code: "ERROR_CREATING_BUSINESS",
           },
         });
       });
+
+      let newrolassigned = new Rol({
+        user: user,
+        business: (await createdbusiness)._id,
+        roltype: "Owner",
+      });
+
+      newrolassigned.save().catch((error) => {
+        throw new GraphQLError("Error creando algo. " + error, {
+          extensions: {
+            code: "ERROR_CREATING_SOME",
+          },
+        });
+      });
+      return business;
     },
     updateBusiness: async (_: any, _args: any, context: any) => {
       const { _id, ...updates } = _args;
@@ -90,6 +105,28 @@ module.exports = {
           extensions: {
             code: "ERROR_DELETING_BUSINESS",
           },
+        });
+      }
+    },
+    addUserToBusiness: async (_: any, _args: any, context: any) => {
+      const idBusiness = _args.idBussines;
+      const idUser = _args.idUser;
+      const business = await Business.findById(idBusiness);
+      const user = await User.findById(idUser);
+      
+      if (business && user) {
+        let newrol = new Rol({
+          user: user,
+          business: business,
+          roltype: "Employee",
+        });
+
+        newrol.save().catch((error) => {
+          throw new GraphQLError("Error registando el usuario. " + error, {
+            extensions: {
+              code: "ERROR_CREATING_ROL",
+            },
+          });
         });
       }
     },

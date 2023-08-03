@@ -24,11 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       
-      root.reder( 
+     
         <ApolloProvider client={client}>
-        {children}
+          <body>
+          {children}
+          </body>
+        
         </ApolloProvider>
-      )
+      
       
   
       

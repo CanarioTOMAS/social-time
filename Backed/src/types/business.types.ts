@@ -1,4 +1,6 @@
-module.exports = `#graphql
+import { gql } from "apollo-server-express";
+
+module.exports = gql`
   type Business {
     user: User
     name: String
@@ -38,6 +40,11 @@ module.exports = `#graphql
     ): Business
     deleteBusiness(
       _id: String!
+    ): String
+    addUserToBusiness(
+      idBusiness: String!
+      idUser: String!
+      roltype: String
     ): String
   }
 `;

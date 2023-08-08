@@ -9,5 +9,8 @@ const schema = new mongoose.Schema({
   image: { type: String, required: false, unique: false },
   phone: { type: String, required: false, unique: false, minlength: 2 },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+},
+{
+  timestamps: true,
 });
 export default mongoose.model("Business", schema);

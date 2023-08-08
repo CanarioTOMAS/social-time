@@ -20,13 +20,16 @@ module.exports = {
   Mutation: {
     //create our mutation:
     createRecord: async (_: any, _args: any, context: any) => {
-      const client = await Client.findById(_args.client);
+      const activity = await Client.findById(_args.activity);
       const user = await User.findById(_args.user);
 
       const project = new Record({
-        client: client,
+        activity: activity,
         user: user,
-        name: _args.name,
+        date: _args.date,
+        startTime: _args.startTime,
+        endTime: _args.endTime,
+        hours: _args.hours,
       });
 
       return project.save().catch((error: any) => {
@@ -49,8 +52,8 @@ module.exports = {
     },
     deleteRecord: async (root: any, args: any) => {
       const { _id } = args;
-      const project = await Project.findByIdAndDelete(_id);
-      if (!project) {
+      const record = await Record.findByIdAndDelete(_id);
+      if (!record) {
         throw new UserInputError("Project not found", {
           invalidArgs: args,
         });

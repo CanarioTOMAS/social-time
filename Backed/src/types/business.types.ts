@@ -1,4 +1,6 @@
-module.exports = `#graphql
+import { gql } from "apollo-server-express";
+
+module.exports = gql`
   type Business {
     user: User
     name: String

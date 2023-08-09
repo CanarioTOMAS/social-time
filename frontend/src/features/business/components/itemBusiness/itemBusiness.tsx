@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
 import { Delete, Edit } from "@mui/icons-material";
-import {
+import React, {
   Avatar,
   Button,
   Dialog,
@@ -11,29 +11,32 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { MouseEventHandler, useState } from "react";
+
+//import { BusinessServices } from "../../services/businessServices";
 import { useMutation, useQuery } from "@apollo/client";
-import { IClient } from "../../models/Client";
+import { MouseEventHandler, useState } from "react";
+import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
-import FormClient from "../FormClient/FormClient";
+import FormBusinessComponent from "../formBusiness/formBusiness";
 
 type Props = {
-  client: IClient;
+  business: IBusiness;
   buttonAction?: boolean;
 };
 
-function ItemClient(props: Props) {
-  //const { data, error, loading, refetch } = useQuery(
-  //ClientServices.QueryClientService.clients
-  //);
+function ItemBusiness(props: Props) {
+//   const { data, error, loading, refetch } = useQuery(
+//     BusinessServices.BusinessQueryServices.FindOneUser
+//   );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  //const [DeleteClient] = useMutation(
-  //ClientServices.ClientMutationServices.DeleteClient
-  //);
-  //refetch();
+
+//   const [DeleteBusiness] = useMutation(
+//     BusinessServices.BusinessMutationServices.DeleteBusiness
+//   );
+//   refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -42,7 +45,7 @@ function ItemClient(props: Props) {
     setIsDeleteDialogOpen(true);
   };
 
-  const toastShow = useToast();
+  const { toastShow } = useToast();
 
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
@@ -50,9 +53,9 @@ function ItemClient(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    //await DeleteClient({ variables: { id: props.client.id } });
+    // await DeleteBusiness({ variables: { id: props.business._id } });
     toastShow({
-      message: "El cliente ha sido eliminado correctamente",
+      message: "La empresa se ha sido eliminado correctamente",
       severity: "success",
       duration: 5000,
     });
@@ -69,12 +72,11 @@ function ItemClient(props: Props) {
       {" "}
       <>
         <ListItemAvatar>
-          <Avatar src={props.client.image} alt={props.client.name} />
+          <Avatar src={props.business.image} alt={props.business.name} />
         </ListItemAvatar>
-
         <ListItemText
-          primary={props.client.name}
-          secondary={`email: ${props.client.email}, phone: ${props.client.phone}`}
+          primary={props.business.name}
+          secondary={`email: ${props.business.email},phone: ${props.business.phone}, address: ${props.business.address}`}
         />
         {props.buttonAction == true ? (
           <>
@@ -96,15 +98,15 @@ function ItemClient(props: Props) {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirmed}
-        title="¿Está seguro que desea eliminar este producto?"
+        title="¿Está seguro que desea eliminar esta empresa?"
         message="Se eliminará de forma permanente "
         confirmText="Eliminar"
         cancelText="Cancelar"
       />
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
-          <FormClient
-            client={props.client}
+          <FormBusinessComponent
+            business={props.business}
             onClose={() => {
               setIsEditDialogOpen(false);
             }}
@@ -117,4 +119,4 @@ function ItemClient(props: Props) {
     </>
   );
 }
-export default ItemClient;
+export default ItemBusiness;

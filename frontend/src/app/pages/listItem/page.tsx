@@ -1,10 +1,10 @@
-"use client"
+"user client"
 
-import ListClient from "@/features/client/components/ListClient/ListClient"
+import FormClient from "@/features/client/components/FormClient/FormClient"
 
-export default function listItem() {
+export default function createClient() {
 
     return(
-        <ListClient/>
+        <FormClient client={undefined}/>
     )
 }

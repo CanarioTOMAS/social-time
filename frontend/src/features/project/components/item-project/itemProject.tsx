@@ -1,7 +1,3 @@
-
-
-"use client"
-
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Avatar,
@@ -13,29 +9,31 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+
 import { MouseEventHandler, useState } from "react";
+
 import { useMutation, useQuery } from "@apollo/client";
-import { IClient } from "../../models/Client";
+import { IProject } from "../../model/project";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
-import FormClient from "../FormClient/FormClient";
+import FormProjectComponent from "../form-project/formProject";
+
 
 type Props = {
-  client: IClient;
+  project: IProject ;
   buttonAction?: boolean;
 };
 
-function ItemClient(props: Props) {
-  //const { data, error, loading, refetch } = useQuery(
-    //ClientServices.QueryClientService.clients
-  //);
+function ItemProject(props: Props) {
+  // const { data, error, loading, refetch } = useQuery(
+  // );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  //const [DeleteClient] = useMutation(
-    //ClientServices.ClientMutationServices.DeleteClient
-  //);
-  //refetch();
+
+  // const [DeleteProject] = useMutation(
+  // );
+  // refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -52,13 +50,13 @@ function ItemClient(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    //await DeleteClient({ variables: { id: props.client.id } });
+    // await DeleteProject({ variables: { id: props.project.id } });
     toastShow({
       message: "El cliente ha sido eliminado correctamente",
       severity: "success",
       duration: 5000,
     });
-    //refetch();
+    // refetch();
   };
 
   const handleCloseEditDialog = async () => {
@@ -71,13 +69,13 @@ function ItemClient(props: Props) {
       {" "}
       <>
         <ListItemAvatar>
-          <Avatar src={props.client.image} alt={props.client.name} />
+          {/* <Avatar src={image} alt={props.project.Image} /> */}
         </ListItemAvatar>
 
         <ListItemText
-          primary={props.client.name}
-          secondary={`email: ${props.client.email}, phone: ${props.client.phone}`}
-        />
+          primary={props.project?.name}
+          secondary={`user: ${props.project?.user}, `}
+         />
         {props.buttonAction == true ? (
           <>
             {" "}
@@ -105,11 +103,10 @@ function ItemClient(props: Props) {
       />
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
-          <FormClient
-            client={props.client}
-            onClose={() => {
+          <FormProjectComponent
+            project={props.project} id={undefined}            /*onClose={() => {
               setIsEditDialogOpen(false);
-            }}
+            }}*/
           />
         </DialogContent>
         <DialogActions>
@@ -119,4 +116,5 @@ function ItemClient(props: Props) {
     </>
   );
 }
-export default ItemClient;
+export default ItemProject;
+

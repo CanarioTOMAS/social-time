@@ -4,15 +4,16 @@ import { Box, Button, Card, Input, TextField, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { useForm, SubmitHandler, set } from "react-hook-form";
 import { useMutation, useQuery } from "@apollo/client";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // import {
 //   getSessionServices,
 //   setSessionService,
 // } from "../../../../auth/services/session.service";
-// import { BusinessMutationServices } from "../../services/businessMutation/businessMutation.service";
+
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
+import { businessMutationService } from "../../services/businessMutation";
 
 type Props = {
   business: IBusiness | undefined;
@@ -39,27 +40,27 @@ export default function FormBusinessComponent(props: Props) {
     },
   });
 
-  //   const { id } = useParams();
-  //   const [mutateFunction] = useMutation(
-  //     id
-  //       ? BusinessMutationServices.UpdateBusiness
-  //       : BusinessMutationServices.AddBusiness
-  //   );
+    // const { id } = useParams();
+    const [mutateFunction] = useMutation(
+      // // id
+      //   ? businessMutationService.updateBusiness
+      businessMutationService.createBusiness
+    );
 
-  //   const idBusiness = getSessionServices("business");
-  //   console.log(idBusiness);
+    // const idBusiness = getSessionServices("business");
+    // console.log(idBusiness);
 
   const onSubmit = handleSubmit(async (values: any) => {
     console.log(values);
-    // const response = await mutateFunction({
-    //   variables: {
-    //     name: values.name,
-    //     address: values.address,
-    //     email: values.email,
-    //     category: values.businessCategory,
-    //     image: values.image,
-    //   },
-    // });
+    const response = await mutateFunction({
+      variables: {
+        name: values.name,
+        address: values.address,
+        email: values.email,
+        category: values.businessCategory,
+        image: values.image,
+      },
+    });
     reset();
     toastShow({
       message: "La Empresa ha sido creado correctamente",

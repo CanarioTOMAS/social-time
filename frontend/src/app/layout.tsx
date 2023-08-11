@@ -9,6 +9,10 @@ const inter = Inter({ subsets: ["latin"] });
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   uri: "http://localhost:4000",
+  headers: {
+    authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYUBwcnVlYmEuY29tIiwiaWQiOiI2NGQ2ODc3MDM0Nzk1ZDI4NDI4NGEyOTUiLCJpYXQiOjE2OTE3ODI2MjN9.jvv_rBhhEkyqx8tkHvww3yAsTEy3IyIGKVO7mW9S-d4",
+    "Content-Type": "application/json",
+  },
 });
 console.log(client);
 export const metadata: Metadata = {

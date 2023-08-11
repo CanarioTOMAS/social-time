@@ -48,7 +48,7 @@ export default function FormRegister() {
       },
     });
     reset();
-    toastShow("Usuario Creado", "info");
+   await toastShow("Usuario Creado", "info");
     console.log(values);
   });
 

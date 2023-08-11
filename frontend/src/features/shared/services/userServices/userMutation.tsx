@@ -37,6 +37,15 @@ const register = gql`
   }
 `;
 
+const login =gql`
+mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    id
+    value
+  }
+}
+`
 export const userMutationService={
-    register
+    register,
+    login
 }

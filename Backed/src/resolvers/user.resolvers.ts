@@ -43,6 +43,7 @@ module.exports = {
       });
     },
     login: async (root: any, args: any) => {
+      console.log(args)
       const user = await User.findOne({
         email: args.email,
         password: args.password,

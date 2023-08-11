@@ -16,24 +16,42 @@ import Grid from "@mui/material/Grid";
 import style from "./styleFormLogin.module.css";
 import { Card } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { userMutationService } from "@/features/shared/services/userServices/userMutation";
+import { useMutation } from "@apollo/client";
+import { ILoginUser } from "@/app/model/user";
 
-interface FormData {
-  Email: string;
-  Password: string;
+type Login={
+  email:string,
+  password:string
 }
+
 export default function FormLogin() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [mutateFunction,{data,error,loading}]= useMutation(
+    userMutationService.login
+  );
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<Login>({
+    defaultValues: {
+      email: '',
+      password: ''
+    }
+
+  });
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
   const onSubmit = handleSubmit((values) => {
-    alert(JSON.stringify(values));
+    mutateFunction({variables: {
+      email: values.email,
+      password: values.password
+    }});
+    console.log(error);
+    console.log(data)
   });
 
   return (
@@ -49,16 +67,16 @@ export default function FormLogin() {
             id="email"
             label="Email"
             sx={{ m: 1, width: "25ch" }}
-            {...register("Email", {
+            {...register("email", {
               required: true,
               pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
               minLength: 2,
             })}
-            {...(errors.Email?.type === "required" && {
+            {...(errors.email?.type === "required" && {
               helperText: "Campo obligatorio",
               error: true,
             })}
-            {...(errors.Email?.type === "pattern" && {
+            {...(errors.email?.type === "pattern" && {
               helperText: "Ingrese un email válido",
               error: true,
             })}
@@ -70,16 +88,16 @@ export default function FormLogin() {
             sx={{ m: 1, width: "25ch" }}
             type={showPassword ? "text" : "password"}
             label="Password"
-            {...register("Password", {
+            {...register("password", {
               required: true,
 
               minLength: 2,
             })}
-            {...(errors.Password?.type === "required" && {
+            {...(errors.password?.type === "required" && {
               helperText: "Campo obligatorio",
               error: true,
             })}
-            {...(errors.Password?.type === "minLength" && {
+            {...(errors.password?.type === "minLength" && {
               helperText: "La contraseña es demasiado corta",
               error: true,
             })}

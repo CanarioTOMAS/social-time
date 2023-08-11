@@ -1,8 +1,10 @@
-import FormRegesterTime from "@/app/features/register-time/components/form-registerTime";
+"use client"
+import FormRegisterTime from "@/features/register-time/components/form-registerTime/form-registerTime";
+
 
 export default function RegisterTime() {
     return (
-    <div><FormRegesterTime/></div>
+    <div><FormRegisterTime/></div>
   )
 
 }

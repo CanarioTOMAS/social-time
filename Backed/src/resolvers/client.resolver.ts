@@ -3,19 +3,15 @@ import Client from "../schema/client";
 import Business from "../schema/business";
 
 module.exports = {
-  // Query: {
-  //   findClient: async (_: any, _args: any, context: any) => {
-  //     console.log("user", context.user.id);
-  //     return await Client.find({
-  //       user: context.user.id,
-  //     });
-  //   },
-  //   findOneClient: async (root: any, args: any) => {
-  //     const idClient = args.id;
-  //     const client = await Client.findById(idClient);
-  //     return client;
-  //   },
-  // },
+   Query: {
+     findClient: async (_: any, _args: any, context: any) => {
+       const client = await Client.find({
+         user: context.user.id,
+       });
+       return client;
+     },
+   },
+ 
   Mutation: {
     //create our mutation:
     createClient: async (_: any, _args: any, context: any) => {

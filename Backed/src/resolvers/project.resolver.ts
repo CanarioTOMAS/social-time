@@ -1,7 +1,5 @@
 import { UserInputError } from "apollo-server-core";
 import Client from "../schema/client";
-import Business from "../schema/business";
-import User from "../schema/user";
 import Project from "../schema/project";
 
 module.exports = {
@@ -21,11 +19,9 @@ module.exports = {
     //create our mutation:
     createProject: async (_: any, _args: any, context: any) => {
       const client = await Client.findById(_args.client);
-      const user = await User.findById(_args.user);
 
       const project = new Project({
         client: client,
-        user: user,
         name: _args.name,
       });
 

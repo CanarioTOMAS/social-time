@@ -13,6 +13,7 @@ module.exports = gql`
     documentType: String
     documentNumber: String
     surname: String
+    project: Project
     id: ID!
   }
 
@@ -34,6 +35,7 @@ module.exports = gql`
       documentType: String
       documentNumber: String
       surname: String
+      project: String
     ): Client
     updateClient(
       _id: String!

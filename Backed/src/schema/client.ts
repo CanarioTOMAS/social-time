@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
     minlength: 3,
   },
   surname: { type: String, required: false, unique: false, minlength: 3 },
-  movement: { type: mongoose.Schema.Types.ObjectId, ref: "Movement" },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+  //movement: { type: mongoose.Schema.Types.ObjectId, ref: "Movement" },
 });
 export default mongoose.model("Client", schema);

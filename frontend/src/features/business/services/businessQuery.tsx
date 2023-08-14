@@ -19,7 +19,7 @@ query FindUserBusiness($findOneUserId: ID!) {
   }
 `;
 
-
 export const businessQueryService={
     FindUserBusiness
 }
+

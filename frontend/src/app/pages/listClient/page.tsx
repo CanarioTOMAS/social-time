@@ -1,10 +1,11 @@
-"user client"
+"user client";
 
-import FormClient from "@/features/client/components/FormClient/FormClient"
+import ListClient from "@/features/client/components/ListClient/ListClient";
 
-export default function createClient() {
-
-    return(
-        <FormClient client={undefined}/>
-    )
+export default function listClient() {
+  return (
+    <div>
+      <ListClient />
+    </div>
+  );
 }

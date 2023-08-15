@@ -2,6 +2,7 @@ import Business from "../schema/business";
 import User from "../schema/user";
 import Client from "../schema/client";
 import Rol from "../schema/rol";
+import Project from "../schema/project";
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
@@ -38,12 +39,59 @@ module.exports = {
       }
     },
   },
+
+/*
+findUserBusiness: async (_: any, _args: any, context: any) => {
+      const offset = (_args.pageCount - 1) * _args.perPage;
+      if (_args._id) {
+        const business = await Business.find({
+          user: context.user.id,
+          _id: _args._id,
+          name: new RegExp(_args.searchWord, "i"),
+        })
+          .skip(offset)
+          .limit(_args.perPage)
+          .exec();
+        return business;
+      } else {
+        const business = await Business.find({
+          user: context.user.id,
+          name: new RegExp(_args.searchWord, "i"),
+        })
+          .skip(offset)
+          .limit(_args.perPage)
+          .exec();
+        return business;
+      }
+    },
+  },
   Business: {
+    products: async (business: any) => {
+      return await Product.find({ business: business._id });
+    },
     client: async (business: any) => {
       return await Client.find({ business: business._id });
     },
+    box: async (business: any) => {
+      return await Box.find({ business: business._id });
+    },
+    movement: async (business: any) => {
+      return await Movement.find({ business: business._id });
+    },
   },
+*/
 
+  Business: {
+    client: async (business: any) => {
+      return await Client.find({ business: business._id });
+    }
+  },
+  Client: {
+    project: async (client: any) => {
+      console.log ("Cliente", client)
+      return await Project.find({ client: client._id });
+    }
+  },
   Mutation: {
     //create our mutation:
     addBusiness: async (_: any, _args: any, context: any) => {

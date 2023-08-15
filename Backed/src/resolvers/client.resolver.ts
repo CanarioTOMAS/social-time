@@ -20,7 +20,7 @@ module.exports = {
     //create our mutation:
     createClient: async (_: any, _args: any, context: any) => {
       const business = await Business.findById(_args.business);
-
+      console.log(_args);
       const client = new Client({
         business: business,
         name: _args.name,
@@ -34,7 +34,7 @@ module.exports = {
         documentNumber: _args.documentNumber,
         surname: _args.surname,
       });
-
+      console.log(client);
       return client.save().catch((error: any) => {
         throw new UserInputError(error.message, {
           invalidArgs: _args,

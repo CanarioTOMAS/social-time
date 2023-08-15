@@ -11,6 +11,8 @@ import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { useNavigate } from "react-router-dom";
+import { getSessionServices } from "@/auth/services/session.service";
+import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 
 type Props = {
   client: IClient | undefined;
@@ -59,19 +61,37 @@ export default function FormClient(props: Props) {
     }
   }, [props.client]);
 
-  //const [createClient] = useMutation(
-  //ClientServices.ClientMutationServices.createClient
-  //);
+  const [createClient] = useMutation(
+    ClientMutationServices.createClient
+  );
+
   //const [updateClient] = useMutation(
   //ClientServices.ClientMutationServices.UpdateClient
   //);
-  //useEffect(() => {
-  //setIdBusiness(getSessionServices("business"));
-  //}, []);
+  useEffect(() => {
+  setIdBusiness(getSessionServices("business"));
+  console.log(idBusiness);
+  
+  }, []);
   //const navigate = useNavigate();
   //const { toastShow } = useToast();
   const onSubmit = handleSubmit(async (values) => {
     console.log(values);
+    await createClient({
+      variables: {
+        name: values.name,
+        surname: values.surname,
+        email: values.email,
+        city: values.city,
+        business: idBusiness,
+        documentNumber: values.documentNumber,
+        documentType: selectedDocumentType,
+        postCode: values.postCode,
+        address: values.address,
+        phone: values.phone,
+        image: values.image,
+      },
+    });
     //navigate("/Clients");
     // toastShow({
     //   message: "El cliente ha sido creado correctamente",
@@ -161,7 +181,9 @@ export default function FormClient(props: Props) {
               type="text"
               label="documentType"
               sx={{ m: 1, width: "37.7ch" }}
-              value={props.client ? props.client.documentType : selectedDocumentType}
+              value={
+                props.client ? props.client.documentType : selectedDocumentType
+              }
               onChange={(e) => setSelectedDocumentType(e.target.value)}
             >
               <MenuItem value="cuit">CUIT</MenuItem>

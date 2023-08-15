@@ -57,6 +57,7 @@ module.exports = {
         image: _args.image,
         phone: _args.phone,
       });
+  
 
       let createdbusiness = business.save().catch((error) => {
         throw new GraphQLError("Error creando el negocio. " + error, {

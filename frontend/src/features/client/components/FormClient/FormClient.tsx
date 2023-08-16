@@ -68,9 +68,13 @@ export default function FormClient(props: Props) {
   ClientMutationServices.UpdateClient
   );
   useEffect(() => {
-  setIdBusiness(getSessionServices("business"));
-  console.log(idBusiness);
-  
+if(getSessionServices("business")==null){
+  console.log("no hay business");
+}else {
+  const business_id=getSessionServices("business")
+  if(business_id!==null){
+  setIdBusiness(business_id);
+}}
   }, []);
   //const navigate = useNavigate();
   //const { toastShow } = useToast();
@@ -82,7 +86,7 @@ export default function FormClient(props: Props) {
         surname: values.surname,
         email: values.email,
         city: values.city,
-        business: idBusiness,
+        business:idBusiness,
         documentNumber: values.documentNumber,
         documentType: selectedDocumentType,
         postCode: values.postCode,

@@ -10,7 +10,6 @@ import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
-import { useNavigate } from "react-router-dom";
 import { getSessionServices } from "@/auth/services/session.service";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 
@@ -37,7 +36,7 @@ export default function FormClient(props: Props) {
       address: "",
       email: "",
       phone: "",
-      idBusiness: "",
+      business: "",
       postCode: "",
       documentType: "",
       documentNumber: "",

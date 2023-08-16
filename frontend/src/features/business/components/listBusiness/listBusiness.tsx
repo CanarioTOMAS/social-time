@@ -15,22 +15,23 @@ export const ListBusiness = (props: IBusiness) => {
       businessQueryService.FindUserBusiness,
       {
         variables: {
-          findOneUserId :"64d6877034795d284284a295",
+          findOneUserId : localStorage.getItem ("authToken"),
         },
       }
     );
 
-
   return (
     <>
-    {data &&data.findOneUser?
+
+    {data ?
       <ListItems
-        items={data.findOneUser.business}
+        items={data.findUserBusiness}
         renderItem={(item: IBusiness) => (
           <ItemBusiness business={item} buttonAction={true} />
         )}
         handleItemClick={function (item: IBusiness): IBusiness {
-          console.log(item);
+          localStorage.setItem ("business",item._id)
+          window.location.href = "http://localhost:3000/pages/createClient";
           return item;
           //handleItemDelete(item.id);
         }}

@@ -16,6 +16,7 @@ module.exports = {
       return business;
     },
     findUserBusiness: async (_: any, _args: any, context: any) => {
+      console.log ("User: ",context)
       const offset = (_args.pageCount - 1) * _args.perPage;
       if (_args._id) {
         const business = await Business.find({

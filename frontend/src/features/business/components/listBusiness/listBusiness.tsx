@@ -10,34 +10,34 @@ import { businessQueryService } from "../../services/businessQuery";
 import { setSessionService } from "../../../../auth/services/session.service";
 
 export const ListBusiness = (props: IBusiness) => {
-  const { data, error, loading, refetch } = useQuery(
-    businessQueryService.FindUserBusiness,
-    {
-      variables: {
-        pageCount: 1,
-        perPage: 10,
-        searchWord: "",
-      },
-    }
-  );
+    const { data, error, loading, refetch } = useQuery(
+      businessQueryService.FindUserBusiness,
+      {
+        variables: {
+          findOneUserId : localStorage.getItem ("authToken"),
+        },
+      }
+    );
 
   return (
     <>
-      {!loading && data && data.findUserBusiness ? (
-        <ListItems
-          items={data.findUserBusiness}
-          renderItem={(item: IBusiness) => (
-            <ItemBusiness business={item} buttonAction={true} />
-          )}
-          handleItemClick={function (item: IBusiness): IBusiness {
-            console.log(item);
-            return item;
-            //handleItemDelete(item.id);
-          }}
-        ></ListItems>
-      ) : (
-        <>Cargando...</>
-      )}
+
+    {data ?
+      <ListItems
+        items={data.findUserBusiness}
+        renderItem={(item: IBusiness) => (
+          <ItemBusiness business={item} buttonAction={true} />
+        )}
+        handleItemClick={function (item: IBusiness): IBusiness {
+          localStorage.setItem ("business",item._id)
+          window.location.href = "http://localhost:3000/pages/createClient";
+          return item;
+          //handleItemDelete(item.id);
+        }}
+      ></ListItems>
+      :
+      <>Cargando...</>
+}
     </>
   );
 };

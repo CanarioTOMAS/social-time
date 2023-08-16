@@ -1,10 +1,8 @@
-"use client"
-
 import { Divider, List, ListItem } from "@mui/material";
 import React from "react";
 
 interface IProps {
-  items: any[];
+  items: any[]; // Cambiar el tipo según tu estructura de datos
   renderItem: (item: any) => React.ReactNode;
   handleItemClick: (item: any) => void;
 }
@@ -22,12 +20,12 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
       >
         {items.map((item: any, i) => {
           return (
-            <>
-              <ListItem key={item.id} onClick={() => handleItemClick(item)}>
-                {renderItem(item)}{" "}
+            <div key={item._id}> {/* Usar el campo _id como clave */}
+              <ListItem onClick={() => handleItemClick(item)}>
+                {renderItem(item)}
               </ListItem>
               <Divider />
-            </>
+            </div>
           );
         })}
       </List>

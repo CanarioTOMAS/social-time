@@ -50,6 +50,10 @@ export default function FormLogin() {
       email: values.email,
       password: values.password
     }});
+
+    if (data.login.value) {
+      localStorage.setItem('authToken', data.login.value);
+    }
     console.log(error);
     console.log(data)
   });

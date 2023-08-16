@@ -65,9 +65,9 @@ export default function FormClient(props: Props) {
     ClientMutationServices.createClient
   );
 
-  //const [updateClient] = useMutation(
-  //ClientServices.ClientMutationServices.UpdateClient
-  //);
+  const [updateClient] = useMutation(
+  ClientMutationServices.UpdateClient
+  );
   useEffect(() => {
   setIdBusiness(getSessionServices("business"));
   console.log(idBusiness);

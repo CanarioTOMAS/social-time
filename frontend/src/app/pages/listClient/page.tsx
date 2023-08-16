@@ -1,11 +1,11 @@
 "user client";
 
-import ListClient from "@/features/client/components/ListClient/ListClient";
+import { ListClientComponent } from "@/features/client/components/ListClient/ListClient";
 
-export default function listClient() {
+export default function ListClient() {
   return (
     <div>
-      <ListClient />
+      <ListClientComponent  />
     </div>
   );
 }

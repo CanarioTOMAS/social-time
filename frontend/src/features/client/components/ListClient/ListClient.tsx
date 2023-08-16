@@ -6,10 +6,15 @@ import { IClient } from "../../models/Client";
 import ItemClient from "../ItemClient/ItemClient";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
+import { getSessionServices } from "@/auth/services/session.service";
 
-export const ListClient = () => {
+
+export const ListClientComponent = () => {
   const { data, error, loading, refetch } = useQuery(
-  QueryClientService.clients
+  QueryClientService.clients,{
+    variables: {
+    id:getSessionServices('business')
+  }}
   );
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -18,11 +23,11 @@ export const ListClient = () => {
     setModalOpen(false);
   };
 
-  const clients = data?.findUserBusiness[0]?.client.slice(0, 10);
+  const clients = data?.findOneBusiness?.client.slice(0, 10);
 
   return (
     <>
-     {!loading && data && data.findUserBusiness ? (
+     {!loading && data && data.findOneBusiness ? (
       <ListItems
         items={clients}
         renderItem={(item: IClient) => (
@@ -41,4 +46,4 @@ export const ListClient = () => {
   );
 };
 
-export default ListClient;
+export default ListClientComponent;

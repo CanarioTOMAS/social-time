@@ -1,19 +1,18 @@
-"use client"
+"use client";
 
 import { Box, Button, Card, Input, TextField, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { useForm, SubmitHandler, set } from "react-hook-form";
 import { useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-// import {
-//   getSessionServices,
-//   setSessionService,
-// } from "../../../../auth/services/session.service";
-
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { businessMutationService } from "../../services/businessMutation";
+import {
+  getSessionServices,
+  setSessionService,
+} from "@/auth/services/session.service";
 
 type Props = {
   business: IBusiness | undefined;
@@ -40,15 +39,15 @@ export default function FormBusinessComponent(props: Props) {
     },
   });
 
-    // const { id } = useParams();
-    const [mutateFunction] = useMutation(
-      // // id
-      //   ? businessMutationService.updateBusiness
-      businessMutationService.createBusiness
-    );
+  const { id } = useParams();
+  const [mutateFunction] = useMutation(
+    id
+      ? businessMutationService.updateBusiness
+      : businessMutationService.createBusiness
+  );
 
-    // const idBusiness = getSessionServices("business");
-    // console.log(idBusiness);
+  const idBusiness = getSessionServices("business");
+  console.log(idBusiness);
 
   const onSubmit = handleSubmit(async (values: any) => {
     console.log(values);
@@ -67,8 +66,7 @@ export default function FormBusinessComponent(props: Props) {
       severity: "success",
       duration: 5000,
     });
-
-    //     setSessionService("business", response.data.addBusiness._id);
+    setSessionService("business", response.data.addBusiness._id);
   });
 
   return (
@@ -187,7 +185,7 @@ export default function FormBusinessComponent(props: Props) {
             variant="contained"
           >
             Enviar
-            {/* { {id ? "Editar" : "Crear"}} */}
+            {id ? "Editar" : "Crear"}
           </Button>
         </FormControl>
       </Card>

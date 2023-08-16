@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Delete, Edit } from "@mui/icons-material";
 import React, {
@@ -11,14 +11,13 @@ import React, {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-
-//import { BusinessServices } from "../../services/businessServices";
 import { useMutation, useQuery } from "@apollo/client";
 import { MouseEventHandler, useState } from "react";
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
 import FormBusinessComponent from "../formBusiness/formBusiness";
+import { businessQueryService } from "../../services/businessQuery";
 
 type Props = {
   business: IBusiness;
@@ -26,17 +25,17 @@ type Props = {
 };
 
 function ItemBusiness(props: Props) {
-//   const { data, error, loading, refetch } = useQuery(
-//     BusinessServices.BusinessQueryServices.FindOneUser
-//   );
+  const { data, error, loading, refetch } = useQuery(
+    businessQueryService.FindUserBusiness
+  );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-//   const [DeleteBusiness] = useMutation(
-//     BusinessServices.BusinessMutationServices.DeleteBusiness
-//   );
-//   refetch();
+  //   const [DeleteBusiness] = useMutation(
+  //     BusinessServices.BusinessMutationServices.DeleteBusiness
+  //   );
+  //   refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };

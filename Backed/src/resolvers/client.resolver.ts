@@ -16,9 +16,9 @@ module.exports = {
     //create our mutation:
     createClient: async (_: any, _args: any, context: any) => {
       const business = await Business.findById(_args.business);
-      console.log(_args);
+    
       const client = new Client({
-        business: business,
+        business: _args.business,
         name: _args.name,
         image: _args.image,
         city: _args.city,

@@ -19,6 +19,7 @@ import { IClient } from "../../models/Client";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
 import FormClient from "../FormClient/FormClient";
+import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 
 type Props = {
   client: IClient;
@@ -26,9 +27,9 @@ type Props = {
 };
 
 function ItemClient(props: Props) {
-  //const { data, error, loading, refetch } = useQuery(
-  //ClientServices.QueryClientService.clients
-  //);
+  const { data, error, loading, refetch } = useQuery(
+  QueryClientService.clients
+  );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -45,13 +46,15 @@ function ItemClient(props: Props) {
   };
 
   const toastShow = useToast();
-
+console.log(props);
+console.log(data);
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
   > = async () => {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
+  
     //await DeleteClient({ variables: { id: props.client.id } });
     toastShow({
       message: "El cliente ha sido eliminado correctamente",

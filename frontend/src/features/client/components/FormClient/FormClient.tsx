@@ -63,7 +63,6 @@ export default function FormClient(props: Props) {
   const [createClient] = useMutation(
     ClientMutationServices.createClient
   );
-
   const [updateClient] = useMutation(
   ClientMutationServices.UpdateClient
   );
@@ -107,6 +106,22 @@ if(getSessionServices("business")==null){
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;
     console.log(values);
+    await updateClient({
+      variables: {
+        id: props.client?.id,
+        name: values.name,
+        surname: values.surname,
+        email: values.email,
+        city: values.city,
+        business: idBusiness,
+        documentNumber: values.documentNumber,
+        documentType: selectedDocumentType,
+        postcode: values.postCode,
+        address: values.address,
+        phone: values.phone,
+        image: values.image,
+      },
+    });
     if (props.onClose) props.onClose();
     setShowAlert(true);
     //toastShow({
@@ -115,10 +130,6 @@ if(getSessionServices("business")==null){
     //duration: 5000,
     //});
   });
-
-  const handleInputChange = (event: any) => {
-    setSelectedDocumentType(event.target.value);
-  };
 
   return (
     <Box

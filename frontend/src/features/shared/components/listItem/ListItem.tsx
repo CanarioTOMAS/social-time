@@ -1,4 +1,3 @@
-"use client"
 
 import { Divider, List, ListItem } from "@mui/material";
 import React from "react";
@@ -6,10 +5,10 @@ import React from "react";
 interface IProps {
   items: any[];
   renderItem: (item: any) => React.ReactNode;
-  handleItemClick: (item: any) => void;
+  // handleItemClick: (item: any) => void;
 }
 
-export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
+export const ListItems = ({ items, renderItem, /*handleItemClick*/ }: IProps) => {
   return (
     <div>
       <List
@@ -23,7 +22,7 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
         {items.map((item: any, i) => {
           return (
             <>
-              <ListItem key={item.id} onClick={() => handleItemClick(item)}>
+              <ListItem key={item.id} /*onClick={() => handleItemClick(item)}*/>
                 {renderItem(item)}{" "}
               </ListItem>
               <Divider />

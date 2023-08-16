@@ -1,4 +1,5 @@
 export interface IBusiness {
+    props: any;
     name: string;
     phone: string;
     email: string;

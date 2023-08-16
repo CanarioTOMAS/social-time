@@ -40,10 +40,10 @@ export default function FormBusinessComponent(props: Props) {
     },
   });
 
-    // const { id } = useParams();
+    const { id } = useParams();
     const [mutateFunction] = useMutation(
-      // // id
-      //   ? businessMutationService.updateBusiness
+      id
+        ? businessMutationService.updateBusiness :
       businessMutationService.createBusiness
     );
 
@@ -62,13 +62,12 @@ export default function FormBusinessComponent(props: Props) {
       },
     });
     reset();
-    toastShow({
-      message: "La Empresa ha sido creado correctamente",
-      severity: "success",
-      duration: 5000,
-    });
-
-    //     setSessionService("business", response.data.addBusiness._id);
+    // toastShow({
+    //   message: "La Empresa ha sido creado correctamente",
+    //   severity: "success",
+    //   duration: 5000,
+    // });
+    // setSessionService("business", response.data.addBusiness._id);
   });
 
   return (

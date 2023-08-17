@@ -7,6 +7,7 @@ module.exports = {
     findProject: async (_: any, _args: any, context: any) => {
       return await Project.find({
         user: context.user.id,
+        client: _args.client
       });
     },
     findOneProject: async (root: any, args: any) => {
@@ -15,6 +16,7 @@ module.exports = {
       return project;
     },
   },
+
   Mutation: {
     //create our mutation:
     createProject: async (_: any, _args: any, context: any) => {

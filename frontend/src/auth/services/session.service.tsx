@@ -1,15 +1,13 @@
-export const setSessionService = (key: string, value: string) => {
+export const setSessionService = (key: string, value: any) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
 export const getSessionServices = (key: string) => {
-
   try {
     const auth = localStorage.getItem(key);
-  
+
     if (auth && auth !== "") {
-      const parsedAuth = JSON.parse(auth);
-      
+      const parsedAuth = auth;
       return parsedAuth;
     } else {
       return null;

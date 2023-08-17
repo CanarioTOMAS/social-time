@@ -78,7 +78,7 @@ if(getSessionServices("business")==null){
   //const navigate = useNavigate();
   //const { toastShow } = useToast();
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
+
     await createClient({
       variables: {
         name: values.name,

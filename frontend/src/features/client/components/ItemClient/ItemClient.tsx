@@ -76,8 +76,9 @@ function ItemClient(props: Props) {
         </ListItemAvatar>
 
         <ListItemText
-          primary={props.client.name}
-          secondary={`email: ${props.client.email}, phone: ${props.client.phone}`}
+          primary={`Name: ${props.client.name} ${props.client.surname}`}
+          secondary={`Email: ${props.client.email}, Phone: ${props.client.phone}`}
+          primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
           <>

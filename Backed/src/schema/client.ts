@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
   business: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   name: { type: String, required: true, unique: false, minlength: 2 },
-  image: { type: String, required: false, unique: false, minlength: 2 },
   city: { type: String, required: false, unique: false, minlength: 3 },
   address: { type: String, required: false, unique: false, minlength: 1 },
   email: { type: String, required: false, unique: false, minlength: 1 },

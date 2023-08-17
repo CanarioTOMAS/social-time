@@ -16,7 +16,6 @@ module.exports = {
       return business;
     },
     findUserBusiness: async (_: any, _args: any, context: any) => {
-      console.log ("User: ",context)
       const offset = (_args.pageCount - 1) * _args.perPage;
       if (_args._id) {
         const business = await Business.find({
@@ -40,47 +39,6 @@ module.exports = {
       }
     },
   },
-
-/*
-findUserBusiness: async (_: any, _args: any, context: any) => {
-      const offset = (_args.pageCount - 1) * _args.perPage;
-      if (_args._id) {
-        const business = await Business.find({
-          user: context.user.id,
-          _id: _args._id,
-          name: new RegExp(_args.searchWord, "i"),
-        })
-          .skip(offset)
-          .limit(_args.perPage)
-          .exec();
-        return business;
-      } else {
-        const business = await Business.find({
-          user: context.user.id,
-          name: new RegExp(_args.searchWord, "i"),
-        })
-          .skip(offset)
-          .limit(_args.perPage)
-          .exec();
-        return business;
-      }
-    },
-  },
-  Business: {
-    products: async (business: any) => {
-      return await Product.find({ business: business._id });
-    },
-    client: async (business: any) => {
-      return await Client.find({ business: business._id });
-    },
-    box: async (business: any) => {
-      return await Box.find({ business: business._id });
-    },
-    movement: async (business: any) => {
-      return await Movement.find({ business: business._id });
-    },
-  },
-*/
 
   Business: {
     client: async (business: any) => {
@@ -89,7 +47,6 @@ findUserBusiness: async (_: any, _args: any, context: any) => {
   },
   Client: {
     project: async (client: any) => {
-      console.log ("Cliente", client)
       return await Project.find({ client: client._id });
     }
   },

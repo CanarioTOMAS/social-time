@@ -2,13 +2,14 @@ import { gql } from "apollo-server-express";
 
 module.exports = gql`
   type Project {
-    client: Client
+    client: Client!
     name: String!
+    description: String
     id: ID!
   }
 
   type Query {
-    findProject: [Project]
+    findProject(client: String!): [Project]
     findOneProject(id: ID!): Project
   }
 
@@ -16,6 +17,7 @@ module.exports = gql`
     createProject(
       client: String!
       name: String!
+      description: String
     ): Project
     updateProject(
       _id: String!

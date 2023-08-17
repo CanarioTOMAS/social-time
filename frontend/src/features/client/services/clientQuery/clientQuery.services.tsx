@@ -5,8 +5,10 @@ query FindOneBusiness($id: ID) {
   findOneBusiness(_id: $id) {
     client {
       name
+      surname
       email
       phone
+      documentNumber
     }
   }
 }

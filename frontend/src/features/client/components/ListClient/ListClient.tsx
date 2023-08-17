@@ -23,7 +23,7 @@ export const ListClientComponent = () => {
     setModalOpen(false);
   };
 
-  const clients = data?.findOneBusiness?.client.slice(0, 10);
+  const clients = data?.findOneBusiness?.client.slice(0, 5);
 
   return (
     <>

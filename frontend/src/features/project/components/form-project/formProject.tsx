@@ -46,7 +46,6 @@ export default function FormProjectComponent(props: Props) {
     }
   }, [props.project]);
 
-
   // const [mutateFunction] = useMutation(
   // props.project?.id
   // ? ProductService.ProductMutationServices.UpdateProduct
@@ -59,14 +58,14 @@ export default function FormProjectComponent(props: Props) {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
-   const onSubmit = handleSubmit(async (values: any) => {
-     console.log(props.project?.id);
+  const onSubmit = handleSubmit(async (values: any) => {
+    console.log(props.project?.id);
     try {
-      if (props.project?.id) {
-        await handleEditSubmit(values);
-      } else {
-        await handleAddSubmit(values);
-      }
+      // if (props.project?.id) {
+      //   await handleEditSubmit(values);
+      // } else {
+      //   await handleAddSubmit(values);
+      // }
       toastShow({
         message: isEditing
           ? "El producto se edito correctamente"
@@ -81,35 +80,35 @@ export default function FormProjectComponent(props: Props) {
         duration: 5000,
       });
     }
-    reset()
-  });
-
-  const handleAddSubmit = handleSubmit(async (values: any) => {
-    console.log(values);
-    await mutateFunction({
-      variables: {
-        name: values.name,
-        idClient: values.idClient,
-        idProject: values.idProject,
-        user: values.user, 
-      },
-    });
-    // props.onAdd();
     reset();
   });
-  const handleEditSubmit = handleSubmit(async (values: any) => {
-    console.log(values);
-    await mutateFunction({
-      variables: {
-     name: values.name,
-     idClient: values.idClient,
-     idProject: values.idProject,
-     user: values.user,   
-      },
-    });
-    // props.onEdit();
-    setIsEditing(false);
-  });
+
+  // const handleAddSubmit = handleSubmit(async (values: any) => {
+  //   console.log(values);
+  //   await mutateFunction({
+  //     variables: {
+  //       name: values.name,
+  //       idClient: values.idClient,
+  //       idProject: values.idProject,
+  //       user: values.user,
+  //     },
+  //   });
+  //   // props.onAdd();
+  //   reset();
+  // });
+  // const handleEditSubmit = handleSubmit(async (values: any) => {
+  //   console.log(values);
+  //   await mutateFunction({
+  //     variables: {
+  //       name: values.name,
+  //       idClient: values.idClient,
+  //       idProject: values.idProject,
+  //       user: values.user,
+  //     },
+  //   });
+  //   // props.onEdit();
+  //   setIsEditing(false);
+  // });
 
   return (
     <Box
@@ -126,36 +125,13 @@ export default function FormProjectComponent(props: Props) {
         <Typography variant="h5" sx={{ textAlign: "center" }}>
           Project
         </Typography>
-        <FormControl sx={{textAlign:"center"}}>
-          <TextField
-            label="User"
-            sx={{ m: 1, width: "90%", textAlign:"center" }}
-            type="text"
-            {...register("user", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.user?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <TextField
-            label="Client"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
-            type="text"
-            {...register("idClient", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.idClient?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
+        <Typography variant="h6" sx={{ textAlign: "-moz-initial", padding:"20px" }}>Client:</Typography>
+        <Typography variant="h6" sx={{ textAlign: "-moz-initial", padding:"20px"  }}>User:</Typography>  
+        <FormControl sx={{ textAlign: "center" }}>
+
           <TextField
             label="Project"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            sx={{ m: 1, width: "50ch", textAlign: "center" }}
             type="text"
             {...register("idProject", {
               required: true,
@@ -167,8 +143,10 @@ export default function FormProjectComponent(props: Props) {
             })}
           />
           <TextField
-            label="Name"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            label="Description "
+            multiline
+            minRows={5} 
+            sx={{ m: 1, minWidth: "50ch", textAlign: "center", maxWidth:"100%"   }}
             type="price"
             {...register("name", {
               required: true,
@@ -180,7 +158,7 @@ export default function FormProjectComponent(props: Props) {
             })}
           />
           <Button
-            sx={{ m: 1, width: "43ch" }}
+            sx={{ m: 1, width: "50ch", }}
             onClick={onSubmit}
             variant="contained"
           >
@@ -191,7 +169,5 @@ export default function FormProjectComponent(props: Props) {
     </Box>
   );
 }
-function mutateFunction(arg0: { variables: { name: any; idClient: any; idProject: any; user: any; }; }) {
-  throw new Error("Function not implemented.");
-}
+
 

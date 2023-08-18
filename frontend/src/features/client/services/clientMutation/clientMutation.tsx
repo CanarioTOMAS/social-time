@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const createClient = gql`
+const CreateClient = gql`
   mutation CreateClient(
     $business: String!
     $name: String!
@@ -81,7 +81,7 @@ const DeleteClient = gql`
 `;
 
 export const ClientMutationServices = {
-  createClient,
+  CreateClient,
   UpdateClient,
   DeleteClient,
 };

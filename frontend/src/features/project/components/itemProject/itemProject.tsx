@@ -16,23 +16,24 @@ import { useMutation, useQuery } from "@apollo/client";
 import { IProject } from "../../model/project";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
-import FormProjectComponent from "../form-project/formProject";
-
+import FormProjectComponent from "../formProject/formProject";
+import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
+import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
 
 type Props = {
-  project: IProject ;
+  project: IProject;
   buttonAction?: boolean;
 };
 
 function ItemProject(props: Props) {
-  // const { data, error, loading, refetch } = useQuery(
-  // );
+  const { data, error, loading, refetch } = useQuery(
+    ProjectQueryService.Project
+  );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  // const [DeleteProject] = useMutation(
-  // );
+  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
   // refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
@@ -50,7 +51,7 @@ function ItemProject(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    // await DeleteProject({ variables: { id: props.project.id } });
+    await DeleteProject({ variables: { id: props.project.id } });
     toastShow({
       message: "El cliente ha sido eliminado correctamente",
       severity: "success",
@@ -75,7 +76,7 @@ function ItemProject(props: Props) {
         <ListItemText
           primary={props.project?.name}
           secondary={`user: ${props.project?.user}, `}
-         />
+        />
         {props.buttonAction == true ? (
           <>
             {" "}
@@ -104,7 +105,8 @@ function ItemProject(props: Props) {
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
           <FormProjectComponent
-            project={props.project} id={undefined}            /*onClose={() => {
+            project={props.project}
+            id={undefined} /*onClose={() => {
               setIsEditDialogOpen(false);
             }}*/
           />
@@ -117,4 +119,3 @@ function ItemProject(props: Props) {
   );
 }
 export default ItemProject;
-

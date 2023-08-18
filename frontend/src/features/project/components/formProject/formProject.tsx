@@ -11,6 +11,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
+import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
+import { useMutation } from "@apollo/client";
 
 type Props = {
   id: any;
@@ -46,12 +48,11 @@ export default function FormProjectComponent(props: Props) {
     }
   }, [props.project]);
 
-
-  // const [mutateFunction] = useMutation(
-  // props.project?.id
-  // ? ProductService.ProductMutationServices.UpdateProduct
-  // : ProductService.ProductMutationServices.AddProduct
-  // );
+  const [mutateFunction] = useMutation(
+    props.project?.id
+      ? ProjectMutationServices.UpdateProject
+      : ProjectMutationServices.CreateProject
+  );
 
   const { toastShow } = useToast();
 
@@ -59,8 +60,8 @@ export default function FormProjectComponent(props: Props) {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
-   const onSubmit = handleSubmit(async (values: any) => {
-     console.log(props.project?.id);
+  const onSubmit = handleSubmit(async (values: any) => {
+    console.log(props.project?.id);
     try {
       if (props.project?.id) {
         await handleEditSubmit(values);
@@ -69,8 +70,8 @@ export default function FormProjectComponent(props: Props) {
       }
       toastShow({
         message: isEditing
-          ? "El producto se edito correctamente"
-          : "El producto se cargó correctamente",
+          ? "El proyecto se edito correctamente"
+          : "El proyecto se cargó correctamente",
         severity: "success",
         duration: 5000,
       });
@@ -81,7 +82,7 @@ export default function FormProjectComponent(props: Props) {
         duration: 5000,
       });
     }
-    reset()
+    reset();
   });
 
   const handleAddSubmit = handleSubmit(async (values: any) => {
@@ -91,7 +92,7 @@ export default function FormProjectComponent(props: Props) {
         name: values.name,
         idClient: values.idClient,
         idProject: values.idProject,
-        user: values.user, 
+        user: values.user,
       },
     });
     // props.onAdd();
@@ -101,10 +102,10 @@ export default function FormProjectComponent(props: Props) {
     console.log(values);
     await mutateFunction({
       variables: {
-     name: values.name,
-     idClient: values.idClient,
-     idProject: values.idProject,
-     user: values.user,   
+        name: values.name,
+        idClient: values.idClient,
+        idProject: values.idProject,
+        user: values.user,
       },
     });
     // props.onEdit();
@@ -126,10 +127,10 @@ export default function FormProjectComponent(props: Props) {
         <Typography variant="h5" sx={{ textAlign: "center" }}>
           Project
         </Typography>
-        <FormControl sx={{textAlign:"center"}}>
+        <FormControl sx={{ textAlign: "center" }}>
           <TextField
             label="User"
-            sx={{ m: 1, width: "90%", textAlign:"center" }}
+            sx={{ m: 1, width: "90%", textAlign: "center" }}
             type="text"
             {...register("user", {
               required: true,
@@ -142,7 +143,7 @@ export default function FormProjectComponent(props: Props) {
           />
           <TextField
             label="Client"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            sx={{ m: 1, width: "90%", textAlign: "center" }}
             type="text"
             {...register("idClient", {
               required: true,
@@ -155,7 +156,7 @@ export default function FormProjectComponent(props: Props) {
           />
           <TextField
             label="Project"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            sx={{ m: 1, width: "90%", textAlign: "center" }}
             type="text"
             {...register("idProject", {
               required: true,
@@ -168,7 +169,7 @@ export default function FormProjectComponent(props: Props) {
           />
           <TextField
             label="Name"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            sx={{ m: 1, width: "90%", textAlign: "center" }}
             type="price"
             {...register("name", {
               required: true,
@@ -190,8 +191,5 @@ export default function FormProjectComponent(props: Props) {
       </Card>
     </Box>
   );
-}
-function mutateFunction(arg0: { variables: { name: any; idClient: any; idProject: any; user: any; }; }) {
-  throw new Error("Function not implemented.");
 }
 

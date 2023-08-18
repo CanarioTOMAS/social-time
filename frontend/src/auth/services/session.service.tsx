@@ -13,7 +13,7 @@ export const getSessionServices = (key: string) => {
       return null;
     }
   } catch (error) {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     console.error("Ocurrió un error:", error);
     return null;
   }

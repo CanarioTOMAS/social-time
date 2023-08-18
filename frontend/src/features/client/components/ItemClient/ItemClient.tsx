@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Delete, Edit } from "@mui/icons-material";
 import {
@@ -27,13 +27,13 @@ type Props = {
 
 function ItemClient(props: Props) {
   const { data, error, loading, refetch } = useQuery(
-  QueryClientService.clients
+    QueryClientService.clients
   );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteClient] = useMutation(
-  ClientMutationServices.DeleteClient
+  const [deleteClient] = useMutation(
+    ClientMutationServices.DeleteClient
   );
   //refetch();
   const handleEdit = async () => {
@@ -45,20 +45,20 @@ function ItemClient(props: Props) {
   };
 
   const toastShow = useToast();
-    console.log(props);
-    console.log(data);
+  console.log(props);
+  console.log(data);
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
   > = async () => {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    await DeleteClient({ variables: { id: props.client.id } });
-    toastShow({
-      message: "El cliente ha sido eliminado correctamente",
-      severity: "success",
-      duration: 5000,
-    });
+    await deleteClient({ variables: { id: props.client.id } });
+    // toastShow({
+    //   message: "El cliente ha sido eliminado correctamente",
+    //   severity: "success",
+    //   duration: 5000,
+    // });
     //refetch();
   };
 

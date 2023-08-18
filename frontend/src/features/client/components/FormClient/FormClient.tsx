@@ -60,32 +60,28 @@ export default function FormClient(props: Props) {
     }
   }, [props.client]);
 
-  const [createClient] = useMutation(
-    ClientMutationServices.createClient
-  );
-  const [updateClient] = useMutation(
-  ClientMutationServices.UpdateClient
-  );
+  const [createClient] = useMutation(ClientMutationServices.CreateClient);
+  const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
   useEffect(() => {
-if(getSessionServices("business")==null){
-  console.log("no hay business");
-}else {
-  const business_id=getSessionServices("business")
-  if(business_id!==null){
-  setIdBusiness(business_id);
-}}
+    if (getSessionServices("business") == null) {
+      console.log("no hay business");
+    } else {
+      const business_id = getSessionServices("business");
+      if (business_id !== null) {
+        setIdBusiness(business_id);
+      }
+    }
   }, []);
   //const navigate = useNavigate();
   //const { toastShow } = useToast();
   const onSubmit = handleSubmit(async (values) => {
-
     await createClient({
       variables: {
         name: values.name,
         surname: values.surname,
         email: values.email,
         city: values.city,
-        business:idBusiness,
+        business: idBusiness,
         documentNumber: values.documentNumber,
         documentType: selectedDocumentType,
         postCode: values.postCode,
@@ -101,7 +97,6 @@ if(getSessionServices("business")==null){
     //   duration: 5000,
     // });
   });
-
   const [showAlert, setShowAlert] = useState(false);
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;

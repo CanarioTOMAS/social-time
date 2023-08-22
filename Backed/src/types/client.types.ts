@@ -13,7 +13,7 @@ module.exports = gql`
     documentType: String
     documentNumber: String
     surname: String
-    project: Project
+    project: [Project]
     id: ID!
   }
 

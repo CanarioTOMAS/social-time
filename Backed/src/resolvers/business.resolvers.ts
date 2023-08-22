@@ -35,6 +35,7 @@ module.exports = {
           .skip(offset)
           .limit(_args.perPage)
           .exec();
+          console.log (business)
         return business;
       }
     },
@@ -43,7 +44,7 @@ module.exports = {
   Business: {
     client: async (business: any) => {
       return await Client.find({ business: business._id });
-    }
+    }    
   },
   Client: {
     project: async (client: any) => {

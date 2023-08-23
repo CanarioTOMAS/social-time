@@ -10,11 +10,11 @@ module.exports = gql`
     image: String
     phone: String
     _id: ID!
-    client: [Client]
+    client (idClient: ID): [Client]
   }
 
   type Query {
-    findUserBusiness(_id: ID, pageCount: Int, perPage: Int, searchWord: String): [Business],
+    findUserBusiness(_id: ID!, pageCount: Int, perPage: Int, searchWord: String): [Business],
     findOneBusiness(_id: ID, user:String, name: String): Business,
     
   }

@@ -42,15 +42,23 @@ module.exports = {
   },
 
   Business: {
-    client: async (business: any) => {
-      return await Client.find({ business: business._id });
+    client: async (business: any, _args: any) => {
+      console.log (_args)
+        if (_args.idClient){
+          return await Client.find({ business: business._id, _id: _args.idClient});
+        }else{
+          return await Client.find({ business: business._id});
+        }
+        
     }    
   },
   Client: {
-    project: async (client: any) => {
-      return await Project.find({ client: client._id });
+    project: async (client: any, _args: any) => {
+        return await Project.find({ client: client._id });
     }
+  
   },
+
   Mutation: {
     //create our mutation:
     addBusiness: async (_: any, _args: any, context: any) => {

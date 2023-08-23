@@ -9,9 +9,9 @@ import { Card, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
-import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { getSessionServices } from "@/auth/services/session.service";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
+import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
 type Props = {
   client: IClient | undefined;
@@ -22,6 +22,10 @@ export default function FormClient(props: Props) {
   const [idBusiness, setIdBusiness] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
+
+  //const navigate = useNavigate();
+  const { toastShow } = useToast();
+
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
@@ -72,8 +76,7 @@ export default function FormClient(props: Props) {
       }
     }
   }, []);
-  //const navigate = useNavigate();
-  //const { toastShow } = useToast();
+
   const onSubmit = handleSubmit(async (values) => {
     await createClient({
       variables: {
@@ -91,11 +94,11 @@ export default function FormClient(props: Props) {
       },
     });
     //navigate("/Clients");
-    // toastShow({
-    //   message: "El cliente ha sido creado correctamente",
-    //   severity: "success",
-    //   duration: 5000,
-    // });
+    toastShow({
+      message: "El cliente ha sido creado correctamente",
+      severity: "success",
+      duration: 5000,
+    });
   });
   const [showAlert, setShowAlert] = useState(false);
   const onUpdate = handleSubmit(async (values) => {
@@ -119,11 +122,11 @@ export default function FormClient(props: Props) {
     });
     if (props.onClose) props.onClose();
     setShowAlert(true);
-    //toastShow({
-    //message: "El cliente ha sido editado correctamente",
-    //severity: "success",
-    //duration: 5000,
-    //});
+    toastShow({
+      message: "El cliente ha sido editado correctamente",
+      severity: "success",
+      duration: 5000,
+    });
   });
 
   return (

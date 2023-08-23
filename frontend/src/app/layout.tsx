@@ -4,6 +4,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import App from "next/app";
+import { ToastProvider } from "@/features/shared/components/toast/ToastProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ApolloProvider client={client}>
-        <body>{children}</body>
+        <body>
+        <ToastProvider>
+          {children}
+          </ToastProvider>
+          </body>
       </ApolloProvider>
     </html>
   );

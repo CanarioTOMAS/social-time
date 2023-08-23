@@ -8,36 +8,37 @@ import ItemClient from "@/features/client/components/ItemClient/ItemClient";
 import ItemBusiness from "../itemBusiness/itemBusiness";
 import { businessQueryService } from "../../services/businessQuery";
 import { setSessionService } from "../../../../auth/services/session.service";
+import { useRouter } from "next/navigation";
 
 export const ListBusiness = (props: IBusiness) => {
-    const { data, error, loading, refetch } = useQuery(
-      businessQueryService.FindUserBusiness,
-      {
-        variables: {
-          findOneUserId : localStorage.getItem ("authToken"),
-        },
-      }
-    );
+  const { data, error, loading, refetch } = useQuery(
+    businessQueryService.FindUserBusiness,
+    {
+      variables: {
+        findOneUserId: localStorage.getItem("authToken"),
+      },
+    }
+  );
+  const router = useRouter();
 
   return (
     <>
-
-    {data ?
-      <ListItems
-        items={data.findUserBusiness}
-        renderItem={(item: IBusiness) => (
-          <ItemBusiness business={item} buttonAction={true} />
-        )}
-        handleItemClick={function (item: IBusiness): IBusiness {
-          localStorage.setItem ("business",item._id)
-          window.location.href = "http://localhost:3000/pages/createClient";
-          return item;
-          //handleItemDelete(item.id);
-        }}
-      ></ListItems>
-      :
-      <>Cargando...</>
-}
+      {data ? (
+        <ListItems
+          items={data.findUserBusiness}
+          renderItem={(item: IBusiness) => (
+            <ItemBusiness business={item} buttonAction={true} />
+          )}
+          handleItemClick={function (item: IBusiness): IBusiness {
+            localStorage.setItem("business", item._id);
+            router.push("/pages/createClient");//redireccionar al dashboard
+            return item;
+            //handleItemDelete(item.id);
+          }}
+        ></ListItems>
+      ) : (
+        <>Cargando...</>
+      )}
     </>
   );
 };

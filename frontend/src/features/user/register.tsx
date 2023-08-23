@@ -18,7 +18,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -48,9 +48,9 @@ export default function FormRegister() {
       },
     });
     reset();
-    await toastShow("Usuario Creado", "info");
-    router.push("/login");
-    console.log(values);
+   await toastShow("Usuario Creado", "info");
+   router.push("/pages/login"); 
+   console.log(values);
   });
 
   const [showPassword, setShowPassword] = React.useState(false);

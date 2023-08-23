@@ -54,11 +54,11 @@ function ItemClient(props: Props) {
     setShowAlert(true);
     console.log(props);
     await deleteClient({ variables: { id: props.client.id } });
-    // toastShow({
-    //   message: "El cliente ha sido eliminado correctamente",
-    //   severity: "success",
-    //   duration: 5000,
-    // });
+    toastShow({
+      message: "El cliente ha sido eliminado correctamente",
+      severity: "success",
+      duration: 5000,
+    });
     //refetch();
   };
 

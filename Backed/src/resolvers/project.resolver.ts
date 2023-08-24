@@ -3,20 +3,7 @@ import Client from "../schema/client";
 import Project from "../schema/project";
 
 module.exports = {
-  Query: {
-    findProject: async (_: any, _args: any, context: any) => {
-      return await Project.find({
-        user: context.user.id,
-        client: _args.client
-      });
-    },
-    findOneProject: async (root: any, args: any) => {
-      const idProject = args.id;
-      const project = await Project.findById(idProject);
-      return project;
-    },
-  },
-
+ 
   Mutation: {
     //create our mutation:
     createProject: async (_: any, _args: any, context: any) => {

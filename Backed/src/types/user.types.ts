@@ -15,12 +15,6 @@ module.exports = gql`
     business: [Business]
   }
 
-  type Query {
-    me: User,
-    findUser: [User],
-    findOneUser(id: ID!): User,
-  }
-
   type Token {
     value: String!
     id: ID!

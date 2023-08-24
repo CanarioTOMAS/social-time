@@ -8,11 +8,6 @@ module.exports = gql`
     id: ID!
   }
 
-  type Query {
-    findRecord: [Record]
-    findOneRecord(id: ID!): Record
-  }
-
   type Mutation {
     createRecord(
       client: String!

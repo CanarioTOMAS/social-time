@@ -17,11 +17,6 @@ module.exports = gql`
     id: ID!
   }
 
-  type Query {
-    findClient: [Client]
-    findOneClient(id: ID!): Client
-  }
-
   type Mutation {
     createClient(
       business: String!

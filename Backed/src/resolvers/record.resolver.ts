@@ -5,18 +5,7 @@ import Project from "../schema/project";
 import Record from "../schema/record";
 
 module.exports = {
-  Query: {
-    findRecord: async (_: any, _args: any, context: any) => {
-      return await Project.find({
-        user: context.user.id,
-      });
-    },
-    findOneRecord: async (root: any, args: any) => {
-      const idProject = args.id;
-      const project = await Project.findById(idProject);
-      return project;
-    },
-  },
+
   Mutation: {
     //create our mutation:
     createRecord: async (_: any, _args: any, context: any) => {

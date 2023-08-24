@@ -6,11 +6,7 @@ module.exports = gql`
     name: String!
     description: String
     id: ID!
-  }
-
-  type Query {
-    findProject(client: String!): [Project]
-    findOneProject(id: ID!): Project
+    activitie: [Activitie]
   }
 
   type Mutation {

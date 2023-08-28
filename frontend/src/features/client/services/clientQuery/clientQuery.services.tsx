@@ -1,9 +1,10 @@
 import { gql } from "@apollo/client";
 
 const clients = gql`
-  query FindOneBusiness($id: ID) {
-    findOneBusiness(_id: $id) {
+  query FindUserBusiness($id: ID!) {
+    findUserBusiness(_id: $id) {
       client {
+        id
         name
         surname
         email
@@ -13,6 +14,7 @@ const clients = gql`
     }
   }
 `;
+
 export const QueryClientService = {
   clients,
 };

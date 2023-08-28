@@ -35,7 +35,7 @@ function ItemClient(props: Props) {
   const [deleteClient] = useMutation(
     ClientMutationServices.DeleteClient
   );
-  //refetch();
+  refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -59,7 +59,7 @@ function ItemClient(props: Props) {
       severity: "success",
       duration: 5000,
     });
-    //refetch();
+    refetch();
   };
 
   const handleCloseEditDialog = async () => {

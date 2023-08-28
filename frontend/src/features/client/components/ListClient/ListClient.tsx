@@ -20,15 +20,15 @@ export const ListClientComponent = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleCloseModal = () => {
-    //refetch();
+    refetch();
     setModalOpen(false);
   };
 
-  const clients = data?.findOneBusiness?.client.slice(0, 5);
+  const clients = data?.findUserBusiness[0].client
 
   return (
     <>
-      {!loading && data && data.findOneBusiness ? (
+      {!loading && data && data.findUserBusiness? (
         <ListItems
           items={clients}
           renderItem={(item: IClient) => (

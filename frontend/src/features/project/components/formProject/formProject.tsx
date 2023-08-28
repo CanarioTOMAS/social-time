@@ -4,6 +4,9 @@ import {
   Button,
   Card,
   FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -12,7 +15,10 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
 import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
+import { getSessionServices } from "@/auth/services/session.service";
+import { IClient } from "@/features/client/models/Client";
 
 type Props = {
   id: any;
@@ -54,6 +60,16 @@ export default function FormProjectComponent(props: Props) {
       : ProjectMutationServices.CreateProject
   );
 
+  const { data, error, loading, refetch } = useQuery(
+    QueryClientService.clients,
+    {
+      variables: {
+        id: getSessionServices("business"),
+      },
+    }
+  );
+
+
   const { toastShow } = useToast();
 
   // useEffect(() => {
@@ -90,9 +106,9 @@ export default function FormProjectComponent(props: Props) {
     await mutateFunction({
       variables: {
         name: values.name,
-        idClient: values.idClient,
-        idProject: values.idProject,
-        user: values.user,
+        client: values.idClient,
+        description:values.idProject
+
       },
     });
     // props.onAdd();
@@ -104,13 +120,17 @@ export default function FormProjectComponent(props: Props) {
       variables: {
         name: values.name,
         idClient: values.idClient,
-        idProject: values.idProject,
-        user: values.user,
       },
     });
     // props.onEdit();
     setIsEditing(false);
   });
+
+  const [client, setClient] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setClient(event.target.value as string);
+  };
 
   return (
     <Box
@@ -141,10 +161,10 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
-          <TextField
+          <Select
             label="Client"
+            id="demo-simple-select"
             sx={{ m: 1, width: "90%", textAlign: "center" }}
-            type="text"
             {...register("idClient", {
               required: true,
               minLength: 2,
@@ -153,7 +173,14 @@ export default function FormProjectComponent(props: Props) {
               helperText: "Campo Obligatorio",
               error: true,
             })}
-          />
+            onChange={handleChange}
+            value={client}
+          >
+            {data && data.findUserBusiness[0].client.map((item: any) => (
+                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                ))
+              }
+          </Select>
           <TextField
             label="Project"
             sx={{ m: 1, width: "90%", textAlign: "center" }}
@@ -192,4 +219,3 @@ export default function FormProjectComponent(props: Props) {
     </Box>
   );
 }
-

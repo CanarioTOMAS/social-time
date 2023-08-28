@@ -12,9 +12,6 @@ const CreateProject = gql`
       description: $description
     ) {
       id
-      client
-      name
-      description
     }
   }
 `;

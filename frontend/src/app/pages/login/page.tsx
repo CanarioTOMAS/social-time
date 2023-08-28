@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { ILoginUser } from "@/app/model/user";
+import { setSessionService } from "@/auth/services/authService";
 
 type Login={
   email:string,
@@ -46,6 +47,7 @@ export default function FormLogin() {
     event.preventDefault();
   };
   const onSubmit = handleSubmit((values) => {
+    console.log(values);
     mutateFunction({variables: {
       email: values.email,
       password: values.password
@@ -53,6 +55,7 @@ export default function FormLogin() {
 
     if (data.login.value) {
       localStorage.setItem('authToken', data.login.value);
+      setSessionService('id', data.login.id);
     }
     console.log(error);
     console.log(data)

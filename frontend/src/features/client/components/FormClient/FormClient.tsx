@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useEffect, useRef, useState } from "react";
@@ -22,10 +23,10 @@ export default function FormClient(props: Props) {
   const [idBusiness, setIdBusiness] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
-
+  //const router = useRouter();
   //const navigate = useNavigate();
   const { toastShow } = useToast();
-
+  
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
@@ -93,12 +94,13 @@ export default function FormClient(props: Props) {
         image: values.image,
       },
     });
-    //navigate("/Clients");
+    //router.reload();
     toastShow({
       message: "El cliente ha sido creado correctamente",
       severity: "success",
       duration: 5000,
     });
+    
   });
   const [showAlert, setShowAlert] = useState(false);
   const onUpdate = handleSubmit(async (values) => {

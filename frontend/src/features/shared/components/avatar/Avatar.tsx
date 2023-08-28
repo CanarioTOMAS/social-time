@@ -32,7 +32,7 @@ function ProfileForm({
   defaultImage,
 }: IProfileFormProps) {
   const [avatarSrc, setAvatarSrc] = useState<File | null>(null);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState<string | null>(null); // Cambia el estado de image a string
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [editor, setEditor] = useState<AvatarEditor | null>(null);
   const [open, setOpen] = useState(false);
@@ -69,12 +69,13 @@ function ProfileForm({
           let reader = new FileReader();
           reader.readAsDataURL(blob);
           reader.onload = () => {
-            //aqui ya esta en base64
-            let base64 = reader.result;
+            // Aquí ya está en base64
+            let base64 = reader.result as string;
             onChange(base64);
+            setAvatarSrc(new File([blob], "avatar.png"));
+            setImage(base64); // Establece la imagen del avatar después de guardarla
+            setOpen(false);
           };
-          setAvatarSrc(new File([blob], "avatar.png"));
-          setOpen(false);
         }
       }, "image/png");
     }
@@ -91,7 +92,7 @@ function ProfileForm({
       >
         <Avatar
           onClick={handleButtonClick}
-          src={image || defaultImage}
+          src={image || defaultImage} 
           alt="Profile"
           style={{ cursor: "pointer" }}
           sx={{
@@ -149,6 +150,7 @@ function ProfileForm({
                 color={[255, 255, 255, 0.6]}
                 scale={scale}
                 rotate={0}
+                onImageReady={() => {}}
               />
             )}
           </DialogContent>

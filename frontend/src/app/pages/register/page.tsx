@@ -18,7 +18,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -37,7 +37,7 @@ export default function FormRegister() {
   const [mutateFunction, { loading, error, data }] = useMutation(
     userMutationService.register
   );
-
+  const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
     const response = await mutateFunction({
       variables: {
@@ -48,7 +48,8 @@ export default function FormRegister() {
       },
     });
     reset();
-   await toastShow("Usuario Creado", "info");
+    await toastShow("Usuario Creado", "info");
+    router.push("/login");
     console.log(values);
   });
 

@@ -8,6 +8,7 @@ import ItemClient from "@/features/client/components/ItemClient/ItemClient";
 import ItemBusiness from "../itemBusiness/itemBusiness";
 import { businessQueryService } from "../../services/businessQuery";
 import { setSessionService } from "../../../../auth/services/session.service";
+import { useRouter } from "next/navigation";
 
 export const ListBusiness = (props: IBusiness) => {
     const { data, error, loading, refetch } = useQuery(
@@ -18,6 +19,7 @@ export const ListBusiness = (props: IBusiness) => {
         },
       }
     );
+    const router = useRouter();
 
   return (
     <>
@@ -30,7 +32,7 @@ export const ListBusiness = (props: IBusiness) => {
         )}
         handleItemClick={function (item: IBusiness): IBusiness {
           localStorage.setItem ("business",item._id)
-          window.location.href = "http://localhost:3000/pages/createClient";
+          router.push("/pages/createClient");//redireccionar al dashboard
           return item;
           //handleItemDelete(item.id);
         }}

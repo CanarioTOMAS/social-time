@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { ILoginUser } from "@/app/model/user";
+import { useRouter } from "next/navigation";
 
 type Login={
   email:string,
@@ -41,6 +42,7 @@ export default function FormLogin() {
     }
 
   });
+  const router = useRouter();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
@@ -49,9 +51,10 @@ export default function FormLogin() {
     mutateFunction({variables: {
       email: values.email,
       password: values.password
-    }});
+    }})
+    router.push("/pages/listBusiness");
 
-    if (data.login.value) {
+    if (data&&data.login.value) {
       localStorage.setItem('authToken', data.login.value);
     }
     console.log(error);
@@ -127,6 +130,7 @@ export default function FormLogin() {
             variant="contained"
             endIcon={<SendIcon />}
             onClick={onSubmit}
+          
           >
             Sign In
           </Button>
@@ -139,7 +143,7 @@ export default function FormLogin() {
           <Link
             sx={{ m: 1 }}
             className={style.forgotPassword}
-            href="/forgotPassword"
+            href="/pages/forgotPassword"
             variant="body2"
             color="#6b0040"
           >
@@ -149,7 +153,7 @@ export default function FormLogin() {
         <Grid item>
           <Link
             sx={{ m: 1 }}
-            href="/register"
+            href="/pages/register"
             variant="body2"
             underline="none"
             color="#6b0040"
@@ -157,7 +161,7 @@ export default function FormLogin() {
             Don't have an account?
           </Link>
           <Link
-            href="/register"
+            href="/pages/register"
             variant="subtitle1"
             color="#92213c"
             underline="hover"

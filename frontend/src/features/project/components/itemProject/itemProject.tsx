@@ -1,6 +1,5 @@
 import { Delete, Edit } from "@mui/icons-material";
 import {
-  Avatar,
   Button,
   Dialog,
   DialogActions,
@@ -34,7 +33,7 @@ function ItemProject(props: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
-  // refetch();
+  refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -57,7 +56,7 @@ function ItemProject(props: Props) {
       severity: "success",
       duration: 5000,
     });
-    // refetch();
+    refetch();
   };
 
   const handleCloseEditDialog = async () => {

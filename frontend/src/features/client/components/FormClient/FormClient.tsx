@@ -98,7 +98,6 @@ export default function FormClient(props: Props) {
     toastShow({
       message: "El cliente ha sido creado correctamente",
       severity: "success",
-      duration: 5000,
     });
     
   });
@@ -150,9 +149,8 @@ export default function FormClient(props: Props) {
             avatarType="client"
             onChange={function (data: any): void {
               setValue("image", data);
-            }}
-            defaultImage={props.client?.image ? props.client.image : ""}
-          />
+            } }
+            defaultImage={props.client?.image ? props.client.image : ""} resetKey={undefined}          />
           <TextField
             id="Name"
             label="Name"

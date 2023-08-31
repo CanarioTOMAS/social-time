@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { IClient } from "../../models/Client";
 import ItemClient from "../ItemClient/ItemClient";
@@ -17,14 +17,15 @@ export const ListClientComponent = () => {
       },
     }
   );
-  const [modalOpen, setModalOpen] = useState(false);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  
   const handleCloseModal = () => {
     refetch();
     setModalOpen(false);
   };
 
-  const clients = data?.findUserBusiness[0].client
+  const clients = data?.findUserBusiness[0]?.client
 
   return (
     <>

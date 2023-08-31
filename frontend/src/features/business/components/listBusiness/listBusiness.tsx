@@ -13,6 +13,7 @@ export const ListBusiness = (props: IBusiness) => {
   );
 
   if (data) console.log(data);
+  
   return (
     <>
       {data && data.findUserBusiness ? (
@@ -23,7 +24,6 @@ export const ListBusiness = (props: IBusiness) => {
           )}
           handleItemClick={function (item: IBusiness): IBusiness {
             localStorage.setItem("business", item._id);
-            window.location.href = "http://localhost:3000/pages/createClient";
             return item;
             //handleItemDelete(item.id);
           }}

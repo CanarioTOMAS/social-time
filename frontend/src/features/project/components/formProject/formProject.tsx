@@ -69,7 +69,6 @@ export default function FormProjectComponent(props: Props) {
     }
   );
 
-
   const { toastShow } = useToast();
 
   // useEffect(() => {
@@ -89,13 +88,11 @@ export default function FormProjectComponent(props: Props) {
           ? "El proyecto se edito correctamente"
           : "El proyecto se cargó correctamente",
         severity: "success",
-        duration: 5000,
       });
     } catch (error) {
       toastShow({
         message: "Error al realizar la operación",
         severity: "error",
-        duration: 5000,
       });
     }
     reset();

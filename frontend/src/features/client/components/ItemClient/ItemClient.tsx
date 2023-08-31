@@ -57,7 +57,6 @@ function ItemClient(props: Props) {
     toastShow({
       message: "El cliente ha sido eliminado correctamente",
       severity: "success",
-      duration: 5000,
     });
     refetch();
   };

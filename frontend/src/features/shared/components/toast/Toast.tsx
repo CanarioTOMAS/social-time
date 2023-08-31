@@ -36,7 +36,7 @@ export default function Toast() {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={show.duration ? show.duration : 6000}
+      autoHideDuration={show.duration ? show.duration : 5000}
       onClose={handleClose}
       anchorOrigin={{
         vertical: show.vertical ? show.vertical : "top",

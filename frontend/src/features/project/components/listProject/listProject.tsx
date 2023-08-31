@@ -11,9 +11,8 @@ export const ListProjectComponent = () => {
   const { data, error, loading, refetch } = useQuery(
     ProjectQueryService.Project,
   );
-
-  const projects = data;
-  console.log(projects);
+console.log(data);
+   const projects = data?.findUserBusiness[0]?.client[0]?.project;
 
   return (
     <>
@@ -30,6 +29,7 @@ export const ListProjectComponent = () => {
             <Typography variant="h5" align="center" gutterBottom>
               Lista de Proyectos
             </Typography>
+            {data && data.findUserBusiness?
             <ListItems
               items={projects}
               renderItem={(item) => (
@@ -41,6 +41,7 @@ export const ListProjectComponent = () => {
                 //handleItemDelete(item.id);
               }}
             ></ListItems>
+            :<></>}
           </Grid>
         </Card>
       </Box>

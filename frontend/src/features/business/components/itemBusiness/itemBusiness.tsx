@@ -35,7 +35,7 @@ function ItemBusiness(props: Props) {
   const [DeleteBusiness] = useMutation(
     businessMutationService.deleteBusiness
   );
-  refetch();
+  
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };

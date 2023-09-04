@@ -74,7 +74,7 @@ function ItemBusiness(props: Props) {
         </ListItemAvatar>
         <ListItemText
           primary={`Name: ${props.business.name}`}
-          secondary={`Email: ${props.business.email}, Phone: ${props.business.phone}, address: ${props.business.address}`}
+          secondary={`Email: ${props.business.email}, Phone: ${props.business.phone}, Address: ${props.business.address}`}
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (

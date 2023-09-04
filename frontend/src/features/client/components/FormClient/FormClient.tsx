@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import { Card, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Card, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
@@ -19,19 +18,17 @@ type Props = {
   onClose?: () => void;
 };
 
-export default function FormClient(props: Props) {
+export default function FormClientComponent(props: Props) {
   const [idBusiness, setIdBusiness] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
-  //const router = useRouter();
-  //const navigate = useNavigate();
   const { toastShow } = useToast();
-  
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<IClient>({
     defaultValues: {
@@ -67,6 +64,7 @@ export default function FormClient(props: Props) {
 
   const [createClient] = useMutation(ClientMutationServices.CreateClient);
   const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
+
   useEffect(() => {
     if (getSessionServices("business") == null) {
       console.log("no hay business");
@@ -94,13 +92,13 @@ export default function FormClient(props: Props) {
         image: values.image,
       },
     });
-    //router.reload();
     toastShow({
       message: "El cliente ha sido creado correctamente",
       severity: "success",
     });
-    
+    reset();
   });
+
   const [showAlert, setShowAlert] = useState(false);
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;
@@ -126,7 +124,6 @@ export default function FormClient(props: Props) {
     toastShow({
       message: "El cliente ha sido editado correctamente",
       severity: "success",
-      duration: 5000,
     });
   });
 
@@ -141,16 +138,21 @@ export default function FormClient(props: Props) {
         minHeight: "100vh",
       }}
       ref={formRef}
-      alignContent={"center"} /*onSubmit={handleSubmit(type)}*/
+      alignContent={"center"}
     >
       <Card sx={{ pb: 1 }}>
+        <Typography variant="h5" sx={{ textAlign: "center" }}>
+          Client
+        </Typography>
         <FormControl>
           <ProfileForm
             avatarType="client"
             onChange={function (data: any): void {
               setValue("image", data);
-            } }
-            defaultImage={props.client?.image ? props.client.image : ""} resetKey={undefined}          />
+            }}
+            defaultImage={props.client?.image ? props.client.image : ""}
+            resetKey={undefined}
+          />
           <TextField
             id="Name"
             label="Name"

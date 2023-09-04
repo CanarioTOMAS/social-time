@@ -1,3 +1,5 @@
+"use client";
+
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Button,
@@ -8,9 +10,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-
 import { MouseEventHandler, useState } from "react";
-
 import { useMutation, useQuery } from "@apollo/client";
 import { IProject } from "../../model/project";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
@@ -31,9 +31,10 @@ function ItemProject(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
-  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
-  refetch();
+  const [DeleteProject] = useMutation(
+    ProjectMutationServices.DeleteProject
+    );
+  refetch();  
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -52,9 +53,8 @@ function ItemProject(props: Props) {
     console.log(props);
     await DeleteProject({ variables: { id: props.project.id } });
     toastShow({
-      message: "El cliente ha sido eliminado correctamente",
+      message: "El proyecto ha sido eliminado correctamente",
       severity: "success",
-      duration: 5000,
     });
     refetch();
   };
@@ -68,13 +68,13 @@ function ItemProject(props: Props) {
     <>
       {" "}
       <>
-        <ListItemAvatar>
-          {/* <Avatar src={image} alt={props.project.Image} /> */}
-        </ListItemAvatar>
-
+        {/* <ListItemAvatar>
+          <Avatar src={image} alt={props.project.Image} />
+        </ListItemAvatar> */}
         <ListItemText
-          primary={props.project?.name}
-          secondary={`user: ${props.project?.user}, `}
+          primary={`Name: ${props.project?.name}`}
+          secondary={`User: ${props.project?.user} Client: ${props.project?.idClient}`}
+          primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
           <>
@@ -96,7 +96,7 @@ function ItemProject(props: Props) {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirmed}
-        title="¿Está seguro que desea eliminar este producto?"
+        title="¿Está seguro que desea eliminar este proyecto?"
         message="Se eliminará de forma permanente "
         confirmText="Eliminar"
         cancelText="Cancelar"
@@ -105,9 +105,10 @@ function ItemProject(props: Props) {
         <DialogContent>
           <FormProjectComponent
             project={props.project}
-            id={undefined} /*onClose={() => {
+            id={undefined} 
+            onClose={() => {
               setIsEditDialogOpen(false);
-            }}*/
+            }}
           />
         </DialogContent>
         <DialogActions>

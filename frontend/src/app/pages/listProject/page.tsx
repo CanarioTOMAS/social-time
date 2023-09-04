@@ -5,7 +5,7 @@ import ListProjectComponent from "@/features/project/components/listProject/list
 export default function ListProject() {
   return (
     <div>
-      <ListProjectComponent />;
+      <ListProjectComponent />
     </div>
   );
 }

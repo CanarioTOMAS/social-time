@@ -16,9 +16,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
-import FormClient from "../FormClient/FormClient";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
+import FormClientComponent from "../FormClient/FormClient";
 
 type Props = {
   client: IClient;
@@ -45,8 +45,10 @@ function ItemClient(props: Props) {
   };
 
   const toastShow = useToast();
+
   console.log(props);
   console.log(data);
+
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
   > = async () => {
@@ -57,7 +59,6 @@ function ItemClient(props: Props) {
     toastShow({
       message: "El cliente ha sido eliminado correctamente",
       severity: "success",
-      duration: 5000,
     });
     refetch();
   };
@@ -74,7 +75,6 @@ function ItemClient(props: Props) {
         <ListItemAvatar>
           <Avatar src={props.client.image} alt={props.client.name} />
         </ListItemAvatar>
-
         <ListItemText
           primary={`Name: ${props.client.name} ${props.client.surname}`}
           secondary={`Email: ${props.client.email}, Phone: ${props.client.phone}`}
@@ -100,14 +100,14 @@ function ItemClient(props: Props) {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirmed}
-        title="¿Está seguro que desea eliminar este producto?"
+        title="¿Está seguro que desea eliminar este cliente?"
         message="Se eliminará de forma permanente "
         confirmText="Eliminar"
         cancelText="Cancelar"
       />
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
-          <FormClient
+          <FormClientComponent
             client={props.client}
             onClose={() => {
               setIsEditDialogOpen(false);

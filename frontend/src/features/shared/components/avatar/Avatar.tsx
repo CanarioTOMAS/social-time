@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Avatar,
   Box,
@@ -24,12 +24,14 @@ interface IProfileFormProps {
   onChange: (data: any) => void;
   avatarType: AvatarType;
   defaultImage: string;
+  resetKey: any;
 }
 
 function ProfileForm({
   onChange,
   avatarType,
   defaultImage,
+  resetKey,
 }: IProfileFormProps) {
   const [avatarSrc, setAvatarSrc] = useState<File | null>(null);
   const [image, setImage] = useState<string | null>(null); // Cambia el estado de image a string
@@ -37,6 +39,9 @@ function ProfileForm({
   const [editor, setEditor] = useState<AvatarEditor | null>(null);
   const [open, setOpen] = useState(false);
   const [scale, setScale] = useState(1);
+  useEffect(() => {
+    setImage(null);
+  }, [resetKey]);
 
   const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

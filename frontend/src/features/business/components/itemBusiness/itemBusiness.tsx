@@ -18,6 +18,7 @@ import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
 import FormBusinessComponent from "../formBusiness/formBusiness";
 import { businessQueryService } from "../../services/businessQuery";
+import { businessMutationService } from "../../services/businessMutation";
 
 type Props = {
   business: IBusiness;
@@ -31,11 +32,10 @@ function ItemBusiness(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
-  //   const [DeleteBusiness] = useMutation(
-  //     BusinessServices.BusinessMutationServices.DeleteBusiness
-  //   );
-  //   refetch();
+  const [DeleteBusiness] = useMutation(
+    businessMutationService.deleteBusiness
+  );
+  
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -52,13 +52,12 @@ function ItemBusiness(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    // await DeleteBusiness({ variables: { id: props.business._id } });
+    await DeleteBusiness({ variables: { id: props.business._id } });
     toastShow({
       message: "La empresa se ha sido eliminado correctamente",
       severity: "success",
-      duration: 5000,
     });
-    //refetch();
+    refetch();
   };
 
   const handleCloseEditDialog = async () => {
@@ -74,8 +73,8 @@ function ItemBusiness(props: Props) {
           <Avatar src={props.business.image} alt={props.business.name} />
         </ListItemAvatar>
         <ListItemText
-          primary={props.business.name}
-          secondary={`email: ${props.business.email},phone: ${props.business.phone}, address: ${props.business.address}`}
+          primary={`Name: ${props.business.name}`}
+          secondary={`Email: ${props.business.email}, Phone: ${props.business.phone}, Address: ${props.business.address}`}
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (

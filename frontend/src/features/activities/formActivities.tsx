@@ -13,7 +13,6 @@ import {
   InputLabel,
   FormControlLabel,
   Checkbox,
-  ListItemText,
   Dialog,
   DialogTitle,
   DialogContent,

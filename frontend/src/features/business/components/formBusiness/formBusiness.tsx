@@ -2,8 +2,8 @@
 
 import { Box, Button, Card, Input, TextField, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
-import { useForm, SubmitHandler, set } from "react-hook-form";
-import { useMutation, useQuery } from "@apollo/client";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
@@ -13,6 +13,7 @@ import {
   getSessionServices,
   setSessionService,
 } from "@/auth/services/session.service";
+import { useState } from "react";
 
 type Props = {
   business: IBusiness | undefined;
@@ -38,7 +39,7 @@ export default function FormBusinessComponent(props: Props) {
       touched: "",
     },
   });
-
+  const [resetKey, setResetKey] = useState(0);
   const { id } = useParams();
   const [mutateFunction] = useMutation(
     id
@@ -60,13 +61,19 @@ export default function FormBusinessComponent(props: Props) {
         image: values.image,
       },
     });
-    reset();
     toastShow({
       message: "La Empresa ha sido creado correctamente",
       severity: "success",
-      duration: 5000,
     });
     setSessionService("business", response.data.addBusiness._id);
+    reset({
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      businessCategory: "",
+    });
+    setResetKey((prevKey) => prevKey + 1);
   });
 
   return (
@@ -86,11 +93,10 @@ export default function FormBusinessComponent(props: Props) {
             avatarType="business"
             onChange={function (data: any): void {
               setValue("image", data);
-            }}
-            defaultImage={props.business?.image ? props.business.image : ""}
-          />
+            } }
+            defaultImage={props.business?.image ? props.business.image : ""} resetKey={resetKey}/>
           <TextField
-            sx={{ m: 1, width: "25ch" }}
+            sx={{ m: 1, width: "43ch" }}
             label="Business Name"
             variant="outlined"
             type="text"
@@ -108,7 +114,7 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <TextField
-            sx={{ m: 1, width: "25ch" }}
+            sx={{ m: 1, width: "43ch" }}
             label="Phone"
             variant="outlined"
             type="tel"
@@ -121,12 +127,12 @@ export default function FormBusinessComponent(props: Props) {
               error: true,
             })}
             {...(errors.phone?.type === "minLength" && {
-              helperText: "El nombre es demasiado corto",
+              helperText: "El teléfono es demasiado corto",
               error: true,
             })}
           />
           <TextField
-            sx={{ m: 1, width: "25ch" }}
+            sx={{ m: 1, width: "43ch" }}
             label="Email"
             variant="outlined"
             type="email"
@@ -139,12 +145,12 @@ export default function FormBusinessComponent(props: Props) {
               error: true,
             })}
             {...(errors.email?.type === "minLength" && {
-              helperText: "El nombre es demasiado corto",
+              helperText: "El email es demasiado corto",
               error: true,
             })}
           />
           <TextField
-            sx={{ m: 1, width: "25ch" }}
+            sx={{ m: 1, width: "43ch" }}
             label="Address"
             variant="outlined"
             type="text"
@@ -157,12 +163,12 @@ export default function FormBusinessComponent(props: Props) {
               error: true,
             })}
             {...(errors.address?.type === "minLength" && {
-              helperText: "El nombre es demasiado corto",
+              helperText: "El dirección es demasiado corto",
               error: true,
             })}
           />
           <TextField
-            sx={{ m: 1, width: "25ch" }}
+            sx={{ m: 1, width: "43ch" }}
             label="Business Category"
             variant="outlined"
             type="text"
@@ -180,12 +186,11 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <Button
-            sx={{ m: 1, width: "43ch" }}
+            sx={{ m: 1, width: "44ch" }}
             onClick={onSubmit}
             variant="contained"
           >
-            Enviar
-            {id ? "Editar" : "Crear"}
+            Crear
           </Button>
         </FormControl>
       </Card>

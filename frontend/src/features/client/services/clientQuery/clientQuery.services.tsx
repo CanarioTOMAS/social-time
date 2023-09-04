@@ -9,7 +9,12 @@ const clients = gql`
         surname
         email
         phone
+        documentType
         documentNumber
+        address
+        city
+        postCode
+        image
       }
     }
   }

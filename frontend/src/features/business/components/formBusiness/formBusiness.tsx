@@ -78,6 +78,7 @@ export default function FormBusinessComponent(props: Props) {
 
   return (
     <Box
+      className="bg-blue-500 text-white p-4"
       component="form"
       sx={{
         display: "flex",
@@ -87,15 +88,25 @@ export default function FormBusinessComponent(props: Props) {
       }}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
-        <Typography variant="h3">Crear Empresa</Typography>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          className="text-xl text-center mb-4"
+        >
+          Crear Empresa
+        </Typography>
         <FormControl sx={{ alignItems: "center" }}>
           <ProfileForm
             avatarType="business"
             onChange={function (data: any): void {
               setValue("image", data);
-            } }
-            defaultImage={props.business?.image ? props.business.image : ""} resetKey={resetKey}/>
+            }}
+            defaultImage={props.business?.image ? props.business.image : ""}
+            resetKey={resetKey}
+          />
           <TextField
+            className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
             label="Business Name"
             variant="outlined"
@@ -114,6 +125,7 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
             label="Phone"
             variant="outlined"
@@ -132,6 +144,7 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
             label="Email"
             variant="outlined"
@@ -150,6 +163,7 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
             label="Address"
             variant="outlined"
@@ -168,6 +182,7 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
             label="Business Category"
             variant="outlined"
@@ -186,7 +201,8 @@ export default function FormBusinessComponent(props: Props) {
             })}
           />
           <Button
-            sx={{ m: 1, width: "44ch" }}
+            className="bg-blue-500 text-white p-2 mt-4"
+            sx={{ m: 1, width: "47.5ch" }}
             onClick={onSubmit}
             variant="contained"
           >

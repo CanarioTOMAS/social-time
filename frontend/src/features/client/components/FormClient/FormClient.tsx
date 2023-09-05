@@ -5,7 +5,14 @@ import TextField from "@mui/material/TextField";
 import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import { Card, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Card,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
@@ -129,6 +136,7 @@ export default function FormClientComponent(props: Props) {
 
   return (
     <Box
+      className="bg-blue-500 text-white p-4"
       component="form"
       sx={{
         display: "flex",
@@ -140,9 +148,14 @@ export default function FormClientComponent(props: Props) {
       ref={formRef}
       alignContent={"center"}
     >
-      <Card sx={{ pb: 1 }}>
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
-          Client
+      <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          className="text-xl text-center mb-4"
+        >
+          Crear Cliente
         </Typography>
         <FormControl>
           <ProfileForm
@@ -154,9 +167,10 @@ export default function FormClientComponent(props: Props) {
             resetKey={undefined}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Name"
             label="Name"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("name", {
               required: true,
@@ -172,9 +186,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Surname"
             label="Surname"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("surname", {
               required: true,
@@ -189,12 +204,12 @@ export default function FormClientComponent(props: Props) {
               error: true,
             })}
           />
-          <FormControl {...register("documentType")}>
+          <FormControl {...register("documentType")} className="w-1/2 p-2">
             <InputLabel>Document Type</InputLabel>
             <Select
               type="text"
               label="documentType"
-              sx={{ m: 1, width: "37.7ch" }}
+              sx={{ width: "41.7ch", m: 1 }}
               value={
                 props.client ? props.client.documentType : selectedDocumentType
               }
@@ -206,9 +221,10 @@ export default function FormClientComponent(props: Props) {
             </Select>
           </FormControl>
           <TextField
+            className="w-1/2 p-2"
             id="N°"
             label="N°"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("documentNumber", {
               required: true,
@@ -224,9 +240,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Adress"
             label="Address"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("address", {
               required: true,
@@ -242,9 +259,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Email"
             label="Email"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="email"
             {...register("email", {
               required: true,
@@ -260,9 +278,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Phone"
             label="Phone"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="phone"
             {...register("phone", {
               required: true,
@@ -278,9 +297,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="City"
             label="City"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("city", {
               required: true,
@@ -296,9 +316,10 @@ export default function FormClientComponent(props: Props) {
             })}
           />
           <TextField
+            className="w-1/2 p-2"
             id="Post Code"
             label="Post Code"
-            sx={{ m: 1 }}
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("postCode", {
               required: true,
@@ -315,7 +336,8 @@ export default function FormClientComponent(props: Props) {
           />
           {!isEditing ? (
             <Button
-              sx={{ m: 1, width: "43ch" }}
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onSubmit}
               variant="contained"
@@ -324,7 +346,8 @@ export default function FormClientComponent(props: Props) {
             </Button>
           ) : (
             <Button
-              sx={{ m: 1, width: "43ch" }}
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onUpdate}
               variant="contained"

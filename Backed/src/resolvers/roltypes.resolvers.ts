@@ -2,13 +2,7 @@ import { UserInputError } from "apollo-server-core";
 import RolType from "../schema/roltype";
 
 module.exports = {
-  Query: {
-    findRolType: async (_: any, _args: any, context: any) => {
-      return await RolType.find({
-        
-      });
-    },
-  },
+
   Mutation: {
     //create our mutation:
     createRolType: async (_: any, _args: any, context: any) => {

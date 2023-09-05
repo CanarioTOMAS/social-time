@@ -3,6 +3,7 @@ import User from "../schema/user";
 import Client from "../schema/client";
 import Rol from "../schema/rol";
 import Project from "../schema/project";
+import Activitie from "../schema/activitie";
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
@@ -58,6 +59,12 @@ module.exports = {
     }
   
   },
+  Project: {
+    activitie: async (project: any, _args: any) => {
+      return await Activitie.find ({ project: project._id, user: _args.user})
+    }
+  },
+
 
   Mutation: {
     //create our mutation:

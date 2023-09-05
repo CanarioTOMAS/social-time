@@ -1,33 +1,22 @@
 import { UserInputError } from "apollo-server-core";
-import Project from "../schema/project";
 import Activitie from "../schema/activitie";
 
 module.exports = {
-  Query: {
-    findActivitie: async (_: any, _args: any, context: any) => {
-      return await Activitie.find({
-        user: context.user.id,
-      });
-    },
-    findOneActivitie: async (root: any, args: any) => {
-      const idActivitie = args.id;
-      const activitie = await Activitie.findById(idActivitie);
-      return activitie;
-    },
-  },
+ 
   Mutation: {
     //create our mutation:
     createActivitie: async (_: any, _args: any, context: any) => {
-      const project = await Project.findById(_args.project);
+      console.log (_args)
       const activitie = new Activitie({
-        project: project,
+        user: context.user.id,
+        project: _args.project,
         name: _args.name,
         tiempoEstimado: _args.tiempoEstimado,
         costoHora: _args.costoHora,
         periocidad: _args.periocidad
       });
-
       return activitie.save().catch((error: any) => {
+        console.log (error)
         throw new UserInputError(error.message, {
           invalidArgs: _args,
         });

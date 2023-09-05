@@ -28,5 +28,6 @@ const schema = new mongoose.Schema({
   gender: { type: String, required: false, unique: false },
   phone: { type: String, required: false, unique: false },
   businesses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Business" }],
+  activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activities" }],
 });
 export default mongoose.model("User", schema);

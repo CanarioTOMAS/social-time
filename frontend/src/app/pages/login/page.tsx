@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { ILoginUser } from "@/app/model/user";
+import { useRouter } from "next/navigation";
 
 type Login = {
   email: string;
@@ -41,6 +42,7 @@ export default function FormLogin() {
       password: "",
     },
   });
+  const router = useRouter();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
@@ -50,9 +52,10 @@ export default function FormLogin() {
     mutateFunction({variables: {
       email: values.email,
       password: values.password
-    }});
+    }})
+    router.push("/pages/listBusiness");
 
-    if (data.login.value) {
+    if (data&&data.login.value) {
       localStorage.setItem('authToken', data.login.value);
     }
     console.log(error);
@@ -128,6 +131,7 @@ export default function FormLogin() {
             variant="contained"
             endIcon={<SendIcon />}
             onClick={onSubmit}
+          
           >
             Sign In
           </Button>

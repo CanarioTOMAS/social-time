@@ -45,17 +45,25 @@ export default function FormLogin() {
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
-  const onSubmit = handleSubmit((values) => {
-    mutateFunction({variables: {
-      email: values.email,
-      password: values.password
-    }});
-
-    if (data.login.value) {
-      localStorage.setItem('authToken', data.login.value);
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      const result = await mutateFunction({
+        variables: {
+          email: values.email,
+          password: values.password,
+        },
+      });
+  
+      const responseData = result.data; // Suponiendo que los datos de inicio de sesión están aquí
+  
+      if (responseData.login.value) {
+        localStorage.setItem('authToken', responseData.login.value);
+      }
+  
+      console.log(responseData);
+    } catch (mutationError) {
+      console.error(mutationError);
     }
-    console.log(error);
-    console.log(data)
   });
 
   return (

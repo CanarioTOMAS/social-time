@@ -1,35 +1,26 @@
 "use client";
-
 import {
   Box,
   Button,
   Card,
   FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
-import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
-import { useMutation, useQuery } from "@apollo/client";
-import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
-import { getSessionServices } from "@/auth/services/session.service";
 
 type Props = {
   id: any;
   project: IProject | undefined;
-  onClose?: () => void;
+  // onEdit: () => void;
+  // onAdd: () => void;
 };
 
 export default function FormProjectComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
-  const { toastShow } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
@@ -55,64 +46,70 @@ export default function FormProjectComponent(props: Props) {
     }
   }, [props.project]);
 
-  const [CreateProject] = useMutation(ProjectMutationServices.CreateProject);
-  const [UpdateProject] = useMutation(ProjectMutationServices.UpdateProject);
 
-  const { data, error, loading, refetch } = useQuery(
-    QueryClientService.clients,
-    {
-      variables: {
-        id: getSessionServices("business"),
-      },
-    }
-  );
+  // const [mutateFunction] = useMutation(
+  // props.project?.id
+  // ? ProductService.ProductMutationServices.UpdateProduct
+  // : ProductService.ProductMutationServices.AddProduct
+  // );
+
+  const { toastShow } = useToast();
 
   // useEffect(() => {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
-
-  const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
-    await CreateProject({
-      variables: {
-        name: values.name,
-        client: values.idClient,
-        description: values.idProject,
-      },
-    });
-    toastShow({
-      message: "El proyecto ha sido creado correctamente",
-      severity: "success",
-    });
-    reset();
+   const onSubmit = handleSubmit(async (values: any) => {
+     console.log(props.project?.id);
+    try {
+      if (props.project?.id) {
+        await handleEditSubmit(values);
+      } else {
+        await handleAddSubmit(values);
+      }
+      toastShow({
+        message: isEditing
+          ? "El producto se edito correctamente"
+          : "El producto se cargó correctamente",
+        severity: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      toastShow({
+        message: "Error al realizar la operación",
+        severity: "error",
+        duration: 5000,
+      });
+    }
+    reset()
   });
 
-  const [showAlert, setShowAlert] = useState(false);
-  const onUpdate = handleSubmit(async (values) => {
-    if (!props.project) return;
+  const handleAddSubmit = handleSubmit(async (values: any) => {
     console.log(values);
-    await UpdateProject({
+    await mutateFunction({
       variables: {
         name: values.name,
         idClient: values.idClient,
-        user: values.user,
         idProject: values.idProject,
+        user: values.user, 
       },
     });
-    if (props.onClose) props.onClose();
-    setShowAlert(true);
-    toastShow({
-      message: "El cliente ha sido editado correctamente",
-      severity: "success",
-    });
+    // props.onAdd();
+    reset();
   });
-
-  const [client, setClient] = useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setClient(event.target.value as string);
-  };
+  const handleEditSubmit = handleSubmit(async (values: any) => {
+    console.log(values);
+    await mutateFunction({
+      variables: {
+     name: values.name,
+     idClient: values.idClient,
+     idProject: values.idProject,
+     user: values.user,   
+      },
+    });
+    // props.onEdit();
+    setIsEditing(false);
+  });
 
   return (
     <Box
@@ -123,17 +120,16 @@ export default function FormProjectComponent(props: Props) {
         alignItems: "center",
         minHeight: "100vh",
       }}
-      ref={formRef}
-      alignContent={"center"}
+      onSubmit={onSubmit}
     >
       <Card sx={{ pb: 1 }}>
         <Typography variant="h5" sx={{ textAlign: "center" }}>
           Project
         </Typography>
-        <FormControl sx={{ textAlign: "center" }}>
+        <FormControl sx={{textAlign:"center"}}>
           <TextField
             label="User"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
+            sx={{ m: 1, width: "90%", textAlign:"center" }}
             type="text"
             {...register("user", {
               required: true,
@@ -144,10 +140,10 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
-          <Select
+          <TextField
             label="Client"
-            id="demo-simple-select"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
+            sx={{m: 1, width: "90%", textAlign:"center" }}
+            type="text"
             {...register("idClient", {
               required: true,
               minLength: 2,
@@ -156,19 +152,10 @@ export default function FormProjectComponent(props: Props) {
               helperText: "Campo Obligatorio",
               error: true,
             })}
-            onChange={handleChange}
-            value={client}
-          >
-            {data &&
-              data.findUserBusiness[0].client.map((item: any) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
-          </Select>
+          />
           <TextField
             label="Project"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
+            sx={{m: 1, width: "90%", textAlign:"center" }}
             type="text"
             {...register("idProject", {
               required: true,
@@ -181,7 +168,7 @@ export default function FormProjectComponent(props: Props) {
           />
           <TextField
             label="Name"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
+            sx={{m: 1, width: "90%", textAlign:"center" }}
             type="price"
             {...register("name", {
               required: true,
@@ -192,27 +179,19 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
-           {!isEditing ? (
-            <Button
-              sx={{ m: 1, width: "43ch" }}
-              type="submit"
-              onClick={onSubmit}
-              variant="contained"
-            >
-              Register
-            </Button>
-          ) : (
-            <Button
-              sx={{ m: 1, width: "43ch" }}
-              type="submit"
-              onClick={onUpdate}
-              variant="contained"
-            >
-              Guardar
-            </Button>
-          )}
+          <Button
+            sx={{ m: 1, width: "43ch" }}
+            onClick={onSubmit}
+            variant="contained"
+          >
+            Submit
+          </Button>
         </FormControl>
       </Card>
     </Box>
   );
 }
+function mutateFunction(arg0: { variables: { name: any; idClient: any; idProject: any; user: any; }; }) {
+  throw new Error("Function not implemented.");
+}
+

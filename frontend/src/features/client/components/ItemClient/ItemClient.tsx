@@ -3,6 +3,7 @@
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Avatar,
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -32,9 +33,7 @@ function ItemClient(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [deleteClient] = useMutation(
-    ClientMutationServices.DeleteClient
-  );
+  const [deleteClient] = useMutation(ClientMutationServices.DeleteClient);
   refetch();
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
@@ -71,7 +70,7 @@ function ItemClient(props: Props) {
   return (
     <>
       {" "}
-      <>
+      <Box sx={{ width: "100%" }}>
         <ListItemAvatar>
           <Avatar src={props.client.image} alt={props.client.name} />
         </ListItemAvatar>
@@ -81,7 +80,9 @@ function ItemClient(props: Props) {
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
-          <>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+          >
             {" "}
             <IconButton
               edge="end"
@@ -93,9 +94,9 @@ function ItemClient(props: Props) {
             <IconButton edge="end" aria-label="eliminar" onClick={handleDelete}>
               <Delete />
             </IconButton>
-          </>
+          </Box>
         ) : null}
-      </>
+      </Box>
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}

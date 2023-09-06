@@ -5,15 +5,19 @@ import { IBusiness } from "../../model/business";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import ItemBusiness from "../itemBusiness/itemBusiness";
 import { businessQueryService } from "../../services/businessQuery";
-import { Box, Card, FormControl, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CircularProgress,
+  FormControl,
+  Typography,
+} from "@mui/material";
 
 export const ListBusiness = (props: IBusiness) => {
   const { data, error, loading, refetch } = useQuery(
     businessQueryService.FindUserBusiness,
     {}
   );
-
-  if (data) console.log(data);
 
   return (
     <Box
@@ -23,9 +27,17 @@ export const ListBusiness = (props: IBusiness) => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
+        margin: "auto",
       }}
     >
-      <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
+      <Card
+        sx={{
+          textAlign: "center",
+          alignItems: "center",
+          width: "80vh",
+          margin: "auto",
+        }}
+      >
         <Typography
           variant="h5"
           align="center"
@@ -50,7 +62,7 @@ export const ListBusiness = (props: IBusiness) => {
               }}
             ></ListItems>
           ) : (
-            <div className="text-center">Cargando...</div>
+            <CircularProgress />
           )}
         </FormControl>
       </Card>

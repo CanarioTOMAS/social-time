@@ -29,7 +29,10 @@ export default function FormClientComponent(props: Props) {
   const [idBusiness, setIdBusiness] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
+  const [createClient] = useMutation(ClientMutationServices.CreateClient);
+  const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
   const { toastShow } = useToast();
+  const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
@@ -69,9 +72,6 @@ export default function FormClientComponent(props: Props) {
     }
   }, [props.client]);
 
-  const [createClient] = useMutation(ClientMutationServices.CreateClient);
-  const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
-
   useEffect(() => {
     if (getSessionServices("business") == null) {
       console.log("no hay business");
@@ -106,7 +106,7 @@ export default function FormClientComponent(props: Props) {
     reset();
   });
 
-  const [showAlert, setShowAlert] = useState(false);
+  
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;
     console.log(values);

@@ -13,7 +13,7 @@ import {
   getSessionServices,
   setSessionService,
 } from "@/auth/services/session.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   business: IBusiness | undefined;
@@ -21,7 +21,14 @@ type Props = {
 };
 
 export default function FormBusinessComponent(props: Props) {
+  const [isEditing, setIsEditing] = useState(false);
+  const idBusiness = getSessionServices("business");
+  const [resetKey, setResetKey] = useState(0);
+  const { id } = useParams();
+  const [createBusiness] = useMutation(businessMutationService.createBusiness);
+  const [updateBusiness] = useMutation(businessMutationService.updateBusiness);
   const { toastShow } = useToast();
+  const [showAlert, setShowAlert] = useState(false);
   const {
     register,
     handleSubmit,
@@ -32,37 +39,40 @@ export default function FormBusinessComponent(props: Props) {
     defaultValues: {
       name: "",
       address: "",
-      businessCategory: "",
+      category: "",
       email: "",
       image: "",
       phone: "",
       touched: "",
     },
   });
-  const [resetKey, setResetKey] = useState(0);
-  const { id } = useParams();
-  const [mutateFunction] = useMutation(
-    id
-      ? businessMutationService.updateBusiness
-      : businessMutationService.createBusiness
-  );
 
-  const idBusiness = getSessionServices("business");
-  console.log(idBusiness);
+  useEffect(() => {
+    if (props && props.business) {
+      setIsEditing(true);
+      setValue("name", props.business.name);
+      setValue("address", props.business.address);
+      setValue("category", props.business.category);
+      setValue("email", props.business.email);
+      setValue("image", props.business.image);
+      setValue("phone", props.business.phone);
+      setValue("touched", props.business.touched);
+    }
+  }, [props.business]);
 
-  const onSubmit = handleSubmit(async (values: any) => {
-    console.log(values);
-    const response = await mutateFunction({
+  const onSubmit = handleSubmit(async (values) => {
+    const response = await createBusiness({
       variables: {
         name: values.name,
         address: values.address,
         email: values.email,
-        category: values.businessCategory,
+        category: values.category,
         image: values.image,
+        phone: values.phone,
       },
     });
     toastShow({
-      message: "La Empresa ha sido creado correctamente",
+      message: "La empresa ha sido creado correctamente",
       severity: "success",
     });
     setSessionService("business", response.data.addBusiness._id);
@@ -71,9 +81,32 @@ export default function FormBusinessComponent(props: Props) {
       phone: "",
       email: "",
       address: "",
-      businessCategory: "",
+      category: "",
+      image: "",
     });
     setResetKey((prevKey) => prevKey + 1);
+  });
+
+  const onUpdate = handleSubmit(async (values) => {
+    if (!props.business) return;
+    console.log(values);
+    await updateBusiness({
+      variables: {
+        id: props.business._id,
+        name: values.name,
+        address: values.address,
+        email: values.email,
+        category: values.category,
+        image: values.image,
+        phone: values.phone,
+      },
+    });
+    if (props.onClose) props.onClose();
+    setShowAlert(true);
+    toastShow({
+      message: "La empresa ha sido editada correctamente",
+      severity: "success",
+    });
   });
 
   return (
@@ -187,27 +220,40 @@ export default function FormBusinessComponent(props: Props) {
             label="Business Category"
             variant="outlined"
             type="text"
-            {...register("businessCategory", {
+            {...register("category", {
               required: true,
               minLength: 2,
             })}
-            {...(errors.businessCategory?.type === "required" && {
+            {...(errors.category?.type === "required" && {
               helperText: "Campo obligatorio",
               error: true,
             })}
-            {...(errors.businessCategory?.type === "minLength" && {
+            {...(errors.category?.type === "minLength" && {
               helperText: "El nombre es demasiado corto",
               error: true,
             })}
           />
-          <Button
-            className="bg-blue-500 text-white p-2 mt-4"
-            sx={{ m: 1, width: "47.5ch" }}
-            onClick={onSubmit}
-            variant="contained"
-          >
-            Crear
-          </Button>
+          {!isEditing ? (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onSubmit}
+              variant="contained"
+            >
+              Crear
+            </Button>
+          ) : (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onUpdate}
+              variant="contained"
+            >
+              Guardar
+            </Button>
+          )}
         </FormControl>
       </Card>
     </Box>

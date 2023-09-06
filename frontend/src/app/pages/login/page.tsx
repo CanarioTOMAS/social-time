@@ -47,16 +47,17 @@ export default function FormLogin() {
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
-  const router = useRouter();
   const onSubmit = handleSubmit((values) => {
-    mutateFunction({variables: {
-      email: values.email,
-      password: values.password
-    }})
+    mutateFunction({
+      variables: {
+        email: values.email,
+        password: values.password,
+      },
+    });
     router.push("/pages/listBusiness");
 
-    if (data&&data.login.value) {
-      localStorage.setItem('authToken', data.login.value);
+    if (data && data.login.value) {
+      localStorage.setItem("authToken", data.login.value);
     }
     console.log(error);
     console.log(data);
@@ -131,7 +132,6 @@ export default function FormLogin() {
             variant="contained"
             endIcon={<SendIcon />}
             onClick={onSubmit}
-          
           >
             Sign In
           </Button>

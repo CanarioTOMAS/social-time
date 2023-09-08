@@ -15,11 +15,11 @@ import {
 import { MouseEventHandler, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { IClient } from "../../models/Client";
-import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 import FormClientComponent from "../FormClient/FormClient";
+import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
 type Props = {
   client: IClient;
@@ -33,8 +33,9 @@ function ItemClient(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [deleteClient] = useMutation(ClientMutationServices.DeleteClient);
-  refetch();
+  const [deleteClient] = useMutation(
+    ClientMutationServices.DeleteClient
+    );
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -45,9 +46,6 @@ function ItemClient(props: Props) {
 
   const toastShow = useToast();
 
-  console.log(props);
-  console.log(data);
-
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
   > = async () => {
@@ -56,7 +54,7 @@ function ItemClient(props: Props) {
     console.log(props);
     await deleteClient({ variables: { id: props.client.id } });
     toastShow({
-      message: "El cliente ha sido eliminado correctamente",
+      message: "La empresa se ha sido eliminado correctamente",
       severity: "success",
     });
     refetch();

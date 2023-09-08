@@ -106,7 +106,6 @@ export default function FormClientComponent(props: Props) {
     reset();
   });
 
-  
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;
     console.log(values);

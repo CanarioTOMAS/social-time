@@ -2,12 +2,12 @@
 
 import { Delete, Edit } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   IconButton,
-  ListItemAvatar,
   ListItemText,
 } from "@mui/material";
 import { MouseEventHandler, useState } from "react";
@@ -31,10 +31,7 @@ function ItemProject(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteProject] = useMutation(
-    ProjectMutationServices.DeleteProject
-    );
-  refetch();  
+  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -67,17 +64,19 @@ function ItemProject(props: Props) {
   return (
     <>
       {" "}
-      <>
+      <Box sx={{ width: "100%" }}>
         {/* <ListItemAvatar>
           <Avatar src={image} alt={props.project.Image} />
         </ListItemAvatar> */}
         <ListItemText
           primary={`Name: ${props.project?.name}`}
-          secondary={`User: ${props.project?.user} Client: ${props.project?.idClient}`}
+          secondary={`User: ${props.project?.user}, Client: ${props.project?.idClient}`}
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
-          <>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+          >
             {" "}
             <IconButton
               edge="end"
@@ -89,9 +88,9 @@ function ItemProject(props: Props) {
             <IconButton edge="end" aria-label="eliminar" onClick={handleDelete}>
               <Delete />
             </IconButton>
-          </>
+          </Box>
         ) : null}
-      </>
+      </Box>
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
@@ -105,7 +104,7 @@ function ItemProject(props: Props) {
         <DialogContent>
           <FormProjectComponent
             project={props.project}
-            id={undefined} 
+            id={undefined}
             onClose={() => {
               setIsEditDialogOpen(false);
             }}

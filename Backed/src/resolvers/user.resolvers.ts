@@ -23,6 +23,7 @@ module.exports = {
         address: args.address,
         gender: args.gender,
         phone: args.phone,
+        deleted: Boolean
       });
 
       return await user.save().catch((error) => {
@@ -34,14 +35,15 @@ module.exports = {
       });
     },
     login: async (root: any, args: any) => {
-      console.log(args)
       const user = await User.findOne({
         email: args.email,
         password: args.password,
       });
-
       if (!user) {
         throw new GraphQLError("wrong credentials");
+      }
+      if (user.deleted){
+        throw new GraphQLError("User Deleted");
       }
 
       const userForToken = {
@@ -64,10 +66,16 @@ module.exports = {
         email: decodedToken.email,
         id: decodedToken.id,
       });
-      if (!user) {
+      if (!user || user.deleted) {
         throw new GraphQLError("Invalid token or user not found");
       }
+      
       return "Token Ok";
     },
+    deleteUser: async (_: any, _args: any, context: any) => {
+      const user = await User.findByIdAndUpdate(_args.id, { deleted: true });
+      return user;
+    }
+
   },
 };

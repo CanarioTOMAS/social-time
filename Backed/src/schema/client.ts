@@ -17,6 +17,7 @@ const schema = new mongoose.Schema({
     minlength: 3,
   },
   surname: { type: String, required: false, unique: false, minlength: 3 },
+  deleted: { type: Boolean, required: false, unique: false },
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   //movement: { type: mongoose.Schema.Types.ObjectId, ref: "Movement" },
 });

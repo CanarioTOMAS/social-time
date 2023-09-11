@@ -6,7 +6,8 @@ module.exports = gql`
     name: String!
     description: String
     id: ID!
-    activitie: [Activitie]
+    deleted: Boolean
+    activitie (User: ID): [Activitie]
   }
 
   type Mutation {

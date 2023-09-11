@@ -9,6 +9,7 @@ module.exports = gql`
     email: String
     image: String
     phone: String
+    deleted: Boolean
     _id: ID!
     client (idClient: ID): [Client]
   }

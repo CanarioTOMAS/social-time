@@ -27,6 +27,7 @@ const schema = new mongoose.Schema({
   address: { type: String, required: false, unique: false },
   gender: { type: String, required: false, unique: false },
   phone: { type: String, required: false, unique: false },
+  deleted: { type: Boolean, required: false, unique: false },
   businesses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Business" }],
   activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activities" }],
 });

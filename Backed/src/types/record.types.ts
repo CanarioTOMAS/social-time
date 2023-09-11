@@ -6,6 +6,7 @@ module.exports = gql`
     user: User
     name: String!
     id: ID!
+    deleted: Boolean
   }
 
   type Mutation {

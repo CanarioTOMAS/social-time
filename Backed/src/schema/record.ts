@@ -5,5 +5,6 @@ const schema = new mongoose.Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   name: { type: String, required: true, unique: false, minlength: 2 },
+  deleted: { type: Boolean, required: false, unique: false },
 });
 export default mongoose.model("Record", schema);

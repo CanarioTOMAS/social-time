@@ -6,6 +6,7 @@ module.exports = gql`
     name: String!
     description: String
     id: ID!
+    deleted: Boolean
     activitie: [Activitie]
   }
 

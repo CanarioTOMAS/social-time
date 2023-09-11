@@ -6,7 +6,6 @@ module.exports = {
   Mutation: {
     //create our mutation:
     createActivitie: async (_: any, _args: any, context: any) => {
-      console.log (_args)
       const activitie = new Activitie({
         user: context.user.id,
         project: _args.project,
@@ -16,7 +15,6 @@ module.exports = {
         periocidad: _args.periocidad
       });
       return activitie.save().catch((error: any) => {
-        console.log (error)
         throw new UserInputError(error.message, {
           invalidArgs: _args,
         });

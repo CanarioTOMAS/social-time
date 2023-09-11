@@ -68,8 +68,11 @@ module.exports = {
   
   },
   Project: {
-    activitie: async (project: any, _args: any) => {
-      return await Activitie.find ({ project: project._id, user: _args.user, deleted: { $ne: true }})
+    activitie: async (project: any, _args: any, context: any) => {
+      return await Activitie.find ({ 
+        project: project._id,
+        user: context.user.id,
+        deleted: { $ne: true }})
     }
   },
 

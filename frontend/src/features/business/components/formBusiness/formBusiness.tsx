@@ -115,10 +115,12 @@ export default function FormBusinessComponent(props: Props) {
       component="form"
       sx={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
       }}
+      alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
         <Typography
@@ -129,7 +131,7 @@ export default function FormBusinessComponent(props: Props) {
         >
           Crear Empresa
         </Typography>
-        <FormControl sx={{ alignItems: "center" }}>
+        <FormControl>
           <ProfileForm
             avatarType="business"
             onChange={function (data: any): void {

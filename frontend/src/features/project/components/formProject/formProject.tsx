@@ -4,13 +4,6 @@ import {
   Button,
   Card,
   FormControl,
-<<<<<<< HEAD
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-=======
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,18 +15,13 @@ import { IProject } from "../../model/project";
 type Props = {
   id: any;
   project: IProject | undefined;
+  onClose?: () => void;
   // onEdit: () => void;
   // onAdd: () => void;
 };
 
 export default function FormProjectComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
-<<<<<<< HEAD
-  const { toastShow } = useToast();
-  const [showAlert, setShowAlert] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
-=======
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
   const {
     register,
     handleSubmit,
@@ -70,33 +58,6 @@ export default function FormProjectComponent(props: Props) {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
-<<<<<<< HEAD
-
-  const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
-    await CreateProject({
-      variables: {
-        name: values.name,
-        description: values.description,
-        client: values.idClient,
-      },
-    });
-    toastShow({
-      message: "El proyecto ha sido creado correctamente",
-      severity: "success",
-    });
-    reset();
-  });
-
-  const onUpdate = handleSubmit(async (values) => {
-    if (!props.project) return;
-    await UpdateProject({
-      variables: {
-        name: values.name,
-        description: values.description,
-        client: values.idClient,
-      }
-=======
    const onSubmit = handleSubmit(async (values: any) => {
      console.log(props.project?.id);
     try {
@@ -131,7 +92,6 @@ export default function FormProjectComponent(props: Props) {
         idProject: values.idProject,
         user: values.user, 
       },
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
     });
     // props.onAdd();
     reset();
@@ -149,16 +109,6 @@ export default function FormProjectComponent(props: Props) {
     // props.onEdit();
     setIsEditing(false);
   });
-<<<<<<< HEAD
-
-  const [client, setClient] = useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
-    setClient(event.target.value as string);
-  };
-=======
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
 
   return (
     <Box
@@ -181,35 +131,6 @@ export default function FormProjectComponent(props: Props) {
         >
           Crear Proyecto
         </Typography>
-<<<<<<< HEAD
-        <FormControl sx={{ textAlign: "center" }}>
-          <FormControl  className="w-1/2 p-2">
-            <InputLabel>Client</InputLabel>
-            <Select
-              className="p-1"
-              label="Client"
-              sx={{ m: 1, width: "41.7ch" }}
-              {...(errors.idClient?.type === "required" && {
-                helperText: "Campo Obligatorio",
-                error: true,
-              })}
-              {...register("idClient")}
-            >
-              {data &&
-                data.findUserBusiness[0].client.map((item: any) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <TextField
-            className="w-1/2 p-2 "
-            label="Project"
-            variant="outlined"
-            sx={{ m: 1, width: "43ch", }}
-            type="text"
-=======
         <FormControl sx={{textAlign:"center"}}>
           <TextField
             label="User"
@@ -254,7 +175,6 @@ export default function FormProjectComponent(props: Props) {
             label="Name"
             sx={{m: 1, width: "90%", textAlign:"center" }}
             type="price"
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
             {...register("name", {
               required: true,
               minLength: 2,
@@ -264,46 +184,6 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
-<<<<<<< HEAD
-          <TextField
-            className="w-1/2 p-2"
-            label="Description"
-            sx={{ m: 1, width: "43ch" }}
-            variant="outlined"
-            multiline
-            minRows={5}
-            type="text"
-            {...register("description", {
-              required: true,
-              minLength: 1,
-            })}
-            {...(errors.description?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          {!isEditing ? (
-            <Button
-              className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
-              type="submit"
-              onClick={onSubmit}
-              variant="contained"
-            >
-              Register
-            </Button>
-          ) : (
-            <Button
-              className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
-              type="submit"
-              onClick={onUpdate}
-              variant="contained"
-            >
-              Guardar
-            </Button>
-          )}
-=======
           <Button
             sx={{ m: 1, width: "43ch" }}
             onClick={onSubmit}
@@ -311,7 +191,6 @@ export default function FormProjectComponent(props: Props) {
           >
             Submit
           </Button>
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
         </FormControl>
       </Card>
     </Box>

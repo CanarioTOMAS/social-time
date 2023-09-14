@@ -31,13 +31,7 @@ export default function RootLayout({
  
   return (
     <html lang="en">
-
       <ApolloProvider client={client}>
-<<<<<<< HEAD
-        <body>
-          <ToastProvider>{children}</ToastProvider>
-        </body>
-=======
         <body>{!hideBar &&<RouterLayout>
           {children}
     </RouterLayout>}
@@ -45,7 +39,6 @@ export default function RootLayout({
           {children}
           </ToastProvider>
           </body>
->>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
       </ApolloProvider>
     </html>
   );

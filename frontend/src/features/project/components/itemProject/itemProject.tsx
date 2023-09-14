@@ -31,7 +31,9 @@ function ItemProject(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
+  const [DeleteProject] = useMutation(
+    ProjectMutationServices.DeleteProject
+    );
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -64,13 +66,19 @@ function ItemProject(props: Props) {
   return (
     <>
       {" "}
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
         {/* <ListItemAvatar>
           <Avatar src={image} alt={props.project.Image} />
         </ListItemAvatar> */}
         <ListItemText
           primary={`Name: ${props.project?.name}`}
-          secondary={`User: ${props.project?.user}, Client: ${props.project?.idClient}`}
+          secondary={
+            <>
+              <span>Description: {props.project.description}</span>
+              <br />
+              <span>Client: {props.project.idClient}</span>
+            </>
+          }
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (

@@ -68,7 +68,13 @@ function ItemBusiness(props: Props) {
   return (
     <>
       {" "}
-      <Box sx={{ width: "100%" }}>
+      <Box  sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        textAlign: "center",
+      }}>
         <ListItemAvatar>
           <Avatar src={props.business.image} alt={props.business.name} />
         </ListItemAvatar>

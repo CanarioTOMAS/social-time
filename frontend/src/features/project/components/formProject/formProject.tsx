@@ -40,11 +40,9 @@ export default function FormProjectComponent(props: Props) {
     formState: { errors },
   } = useForm<IProject>({
     defaultValues: {
-
       name: "",
+      description: "",
       idClient: "",
-      user: "",
-      idProject: "",
     },
   });
 
@@ -52,9 +50,8 @@ export default function FormProjectComponent(props: Props) {
     if (props && props.project) {
       setIsEditing(true);
       setValue("name", props.project.name);
+      setValue("description", props.project.description);
       setValue("idClient", props.project.idClient);
-      setValue("user", props.project.user);
-      setValue("idProject", props.project.idProject);
     }
   }, [props.project]);
 
@@ -80,8 +77,8 @@ export default function FormProjectComponent(props: Props) {
     await CreateProject({
       variables: {
         name: values.name,
+        description: values.description,
         client: values.idClient,
-        description: values.idProject,
       },
     });
     toastShow({
@@ -91,10 +88,15 @@ export default function FormProjectComponent(props: Props) {
     reset();
   });
 
-  const onUpdate = handleSubmit(async (variables) => {
+  const onUpdate = handleSubmit(async (values) => {
     if (!props.project) return;
-
-    await UpdateProject({variables});
+    await UpdateProject({
+      variables: {
+        name: values.name,
+        description: values.description,
+        client: values.idClient,
+      }
+    });
     if (props.onClose) props.onClose();
     setShowAlert(true);
     toastShow({
@@ -107,7 +109,6 @@ export default function FormProjectComponent(props: Props) {
 
   const handleChange = (event: SelectChangeEvent) => {
     console.log(event.target.value);
-    
     setClient(event.target.value as string);
   };
 
@@ -134,20 +135,6 @@ export default function FormProjectComponent(props: Props) {
           Crear Proyecto
         </Typography>
         <FormControl sx={{ textAlign: "center" }}>
-          <TextField
-            className="w-1/2 p-2"
-            label="User"
-            sx={{ m: 1, width: "43ch" }}
-            type="text"
-            {...register("user", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.user?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
           <FormControl  className="w-1/2 p-2">
             <InputLabel>Client</InputLabel>
             <Select
@@ -169,31 +156,33 @@ export default function FormProjectComponent(props: Props) {
             </Select>
           </FormControl>
           <TextField
-            className="w-1/2 p-2"
+            className="w-1/2 p-2 "
             label="Project"
             variant="outlined"
-            sx={{ m: 1, width: "43ch" }}
+            sx={{ m: 1, width: "43ch", }}
             type="text"
-            {...register("idProject", {
+            {...register("name", {
               required: true,
               minLength: 2,
             })}
-            {...(errors.idProject?.type === "required" && {
+            {...(errors.name?.type === "required" && {
               helperText: "Campo Obligatorio",
               error: true,
             })}
           />
           <TextField
             className="w-1/2 p-2"
-            label="Name"
+            label="Description"
             sx={{ m: 1, width: "43ch" }}
             variant="outlined"
-            type="price"
-            {...register("name", {
+            multiline
+            minRows={5}
+            type="text"
+            {...register("description", {
               required: true,
               minLength: 1,
             })}
-            {...(errors.name?.type === "required" && {
+            {...(errors.description?.type === "required" && {
               helperText: "Campo Obligatorio",
               error: true,
             })}

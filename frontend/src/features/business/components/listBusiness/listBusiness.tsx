@@ -5,6 +5,7 @@ import { IBusiness } from "../../model/business";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import ItemBusiness from "../itemBusiness/itemBusiness";
 import { businessQueryService } from "../../services/businessQuery";
+<<<<<<< HEAD
 import {
   Box,
   Card,
@@ -12,14 +13,24 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
+=======
+import { setSessionService } from "../../../../auth/services/session.service";
+import { useRouter } from "next/navigation";
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
 
 export const ListBusiness = (props: IBusiness) => {
-  const { data, error, loading, refetch } = useQuery(
-    businessQueryService.FindUserBusiness,
-    {}
-  );
+    const { data, error, loading, refetch } = useQuery(
+      businessQueryService.FindUserBusiness,
+      {
+        variables: {
+          findOneUserId : localStorage.getItem ("authToken"),
+        },
+      }
+    );
+    const router = useRouter();
 
   return (
+<<<<<<< HEAD
     <Box
       className="bg-blue-500 text-white p-4"
       component="form"
@@ -67,6 +78,27 @@ export const ListBusiness = (props: IBusiness) => {
         </FormControl>
       </Card>
     </Box>
+=======
+    <>
+
+    {data ?
+      <ListItems
+        items={data.findUserBusiness}
+        renderItem={(item: IBusiness) => (
+          <ItemBusiness business={item} buttonAction={true} />
+        )}
+        handleItemClick={function (item: IBusiness): IBusiness {
+          localStorage.setItem ("business",item._id)
+          router.push("/pages/createClient");//redireccionar al dashboard
+          return item;
+          //handleItemDelete(item.id);
+        }}
+      ></ListItems>
+      :
+      <>Cargando...</>
+}
+    </>
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
   );
 };
 

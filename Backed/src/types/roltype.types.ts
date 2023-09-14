@@ -7,10 +7,6 @@ module.exports = gql`
     id: ID!
   }
 
-  type Query {
-    findRolType: [Roltype]
-  }
-
   type Mutation {
     createRolType(
       name: String!

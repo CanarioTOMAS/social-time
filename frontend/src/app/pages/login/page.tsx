@@ -19,46 +19,48 @@ import { useForm } from "react-hook-form";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { ILoginUser } from "@/app/model/user";
-import { setSessionService } from "@/auth/services/authService";
+import { useRouter } from "next/navigation";
 
-type Login={
-  email:string,
-  password:string
-}
+type Login = {
+  email: string;
+  password: string;
+};
 
 export default function FormLogin() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [mutateFunction,{data,error,loading}]= useMutation(
+  const [mutateFunction, { data, error, loading }] = useMutation(
     userMutationService.login
   );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Login>({
     defaultValues: {
-      email: '',
-      password: ''
-    }
-
+      email: "",
+      password: "",
+    },
   });
+  const router = useRouter();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
   const onSubmit = handleSubmit((values) => {
-    console.log(values);
-    mutateFunction({variables: {
-      email: values.email,
-      password: values.password
-    }});
+    mutateFunction({
+      variables: {
+        email: values.email,
+        password: values.password,
+      },
+    });
+    router.push("/pages/listBusiness");
 
-    if (data.login.value) {
-      localStorage.setItem('authToken', data.login.value);
-      setSessionService('id', data.login.id);
+    if (data && data.login.value) {
+      localStorage.setItem("authToken", data.login.value);
     }
     console.log(error);
-    console.log(data)
+    console.log(data);
   });
 
   return (
@@ -142,7 +144,7 @@ export default function FormLogin() {
           <Link
             sx={{ m: 1 }}
             className={style.forgotPassword}
-            href="/forgotPassword"
+            href="/pages/forgotPassword"
             variant="body2"
             color="#6b0040"
           >
@@ -152,7 +154,7 @@ export default function FormLogin() {
         <Grid item>
           <Link
             sx={{ m: 1 }}
-            href="/register"
+            href="/pages/register"
             variant="body2"
             underline="none"
             color="#6b0040"
@@ -160,7 +162,7 @@ export default function FormLogin() {
             Don't have an account?
           </Link>
           <Link
-            href="/register"
+            href="/pages/register"
             variant="subtitle1"
             color="#92213c"
             underline="hover"

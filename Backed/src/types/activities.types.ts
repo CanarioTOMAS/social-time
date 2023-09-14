@@ -2,7 +2,8 @@ import { gql } from "apollo-server-express";
 
 module.exports = gql`
   type Activitie {
-    project: Project
+    project: Project!
+    user: User!
     name: String!
     tiempoEstimado: String
     costoHora: String
@@ -10,14 +11,11 @@ module.exports = gql`
     _id: ID!
   }
 
-  type Query {
-    findActivitie: [Activitie]
-    findOneActivitie(id: ID!): Activitie
-  }
 
   type Mutation {
     createActivitie(
-      project: ID
+      project: ID!
+      user: ID
       name: String
       tiempoEstimado: String
       costoHora: String

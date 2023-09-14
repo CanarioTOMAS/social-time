@@ -1,22 +1,10 @@
 import { UserInputError } from "apollo-server-core";
 import Client from "../schema/client";
 import Project from "../schema/project";
+import { GraphQLError } from "graphql/error/GraphQLError";
 
 module.exports = {
-  Query: {
-    findProject: async (_: any, _args: any, context: any) => {
-      return await Project.find({
-        user: context.user.id,
-        client: _args.client,
-      });
-    },
-    findOneProject: async (root: any, args: any) => {
-      const idProject = args.id;
-      const project = await Project.findById(idProject);
-      return project;
-    },
-  },
-
+ 
   Mutation: {
     //create our mutation:
     createProject: async (_: any, _args: any, context: any) => {
@@ -46,15 +34,17 @@ module.exports = {
       }
       return project;
     },
-    deleteProject: async (root: any, args: any) => {
-      const { _id } = args;
-      const project = await Project.findByIdAndDelete(_id);
-      if (!project) {
-        throw new UserInputError("Project not found", {
-          invalidArgs: args,
+    deleteProject: async (_: any, _args: any, context: any) => {
+      const project = await Project.findByIdAndUpdate(_args._id, { deleted: true });
+      if (project) {
+        return "Proyecto Borrado";
+      } else {
+        throw new GraphQLError("Error eliminando el proyecto.", {
+          extensions: {
+            code: "ERROR_DELETING_PROJECT",
+          },
         });
       }
-      return "Project deleted successfully";
     },
   },
 };

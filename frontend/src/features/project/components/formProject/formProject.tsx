@@ -1,37 +1,39 @@
 "use client";
-
 import {
   Box,
   Button,
   Card,
   FormControl,
+<<<<<<< HEAD
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+=======
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
   TextField,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
-import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
-import { useMutation, useQuery } from "@apollo/client";
-import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
-import { getSessionServices } from "@/auth/services/session.service";
 
 type Props = {
   id: any;
   project: IProject | undefined;
-  onClose?: () => void;
+  // onEdit: () => void;
+  // onAdd: () => void;
 };
 
 export default function FormProjectComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
+<<<<<<< HEAD
   const { toastShow } = useToast();
   const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+=======
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
   const {
     register,
     handleSubmit,
@@ -55,22 +57,20 @@ export default function FormProjectComponent(props: Props) {
     }
   }, [props.project]);
 
-  const [CreateProject] = useMutation(ProjectMutationServices.CreateProject);
-  const [UpdateProject] = useMutation(ProjectMutationServices.UpdateProject);
 
-  const { data, error, loading, refetch } = useQuery(
-    QueryClientService.clients,
-    {
-      variables: {
-        id: getSessionServices("business"),
-      },
-    }
-  );
+  // const [mutateFunction] = useMutation(
+  // props.project?.id
+  // ? ProductService.ProductMutationServices.UpdateProduct
+  // : ProductService.ProductMutationServices.AddProduct
+  // );
+
+  const { toastShow } = useToast();
 
   // useEffect(() => {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
+<<<<<<< HEAD
 
   const onSubmit = handleSubmit(async (values) => {
     console.log(values);
@@ -96,14 +96,60 @@ export default function FormProjectComponent(props: Props) {
         description: values.description,
         client: values.idClient,
       }
-    });
-    if (props.onClose) props.onClose();
-    setShowAlert(true);
-    toastShow({
-      message: "El cliente ha sido editado correctamente",
-      severity: "success",
-    });
+=======
+   const onSubmit = handleSubmit(async (values: any) => {
+     console.log(props.project?.id);
+    try {
+      if (props.project?.id) {
+        await handleEditSubmit(values);
+      } else {
+        await handleAddSubmit(values);
+      }
+      toastShow({
+        message: isEditing
+          ? "El producto se edito correctamente"
+          : "El producto se cargó correctamente",
+        severity: "success",
+        duration: 5000,
+      });
+    } catch (error) {
+      toastShow({
+        message: "Error al realizar la operación",
+        severity: "error",
+        duration: 5000,
+      });
+    }
+    reset()
   });
+
+  const handleAddSubmit = handleSubmit(async (values: any) => {
+    console.log(values);
+    await mutateFunction({
+      variables: {
+        name: values.name,
+        idClient: values.idClient,
+        idProject: values.idProject,
+        user: values.user, 
+      },
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
+    });
+    // props.onAdd();
+    reset();
+  });
+  const handleEditSubmit = handleSubmit(async (values: any) => {
+    console.log(values);
+    await mutateFunction({
+      variables: {
+     name: values.name,
+     idClient: values.idClient,
+     idProject: values.idProject,
+     user: values.user,   
+      },
+    });
+    // props.onEdit();
+    setIsEditing(false);
+  });
+<<<<<<< HEAD
 
   const [client, setClient] = useState("");
 
@@ -111,6 +157,8 @@ export default function FormProjectComponent(props: Props) {
     console.log(event.target.value);
     setClient(event.target.value as string);
   };
+=======
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
 
   return (
     <Box
@@ -122,8 +170,7 @@ export default function FormProjectComponent(props: Props) {
         alignItems: "center",
         minHeight: "100vh",
       }}
-      ref={formRef}
-      alignContent={"center"}
+      onSubmit={onSubmit}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
         <Typography
@@ -134,6 +181,7 @@ export default function FormProjectComponent(props: Props) {
         >
           Crear Proyecto
         </Typography>
+<<<<<<< HEAD
         <FormControl sx={{ textAlign: "center" }}>
           <FormControl  className="w-1/2 p-2">
             <InputLabel>Client</InputLabel>
@@ -161,6 +209,52 @@ export default function FormProjectComponent(props: Props) {
             variant="outlined"
             sx={{ m: 1, width: "43ch", }}
             type="text"
+=======
+        <FormControl sx={{textAlign:"center"}}>
+          <TextField
+            label="User"
+            sx={{ m: 1, width: "90%", textAlign:"center" }}
+            type="text"
+            {...register("user", {
+              required: true,
+              minLength: 2,
+            })}
+            {...(errors.user?.type === "required" && {
+              helperText: "Campo Obligatorio",
+              error: true,
+            })}
+          />
+          <TextField
+            label="Client"
+            sx={{m: 1, width: "90%", textAlign:"center" }}
+            type="text"
+            {...register("idClient", {
+              required: true,
+              minLength: 2,
+            })}
+            {...(errors.idClient?.type === "required" && {
+              helperText: "Campo Obligatorio",
+              error: true,
+            })}
+          />
+          <TextField
+            label="Project"
+            sx={{m: 1, width: "90%", textAlign:"center" }}
+            type="text"
+            {...register("idProject", {
+              required: true,
+              minLength: 2,
+            })}
+            {...(errors.idProject?.type === "required" && {
+              helperText: "Campo Obligatorio",
+              error: true,
+            })}
+          />
+          <TextField
+            label="Name"
+            sx={{m: 1, width: "90%", textAlign:"center" }}
+            type="price"
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
             {...register("name", {
               required: true,
               minLength: 2,
@@ -170,6 +264,7 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
+<<<<<<< HEAD
           <TextField
             className="w-1/2 p-2"
             label="Description"
@@ -208,8 +303,21 @@ export default function FormProjectComponent(props: Props) {
               Guardar
             </Button>
           )}
+=======
+          <Button
+            sx={{ m: 1, width: "43ch" }}
+            onClick={onSubmit}
+            variant="contained"
+          >
+            Submit
+          </Button>
+>>>>>>> 6908c53edbcce83ea00fde1a84085cadb6ce33be
         </FormControl>
       </Card>
     </Box>
   );
 }
+function mutateFunction(arg0: { variables: { name: any; idClient: any; idProject: any; user: any; }; }) {
+  throw new Error("Function not implemented.");
+}
+

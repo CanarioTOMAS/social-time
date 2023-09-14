@@ -7,10 +7,6 @@ module.exports = gql`
     roltype: String
   }
 
-  type Query {
-    findRol(_id: ID, pageCount: Int, perPage: Int, searchWord: String): [Rol],
-  }
-
   type Mutation {
     createRol(
       user: String

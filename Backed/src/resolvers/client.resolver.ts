@@ -1,16 +1,10 @@
 import { UserInputError } from "apollo-server-core";
 import Client from "../schema/client";
 import Business from "../schema/business";
+import { GraphQLError } from "graphql/error/GraphQLError";
 
 module.exports = {
-   Query: {
-     findClient: async (_: any, _args: any, context: any) => {
-       const client = await Client.find({
-         user: context.user._id,
-       });
-       return client;
-     },
-   },
+   
  
   Mutation: {
     //create our mutation:
@@ -30,7 +24,6 @@ module.exports = {
         documentNumber: _args.documentNumber,
         surname: _args.surname,
       });
-      console.log(client);
       return client.save().catch((error: any) => {
         throw new UserInputError(error.message, {
           invalidArgs: _args,
@@ -49,15 +42,17 @@ module.exports = {
       }
       return client;
     },
-    deleteClient: async (root: any, args: any) => {
-      const { _id } = args;
-      const client = await Client.findByIdAndDelete(_id);
-      if (!client) {
-        throw new UserInputError("Client not found", {
-          invalidArgs: args,
+    deleteClient: async (_: any, _args: any, context: any) => {
+      const client = await Client.findByIdAndUpdate(_args._id, { deleted: true });
+      if (client) {
+        return "Cliente Borrado";
+      } else {
+        throw new GraphQLError("Error eliminando el cliente.", {
+          extensions: {
+            code: "ERROR_DELETING_CLIENT",
+          },
         });
       }
-      return "Client deleted successfully";
     },
   },
 };

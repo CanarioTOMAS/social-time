@@ -6,11 +6,7 @@ module.exports = gql`
     user: User
     name: String!
     id: ID!
-  }
-
-  type Query {
-    findRecord: [Record]
-    findOneRecord(id: ID!): Record
+    deleted: Boolean
   }
 
   type Mutation {

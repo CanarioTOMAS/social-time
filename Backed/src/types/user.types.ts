@@ -13,12 +13,7 @@ module.exports = gql`
     phone: String
     id: ID!
     business: [Business]
-  }
-
-  type Query {
-    me: User,
-    findUser: [User],
-    findOneUser(id: ID!): User,
+    deleted: Boolean
   }
 
   type Token {
@@ -40,5 +35,6 @@ module.exports = gql`
     ): User
     login(email: String!, password: String!): Token
     validateToken (token: String!): String
+    deleteUser(id: ID!): User
   }
 `;

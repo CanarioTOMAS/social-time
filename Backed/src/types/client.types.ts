@@ -13,13 +13,9 @@ module.exports = gql`
     documentType: String
     documentNumber: String
     surname: String
+    deleted: Boolean
     project: [Project]
     id: ID!
-  }
-
-  type Query {
-    findClient: [Client]
-    findOneClient(id: ID!): Client
   }
 
   type Mutation {

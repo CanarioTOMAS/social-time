@@ -9,6 +9,7 @@ const FindUserBusiness = gql`
       email
       address
       image
+      category
     }
   }
 `;

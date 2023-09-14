@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -29,6 +30,7 @@ type Props = {
 export default function FormProjectComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const { toastShow } = useToast();
+  const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
@@ -39,9 +41,8 @@ export default function FormProjectComponent(props: Props) {
   } = useForm<IProject>({
     defaultValues: {
       name: "",
+      description: "",
       idClient: "",
-      user: "",
-      idProject: "",
     },
   });
 
@@ -49,9 +50,8 @@ export default function FormProjectComponent(props: Props) {
     if (props && props.project) {
       setIsEditing(true);
       setValue("name", props.project.name);
+      setValue("description", props.project.description);
       setValue("idClient", props.project.idClient);
-      setValue("user", props.project.user);
-      setValue("idProject", props.project.idProject);
     }
   }, [props.project]);
 
@@ -77,8 +77,8 @@ export default function FormProjectComponent(props: Props) {
     await CreateProject({
       variables: {
         name: values.name,
+        description: values.description,
         client: values.idClient,
-        description: values.idProject,
       },
     });
     toastShow({
@@ -88,17 +88,14 @@ export default function FormProjectComponent(props: Props) {
     reset();
   });
 
-  const [showAlert, setShowAlert] = useState(false);
   const onUpdate = handleSubmit(async (values) => {
     if (!props.project) return;
-    console.log(values);
     await UpdateProject({
       variables: {
         name: values.name,
-        idClient: values.idClient,
-        user: values.user,
-        idProject: values.idProject,
-      },
+        description: values.description,
+        client: values.idClient,
+      }
     });
     if (props.onClose) props.onClose();
     setShowAlert(true);
@@ -111,11 +108,13 @@ export default function FormProjectComponent(props: Props) {
   const [client, setClient] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
+    console.log(event.target.value);
     setClient(event.target.value as string);
   };
 
   return (
     <Box
+      className="bg-blue-500 text-white p-4"
       component="form"
       sx={{
         display: "flex",
@@ -126,75 +125,72 @@ export default function FormProjectComponent(props: Props) {
       ref={formRef}
       alignContent={"center"}
     >
-      <Card sx={{ pb: 1 }}>
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
-          Project
+      <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          className="text-xl text-center mb-4"
+        >
+          Crear Proyecto
         </Typography>
         <FormControl sx={{ textAlign: "center" }}>
+          <FormControl  className="w-1/2 p-2">
+            <InputLabel>Client</InputLabel>
+            <Select
+              className="p-1"
+              label="Client"
+              sx={{ m: 1, width: "41.7ch" }}
+              {...(errors.idClient?.type === "required" && {
+                helperText: "Campo Obligatorio",
+                error: true,
+              })}
+              {...register("idClient")}
+            >
+              {data &&
+                data.findUserBusiness[0].client.map((item: any) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
           <TextField
-            label="User"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
-            type="text"
-            {...register("user", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.user?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <Select
-            label="Client"
-            id="demo-simple-select"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
-            {...register("idClient", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.idClient?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-            onChange={handleChange}
-            value={client}
-          >
-            {data &&
-              data.findUserBusiness[0].client.map((item: any) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
-          </Select>
-          <TextField
+            className="w-1/2 p-2 "
             label="Project"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
+            variant="outlined"
+            sx={{ m: 1, width: "43ch", }}
             type="text"
-            {...register("idProject", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.idProject?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <TextField
-            label="Name"
-            sx={{ m: 1, width: "90%", textAlign: "center" }}
-            type="price"
             {...register("name", {
               required: true,
-              minLength: 1,
+              minLength: 2,
             })}
             {...(errors.name?.type === "required" && {
               helperText: "Campo Obligatorio",
               error: true,
             })}
           />
-           {!isEditing ? (
+          <TextField
+            className="w-1/2 p-2"
+            label="Description"
+            sx={{ m: 1, width: "43ch" }}
+            variant="outlined"
+            multiline
+            minRows={5}
+            type="text"
+            {...register("description", {
+              required: true,
+              minLength: 1,
+            })}
+            {...(errors.description?.type === "required" && {
+              helperText: "Campo Obligatorio",
+              error: true,
+            })}
+          />
+          {!isEditing ? (
             <Button
-              sx={{ m: 1, width: "43ch" }}
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onSubmit}
               variant="contained"
@@ -203,7 +199,8 @@ export default function FormProjectComponent(props: Props) {
             </Button>
           ) : (
             <Button
-              sx={{ m: 1, width: "43ch" }}
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onUpdate}
               variant="contained"

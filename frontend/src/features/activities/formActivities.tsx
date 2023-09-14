@@ -74,19 +74,29 @@ export default function ActivityForm() {
 
   return (
     <Box
+      className="bg-blue-500 text-white p-4"
+      component="form"
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        textAlign: "center",
       }}
     >
-      <Card>
-        <Typography variant="h4">Nuevo Registro de Actividad</Typography>
+      <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          className="text-xl text-center mb-4"
+        >
+          Nuevo Registro de Actividad
+        </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl sx={{ m: 1, width: "100ch" }}>
             <TextField
+              className="w-1/2 p-2"
+              sx={{ m: 1, width: "100ch" }}
               label="Nombre de la actividad"
               variant="outlined"
               type="text"
@@ -96,6 +106,8 @@ export default function ActivityForm() {
           </FormControl>
           <FormControl sx={{ m: 1, width: "100ch" }}>
             <TextField
+              className="w-1/2 p-2"
+              sx={{ m: 1, width: "100ch" }}
               label="Descripción"
               variant="outlined"
               type="tel"
@@ -105,6 +117,8 @@ export default function ActivityForm() {
           </FormControl>
           <FormControl sx={{ m: 1, width: "100ch" }}>
             <TextField
+              className="w-1/2 p-2"
+              sx={{ m: 1, width: "100ch" }}
               label="Tiempo total"
               variant="outlined"
               type="text"
@@ -114,7 +128,10 @@ export default function ActivityForm() {
           </FormControl>
           <FormControl sx={{ m: 1, width: "100ch" }}>
             <InputLabel>Cliente</InputLabel>
-            <Select {...register("clients", { required: true })}>
+            <Select
+              sx={{ m: 1, width: "97ch" }}
+              {...register("clients", { required: true })}
+            >
               {clients.map((clients) => (
                 <MenuItem key={clients.id} value={clients.id}>
                   {clients.name}
@@ -125,7 +142,10 @@ export default function ActivityForm() {
           </FormControl>
           <FormControl sx={{ m: 1, width: "100ch" }}>
             <InputLabel>Proyecto</InputLabel>
-            <Select {...register("project", { required: true })}>
+            <Select
+              sx={{ m: 1, width: "97ch" }}
+              {...register("project", { required: true })}
+            >
               {options.map((project) => (
                 <MenuItem key={project.id} value={project.id}>
                   {project.name}

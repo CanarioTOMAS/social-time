@@ -4,7 +4,7 @@ export interface IBusiness {
     phone: string;
     email: string;
     address: string;
-    businessCategory: string;
+    category: string;
     image: string;
     touched: string;
   }

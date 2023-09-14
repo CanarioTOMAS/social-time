@@ -3,6 +3,7 @@
 import { Delete, Edit } from "@mui/icons-material";
 import React, {
   Avatar,
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -34,8 +35,7 @@ function ItemBusiness(props: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [DeleteBusiness] = useMutation(
     businessMutationService.deleteBusiness
-  );
-  
+    );
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -68,7 +68,13 @@ function ItemBusiness(props: Props) {
   return (
     <>
       {" "}
-      <>
+      <Box  sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        textAlign: "center",
+      }}>
         <ListItemAvatar>
           <Avatar src={props.business.image} alt={props.business.name} />
         </ListItemAvatar>
@@ -78,7 +84,9 @@ function ItemBusiness(props: Props) {
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
-          <>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+          >
             {" "}
             <IconButton
               edge="end"
@@ -90,9 +98,9 @@ function ItemBusiness(props: Props) {
             <IconButton edge="end" aria-label="eliminar" onClick={handleDelete}>
               <Delete />
             </IconButton>
-          </>
+          </Box>
         ) : null}
-      </>
+      </Box>
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}

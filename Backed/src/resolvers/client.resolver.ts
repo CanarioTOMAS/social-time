@@ -6,7 +6,7 @@ module.exports = {
    Query: {
      findClient: async (_: any, _args: any, context: any) => {
        const client = await Client.find({
-         user: context.user.id,
+         user: context.user._id,
        });
        return client;
      },

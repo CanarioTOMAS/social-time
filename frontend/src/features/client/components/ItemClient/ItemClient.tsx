@@ -3,6 +3,7 @@
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Avatar,
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -14,11 +15,11 @@ import {
 import { MouseEventHandler, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { IClient } from "../../models/Client";
-import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 import FormClientComponent from "../FormClient/FormClient";
+import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
 type Props = {
   client: IClient;
@@ -34,8 +35,7 @@ function ItemClient(props: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [deleteClient] = useMutation(
     ClientMutationServices.DeleteClient
-  );
-  refetch();
+    );
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -46,9 +46,6 @@ function ItemClient(props: Props) {
 
   const toastShow = useToast();
 
-  console.log(props);
-  console.log(data);
-
   const handleDeleteConfirmed: MouseEventHandler<
     HTMLButtonElement
   > = async () => {
@@ -57,7 +54,7 @@ function ItemClient(props: Props) {
     console.log(props);
     await deleteClient({ variables: { id: props.client.id } });
     toastShow({
-      message: "El cliente ha sido eliminado correctamente",
+      message: "La empresa se ha sido eliminado correctamente",
       severity: "success",
     });
     refetch();
@@ -71,7 +68,7 @@ function ItemClient(props: Props) {
   return (
     <>
       {" "}
-      <>
+      <Box sx={{ width: "100%" }}>
         <ListItemAvatar>
           <Avatar src={props.client.image} alt={props.client.name} />
         </ListItemAvatar>
@@ -81,7 +78,9 @@ function ItemClient(props: Props) {
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (
-          <>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+          >
             {" "}
             <IconButton
               edge="end"
@@ -93,9 +92,9 @@ function ItemClient(props: Props) {
             <IconButton edge="end" aria-label="eliminar" onClick={handleDelete}>
               <Delete />
             </IconButton>
-          </>
+          </Box>
         ) : null}
-      </>
+      </Box>
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}

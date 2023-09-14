@@ -47,7 +47,7 @@ const UpdateClient = gql`
     $surname: String
   ) {
     updateClient(
-      _id: $id
+      id: $id
       name: $name
       email: $email
       image: $image

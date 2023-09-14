@@ -7,7 +7,7 @@ module.exports = {
     findProject: async (_: any, _args: any, context: any) => {
       return await Project.find({
         user: context.user.id,
-        client: _args.client
+        client: _args.client,
       });
     },
     findOneProject: async (root: any, args: any) => {
@@ -25,8 +25,9 @@ module.exports = {
       const project = new Project({
         client: client,
         name: _args.name,
+        description: _args.description,
       });
-
+      console.log(project);
       return project.save().catch((error: any) => {
         throw new UserInputError(error.message, {
           invalidArgs: _args,

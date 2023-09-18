@@ -1,16 +1,15 @@
 import { gql } from "@apollo/client";
 
 const Project = gql`
-  query Project($idClient: ID, $id: ID) {
-    findUserBusiness(_id: $id) {
+  query FindUserBusiness($idClient: ID) {
+    findUserBusiness {
       client(idClient: $idClient) {
+        id
+        name
         project {
-          id
           description
+          id
           name
-          client {
-            name
-          }
         }
       }
     }

@@ -33,9 +33,7 @@ function ItemBusiness(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteBusiness] = useMutation(
-    businessMutationService.deleteBusiness
-    );
+  const [DeleteBusiness] = useMutation(businessMutationService.deleteBusiness);
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -68,13 +66,21 @@ function ItemBusiness(props: Props) {
   return (
     <>
       {" "}
-      <Box  sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%" }}>
         <ListItemAvatar>
           <Avatar src={props.business.image} alt={props.business.name} />
         </ListItemAvatar>
         <ListItemText
           primary={`Name: ${props.business.name}`}
-          secondary={`Email: ${props.business.email}, Phone: ${props.business.phone}, Address: ${props.business.address}`}
+          secondary={
+            <>
+            <span>Email: {props.business.email}</span>
+            <br />
+            <span>Phone: {props.business.phone}</span>
+            <br />
+            <span>Address: {props.business.address}</span>
+            </>
+            }
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (

@@ -33,9 +33,7 @@ function ItemClient(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [deleteClient] = useMutation(
-    ClientMutationServices.DeleteClient
-    );
+  const [deleteClient] = useMutation(ClientMutationServices.DeleteClient);
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -54,7 +52,7 @@ function ItemClient(props: Props) {
     console.log(props);
     await deleteClient({ variables: { id: props.client.id } });
     toastShow({
-      message: "La empresa se ha sido eliminado correctamente",
+      message: "El cliente se ha sido eliminado correctamente",
       severity: "success",
     });
     refetch();
@@ -74,7 +72,13 @@ function ItemClient(props: Props) {
         </ListItemAvatar>
         <ListItemText
           primary={`Name: ${props.client.name} ${props.client.surname}`}
-          secondary={`Email: ${props.client.email}, Phone: ${props.client.phone}`}
+          secondary={
+            <>
+              <span>Email: {props.client.email}</span>
+              <br />
+              <span>Phone: {props.client.phone}</span>
+            </>
+          }
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
         {props.buttonAction == true ? (

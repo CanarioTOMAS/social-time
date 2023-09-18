@@ -1,27 +1,37 @@
 "use client";
+
 import {
   Box,
   Button,
   Card,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
+import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
+import { useMutation, useQuery } from "@apollo/client";
+import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
+import { getSessionServices } from "@/auth/services/session.service";
 
 type Props = {
   id: any;
   project: IProject | undefined;
   onClose?: () => void;
-  // onEdit: () => void;
-  // onAdd: () => void;
 };
 
 export default function FormProjectComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
+  const { toastShow } = useToast();
+  const [showAlert, setShowAlert] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
@@ -45,70 +55,62 @@ export default function FormProjectComponent(props: Props) {
     }
   }, [props.project]);
 
+  const [CreateProject] = useMutation(ProjectMutationServices.CreateProject);
+  const [UpdateProject] = useMutation(ProjectMutationServices.UpdateProject);
 
-  // const [mutateFunction] = useMutation(
-  // props.project?.id
-  // ? ProductService.ProductMutationServices.UpdateProduct
-  // : ProductService.ProductMutationServices.AddProduct
-  // );
-
-  const { toastShow } = useToast();
+  const { data, error, loading, refetch } = useQuery(
+    QueryClientService.clients,
+    {
+      variables: {
+        id: getSessionServices("business"),
+      },
+    }
+  );
 
   // useEffect(() => {
   //   // getSessionBusiness();
   //   setIdBusiness(getSessionServices("business"));
   // }, []);
-   const onSubmit = handleSubmit(async (values: any) => {
-     console.log(props.project?.id);
-    try {
-      if (props.project?.id) {
-        await handleEditSubmit(values);
-      } else {
-        await handleAddSubmit(values);
-      }
-      toastShow({
-        message: isEditing
-          ? "El producto se edito correctamente"
-          : "El producto se cargó correctamente",
-        severity: "success",
-        duration: 5000,
-      });
-    } catch (error) {
-      toastShow({
-        message: "Error al realizar la operación",
-        severity: "error",
-        duration: 5000,
-      });
-    }
-    reset()
-  });
 
-  const handleAddSubmit = handleSubmit(async (values: any) => {
+  const onSubmit = handleSubmit(async (values) => {
     console.log(values);
-    await mutateFunction({
+    await CreateProject({
       variables: {
         name: values.name,
-        idClient: values.idClient,
-        idProject: values.idProject,
-        user: values.user, 
+        description: values.description,
+        client: values.idClient,
       },
     });
-    // props.onAdd();
+    toastShow({
+      message: "El proyecto ha sido creado correctamente",
+      severity: "success",
+    });
     reset();
   });
-  const handleEditSubmit = handleSubmit(async (values: any) => {
-    console.log(values);
-    await mutateFunction({
+
+  const onUpdate = handleSubmit(async (values) => {
+    if (!props.project) return;
+    await UpdateProject({
       variables: {
-     name: values.name,
-     idClient: values.idClient,
-     idProject: values.idProject,
-     user: values.user,   
-      },
+        name: values.name,
+        description: values.description,
+        client: values.idClient,
+      }
     });
-    // props.onEdit();
-    setIsEditing(false);
+    if (props.onClose) props.onClose();
+    setShowAlert(true);
+    toastShow({
+      message: "El cliente ha sido editado correctamente",
+      severity: "success",
+    });
   });
+
+  const [client, setClient] = useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    console.log(event.target.value);
+    setClient(event.target.value as string);
+  };
 
   return (
     <Box
@@ -120,7 +122,8 @@ export default function FormProjectComponent(props: Props) {
         alignItems: "center",
         minHeight: "100vh",
       }}
-      onSubmit={onSubmit}
+      ref={formRef}
+      alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
         <Typography
@@ -131,50 +134,33 @@ export default function FormProjectComponent(props: Props) {
         >
           Crear Proyecto
         </Typography>
-        <FormControl sx={{textAlign:"center"}}>
+        <FormControl sx={{ textAlign: "center" }}>
+          <FormControl  className="w-1/2 p-2">
+            <InputLabel>Client</InputLabel>
+            <Select
+              className="p-1"
+              label="Client"
+              sx={{ m: 1, width: "41.7ch" }}
+              {...(errors.idClient?.type === "required" && {
+                helperText: "Campo Obligatorio",
+                error: true,
+              })}
+              {...register("idClient")}
+            >
+              {data &&
+                data.findUserBusiness[0].client.map((item: any) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
           <TextField
-            label="User"
-            sx={{ m: 1, width: "90%", textAlign:"center" }}
-            type="text"
-            {...register("user", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.user?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <TextField
-            label="Client"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
-            type="text"
-            {...register("idClient", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.idClient?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <TextField
+            className="w-1/2 p-2 "
             label="Project"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
+            variant="outlined"
+            sx={{ m: 1, width: "43ch", }}
             type="text"
-            {...register("idProject", {
-              required: true,
-              minLength: 2,
-            })}
-            {...(errors.idProject?.type === "required" && {
-              helperText: "Campo Obligatorio",
-              error: true,
-            })}
-          />
-          <TextField
-            label="Name"
-            sx={{m: 1, width: "90%", textAlign:"center" }}
-            type="price"
             {...register("name", {
               required: true,
               minLength: 2,
@@ -184,19 +170,46 @@ export default function FormProjectComponent(props: Props) {
               error: true,
             })}
           />
-          <Button
+          <TextField
+            className="w-1/2 p-2"
+            label="Description"
             sx={{ m: 1, width: "43ch" }}
-            onClick={onSubmit}
-            variant="contained"
-          >
-            Submit
-          </Button>
+            variant="outlined"
+            multiline
+            minRows={5}
+            type="text"
+            {...register("description", {
+              required: true,
+              minLength: 1,
+            })}
+            {...(errors.description?.type === "required" && {
+              helperText: "Campo Obligatorio",
+              error: true,
+            })}
+          />
+          {!isEditing ? (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onSubmit}
+              variant="contained"
+            >
+              Register
+            </Button>
+          ) : (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onUpdate}
+              variant="contained"
+            >
+              Guardar
+            </Button>
+          )}
         </FormControl>
       </Card>
     </Box>
   );
 }
-function mutateFunction(arg0: { variables: { name: any; idClient: any; idProject: any; user: any; }; }) {
-  throw new Error("Function not implemented.");
-}
-

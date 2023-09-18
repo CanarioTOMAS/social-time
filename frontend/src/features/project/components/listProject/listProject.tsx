@@ -18,8 +18,6 @@ export const ListProjectComponent = () => {
     ProjectQueryService.Project
   );
 
-  console.log(data);
-
   const projects = data?.findUserBusiness[0]?.client[0]?.project;
 
   return (
@@ -54,7 +52,9 @@ export const ListProjectComponent = () => {
             <ListItems
               items={projects}
               renderItem={(item: IProject) => (
-                <ItemProject project={item} buttonAction={true} />
+                <div key={item.id}>
+                  <ItemProject project={item} buttonAction={true} />
+                </div>
               )}
               handleItemClick={function (item: IProject): IProject {
                 console.log(item);

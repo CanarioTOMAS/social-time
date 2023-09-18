@@ -26,14 +26,17 @@ type Props = {
 
 function ItemProject(props: Props) {
   const { data, error, loading, refetch } = useQuery(
-    ProjectQueryService.Project
+    ProjectQueryService.Project,
+    {
+      variables: {
+        idClient: props.project.idClient,
+      },
+    }
   );
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteProject] = useMutation(
-    ProjectMutationServices.DeleteProject
-    );
+  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
@@ -63,10 +66,13 @@ function ItemProject(props: Props) {
     setIsEditDialogOpen(false);
   };
 
+  const clientDetails = data?.findUserBusiness[0]?.client[0];
+  const projectDetails = clientDetails?.project[0];
+
   return (
     <>
       {" "}
-      <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ width: "100%" }}>
         {/* <ListItemAvatar>
           <Avatar src={image} alt={props.project.Image} />
         </ListItemAvatar> */}
@@ -74,9 +80,9 @@ function ItemProject(props: Props) {
           primary={`Name: ${props.project?.name}`}
           secondary={
             <>
-              <span>Description: {props.project.description}</span>
+              <span>Client: {clientDetails?.name}</span>
               <br />
-              <span>Client: {props.project.idClient}</span>
+              <span>Description: {projectDetails?.description}</span>
             </>
           }
           primaryTypographyProps={{ sx: { color: "#000" } }}

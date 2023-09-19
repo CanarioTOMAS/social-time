@@ -20,25 +20,21 @@ const client = new ApolloClient({
 });
 console.log(client);
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const hideBar = ["/pages/login","/pages/register","/pages/forgotPassword"];
- 
+  const hideBar = ["/pages/login", "/pages/register", "/pages/forgotPassword"];
+
   return (
     <html lang="en">
       <ApolloProvider client={client}>
-        <body>{!hideBar &&<RouterLayout>
-          {children}
-    </RouterLayout>}
-        <ToastProvider>
-          {children}
-          </ToastProvider>
-          </body>
+        <body>
+          {!hideBar && <RouterLayout>{children}</RouterLayout>}
+          <ToastProvider>{children}</ToastProvider>
+        </body>
       </ApolloProvider>
     </html>
   );

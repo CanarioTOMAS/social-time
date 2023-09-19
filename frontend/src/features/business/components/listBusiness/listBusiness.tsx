@@ -58,7 +58,7 @@ export const ListBusiness = (props: IBusiness) => {
               )}
               handleItemClick={function (item: IBusiness): IBusiness {
                 localStorage.setItem("business", item._id);
-                router.push("/pages/createClient"); //redireccionar al dashboard
+                //router.push("/pages/createClient"); //redireccionar al dashboard
                 return item;
                 //handleItemDelete(item.id);
               }}

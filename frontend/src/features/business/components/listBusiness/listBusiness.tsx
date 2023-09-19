@@ -21,6 +21,7 @@ export const ListBusiness = (props: IBusiness) => {
   const router = useRouter();
 
   return (
+<<<<<<< HEAD
     <Box
       className="bg-blue-500 text-white p-4"
       component="form"
@@ -37,6 +38,23 @@ export const ListBusiness = (props: IBusiness) => {
           alignItems: "center",
           width: "80vh",
           margin: "auto",
+=======
+    <>
+
+    {data ?
+      <ListItems
+        items={data.findUserBusiness}
+        renderItem={(item: IBusiness) => (
+          <ItemBusiness business={item} buttonAction={true} />
+        )}
+        handleItemClick={function (item: IBusiness): IBusiness {
+
+          if (typeof window !== 'undefined') 
+            localStorage.setItem ("business",item._id)
+          router.push("/pages/createClient");//redireccionar al dashboard
+          return item;
+          //handleItemDelete(item.id);
+>>>>>>> auth-demas
         }}
       >
         <Typography

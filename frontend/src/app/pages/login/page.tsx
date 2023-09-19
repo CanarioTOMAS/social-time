@@ -54,10 +54,11 @@ export default function FormLogin() {
         password: values.password,
       },
     });
-    router.push("/pages/listBusiness");
+    
 
     if (data && data.login.value) {
       localStorage.setItem("authToken", data.login.value);
+      router.push("/pages/listBusiness");
     }
     console.log(error);
     console.log(data);

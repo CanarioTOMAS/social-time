@@ -31,7 +31,9 @@ export const ListBusiness = (props: IBusiness) => {
           <ItemBusiness business={item} buttonAction={true} />
         )}
         handleItemClick={function (item: IBusiness): IBusiness {
-          localStorage.setItem ("business",item._id)
+
+          if (typeof window !== 'undefined') 
+            localStorage.setItem ("business",item._id)
           router.push("/pages/createClient");//redireccionar al dashboard
           return item;
           //handleItemDelete(item.id);

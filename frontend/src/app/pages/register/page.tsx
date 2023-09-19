@@ -47,6 +47,10 @@ export default function FormRegister() {
         password: values.password,
       },
     });
+
+
+    
+
     reset();
     await toastShow("Usuario Creado", "info");
     router.push("/login");

@@ -5,7 +5,7 @@ import { IClient } from "../../models/Client";
 import ItemClient from "../ItemClient/ItemClient";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
-import { getSessionServices } from "@/auth/services/session.service";
+import { getLocalStorageValue } from "@/auth/services/session.service";
 import { Box, Card, CircularProgress, FormControl, Typography } from "@mui/material";
 
 export const ListClientComponent = () => {
@@ -13,7 +13,7 @@ export const ListClientComponent = () => {
     QueryClientService.clients,
     {
       variables: {
-        id: getSessionServices("business"),
+        id: getLocalStorageValue("business"),
       },
     }
   );

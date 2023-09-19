@@ -1,8 +1,8 @@
-export const setSessionService = (key: string, value: string) => {
+export const setocalStorageValue = (key: string, value: string) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const getSessionServices = () => {
+export const getLocalStorageValue = () => {
   const auth = localStorage.getItem("token");
   if (auth && auth !== "") {
     return true;

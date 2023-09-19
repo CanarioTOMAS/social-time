@@ -48,6 +48,11 @@ export default function FormRegister() {
       },
     });
     reset();
+
+
+    //TODO! validar que responsda registro ok
+
+
    await toastShow("Usuario Creado", "info");
    router.push("/pages/login"); 
    console.log(values);

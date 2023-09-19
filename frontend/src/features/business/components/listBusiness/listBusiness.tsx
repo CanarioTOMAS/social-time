@@ -5,23 +5,23 @@ import { IBusiness } from "../../model/business";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import ItemBusiness from "../itemBusiness/itemBusiness";
 import { businessQueryService } from "../../services/businessQuery";
-import { setSessionService } from "../../../../auth/services/session.service";
 import { useRouter } from "next/navigation";
 import { Box, Card, CircularProgress, FormControl, Typography } from "@mui/material";
+import { getLocalStorageValue } from "@/auth/services/session.service";
 
 export const ListBusiness = (props: IBusiness) => {
+
   const { data, error, loading, refetch } = useQuery(
     businessQueryService.FindUserBusiness,
     {
       variables: {
-        findOneUserId: localStorage.getItem("authToken"),
+        findOneUserId: getLocalStorageValue("token"),
       },
     }
   );
   const router = useRouter();
 
   return (
-<<<<<<< HEAD
     <Box
       className="bg-blue-500 text-white p-4"
       component="form"
@@ -38,23 +38,6 @@ export const ListBusiness = (props: IBusiness) => {
           alignItems: "center",
           width: "80vh",
           margin: "auto",
-=======
-    <>
-
-    {data ?
-      <ListItems
-        items={data.findUserBusiness}
-        renderItem={(item: IBusiness) => (
-          <ItemBusiness business={item} buttonAction={true} />
-        )}
-        handleItemClick={function (item: IBusiness): IBusiness {
-
-          if (typeof window !== 'undefined') 
-            localStorage.setItem ("business",item._id)
-          router.push("/pages/createClient");//redireccionar al dashboard
-          return item;
-          //handleItemDelete(item.id);
->>>>>>> auth-demas
         }}
       >
         <Typography

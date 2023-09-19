@@ -9,8 +9,8 @@ import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { businessMutationService } from "../../services/businessMutation";
 import {
-  getSessionServices,
-  setSessionService,
+  getLocalStorageValue,
+  setLocalStorageValue,
 } from "@/auth/services/session.service";
 import { useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ type Props = {
 
 export default function FormBusinessComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
-  const idBusiness = getSessionServices("business");
+  const idBusiness = getLocalStorageValue("business");
   const [resetKey, setResetKey] = useState(0);
   const [createBusiness] = useMutation(businessMutationService.createBusiness);
   const [updateBusiness] = useMutation(businessMutationService.updateBusiness);
@@ -73,7 +73,7 @@ export default function FormBusinessComponent(props: Props) {
       message: "La empresa ha sido creado correctamente",
       severity: "success",
     });
-    setSessionService("business", response.data.addBusiness._id);
+    setLocalStorageValue("business", response.data.addBusiness._id);
     reset({
       name: "",
       phone: "",

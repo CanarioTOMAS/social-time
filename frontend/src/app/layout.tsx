@@ -6,7 +6,7 @@ import { ToastProvider } from "@/features/shared/components/toast/ToastProvider"
 import { RouterLayout } from "@/features/shared/components/navBar/RouterLayout";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getSessionServices } from "@/auth/services/session.service";
+import { getLocalStorageValue } from "@/auth/services/session.service";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
   const httpLink = createHttpLink({
     uri: "http://localhost:4000/graphql",
     headers: {
-      authorization: getSessionServices("token"),
+      authorization: ""+getLocalStorageValue("token"),
       "Content-Type": "application/json",
     },
   });
@@ -36,8 +36,8 @@ export default function RootLayout({
       next: (data: any) => {},
       error: (err: any) => {
         if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          window.location.href = "pages/login";
+         // localStorage.removeItem("token");
+          window.location.href = "login";
         }
       },
     });
@@ -47,7 +47,7 @@ export default function RootLayout({
   });
   
   const client = new ApolloClient({
-    link: ApolloLink.from([httpLink, errorLink]),
+    link: ApolloLink.from([errorLink,httpLink ]),
     cache: new InMemoryCache(),
   });
  

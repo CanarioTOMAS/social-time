@@ -19,7 +19,7 @@ import { IProject } from "../../model/project";
 import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
 import { useMutation, useQuery } from "@apollo/client";
 import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
-import { getSessionServices } from "@/auth/services/session.service";
+import { getLocalStorageValue } from "@/auth/services/session.service";
 
 type Props = {
   id: any;
@@ -62,14 +62,14 @@ export default function FormProjectComponent(props: Props) {
     QueryClientService.clients,
     {
       variables: {
-        id: getSessionServices("business"),
+        id: getLocalStorageValue("business"),
       },
     }
   );
 
   // useEffect(() => {
   //   // getSessionBusiness();
-  //   setIdBusiness(getSessionServices("business"));
+  //   setIdBusiness(getLocalStorageValue("business"));
   // }, []);
 
   const onSubmit = handleSubmit(async (values) => {

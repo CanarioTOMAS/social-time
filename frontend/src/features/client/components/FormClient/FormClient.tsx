@@ -16,7 +16,7 @@ import {
 import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
-import { getSessionServices } from "@/auth/services/session.service";
+import { getLocalStorageValue } from "@/auth/services/session.service";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
@@ -73,10 +73,10 @@ export default function FormClientComponent(props: Props) {
   }, [props.client]);
 
   useEffect(() => {
-    if (getSessionServices("business") == null) {
+    if (getLocalStorageValue("business") == null) {
       console.log("no hay business");
     } else {
-      const business_id = getSessionServices("business");
+      const business_id = getLocalStorageValue("business");
       if (business_id !== null) {
         setIdBusiness(business_id);
       }

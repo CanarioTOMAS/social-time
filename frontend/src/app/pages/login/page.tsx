@@ -20,6 +20,7 @@ import { userMutationService } from "@/features/shared/services/userServices/use
 import { useMutation } from "@apollo/client";
 import { ILoginUser } from "@/app/model/user";
 import { useRouter } from "next/navigation";
+import { setLocalStorageValue } from "@/auth/services/session.service";
 
 type Login = {
   email: string;
@@ -47,22 +48,32 @@ export default function FormLogin() {
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
-  const onSubmit = handleSubmit((values) => {
-    mutateFunction({
+  const onSubmit = handleSubmit(async (values) => {
+    const resp = await mutateFunction({
       variables: {
         email: values.email,
         password: values.password,
       },
     });
     
+    console.log(resp)
+    setLocalStorageValue("token",resp.data?.login?.value)
 
-    if (data && data.login.value) {
-      localStorage.setItem("authToken", data.login.value);
+    setTimeout(()=>{
       router.push("/pages/listBusiness");
+       },1000)
+
+   
+  //  if (resp.data && resp.data.login && resp.data.login.value) {
+  //    localStorage.setItem("token", data.login.value);
+  //    setTimeout(()=>{
+   //    
+   //   },1000)
+      
     }
-    console.log(error);
-    console.log(data);
-  });
+    
+  //}
+  );
 
   return (
     <div className={style.Body}>

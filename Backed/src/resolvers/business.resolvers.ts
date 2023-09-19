@@ -17,64 +17,76 @@ module.exports = {
       return business;
     },
     findUserBusiness: async (_: any, _args: any, context: any) => {
-
       const user = await User.findOne({ _id: context.user.id });
+    
       // Verificar si el usuario está marcado como eliminado
-      if (user && user.deleted) {
+      if (!user || user.deleted) {
         throw new GraphQLError("El usuario está marcado como eliminado");
       }
     
       const offset = (_args.pageCount - 1) * _args.perPage;
-
+      
+      const query: any = {
+        user: context.user.id,
+        deleted: { $ne: true },
+      };
+    
       if (_args._id) {
-          const business = await Business.find({
-          user: context.user.id,
-          _id: _args._id,
-          name: new RegExp(_args.searchWord, "i"),
-          deleted: { $ne: true },
-        })
-          .skip(offset)
-          .limit(_args.perPage)
-          .exec();
-        return business;
-      } else {
-        const business = await Business.find({
-          user: context.user.id,
-          name: new RegExp(_args.searchWord, "i"),
-          deleted: { $ne: true },
-        })
-          .skip(offset)
-          .limit(_args.perPage)
-          .exec();
-        return business;
+        query._id = _args._id;
       }
+    
+      if (_args.searchWord) {
+        query.name = new RegExp(_args.searchWord, "i");
+      }
+    
+      const business = await Business.find(query)
+        .skip(offset)
+        .limit(_args.perPage)
+        .exec();
+    
+      return business;
     },
   },
-
   Business: {
     client: async (business: any, _args: any) => {
-        if (_args.idClient){
-          return await Client.find({ business: business._id, _id: _args.idClient, deleted: { $ne: true } });
-        }else{
-          return await Client.find({ business: business._id, deleted: { $ne: true }});
-        }
-        
-    }    
+      const filter: any = {
+        business: business._id,
+        deleted: { $ne: true }
+      };
+  
+      if (_args.idClient) {
+        filter._id = _args.idClient;
+      }
+  
+      return await Client.find(filter);
+    }
   },
   Client: {
     project: async (client: any, _args: any) => {
-        return await Project.find({ client: client._id, deleted: { $ne: true } });
+      const filter: any = {
+        client: client._id,
+        deleted: { $ne: true }
+      }; 
+      if (_args.idProject) {
+        filter._id = _args.idProject;
+      }
+      return await Project.find(filter);
     }
-  
   },
   Project: {
     activitie: async (project: any, _args: any, context: any) => {
-      return await Activitie.find ({ 
+      console.log ("Project: ",project)
+      console.log ("Args: ",_args)
+      const filter: any = {
         project: project._id,
-        user: context.user.id,
-        deleted: { $ne: true }})
-    }
+        deleted: { $ne: true }
+      };
+      if (_args.User) {
+        filter.user = _args.User
+      }
+      return await Activitie.find (filter)
   },
+},
 
 
   Mutation: {

@@ -6,5 +6,6 @@ const schema = new mongoose.Schema({
   name: { type: String, required: true, unique: false, minlength: 2 },
   deleted: { type: Boolean, required: false, unique: false },
   description: { type: String, required: true, unique: false, minlength: 2 },
+  activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activities" }],
 });
 export default mongoose.model("Project", schema);

@@ -13,6 +13,7 @@ module.exports = gql`
     phone: String
     id: ID!
     business: [Business]
+    ativitie: [Activitie]
     deleted: Boolean
   }
 

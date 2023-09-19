@@ -14,7 +14,7 @@ module.exports = gql`
     documentNumber: String
     surname: String
     deleted: Boolean
-    project: [Project]
+    project (idProject: ID): [Project]
     id: ID!
   }
 

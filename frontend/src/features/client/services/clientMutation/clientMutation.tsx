@@ -38,23 +38,23 @@ const UpdateClient = gql`
     $name: String!
     $email: String!
     $image: String
-    $address: String
     $city: String
-    $postCode: String
+    $address: String
     $phone: String
+    $postCode: String
     $documentType: String
     $documentNumber: String
     $surname: String
   ) {
     updateClient(
-      id: $id
+      _id: $id
       name: $name
       email: $email
       image: $image
-      address: $address
       city: $city
-      postCode: $postCode
+      address: $address
       phone: $phone
+      postCode: $postCode
       documentType: $documentType
       documentNumber: $documentNumber
       surname: $surname
@@ -62,8 +62,8 @@ const UpdateClient = gql`
       name
       image
       city
-      email
       address
+      email
       phone
       postCode
       documentType

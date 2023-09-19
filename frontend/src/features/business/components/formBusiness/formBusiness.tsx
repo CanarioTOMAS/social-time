@@ -4,7 +4,6 @@ import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { useParams } from "react-router-dom";
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
@@ -24,7 +23,6 @@ export default function FormBusinessComponent(props: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const idBusiness = getSessionServices("business");
   const [resetKey, setResetKey] = useState(0);
-  const { id } = useParams();
   const [createBusiness] = useMutation(businessMutationService.createBusiness);
   const [updateBusiness] = useMutation(businessMutationService.updateBusiness);
   const { toastShow } = useToast();
@@ -107,6 +105,7 @@ export default function FormBusinessComponent(props: Props) {
       message: "La empresa ha sido editada correctamente",
       severity: "success",
     });
+    history.go(0);
   });
 
   return (
@@ -123,14 +122,25 @@ export default function FormBusinessComponent(props: Props) {
       alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
-        <Typography
-          variant="h5"
-          align="center"
-          gutterBottom
-          className="text-xl text-center mb-4"
-        >
-          Crear Empresa
-        </Typography>
+        {!isEditing ? (
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            className="text-xl text-center mb-4"
+          >
+            Crear Empresa
+          </Typography>
+        ) : (
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            className="text-xl text-center mb-4"
+          >
+            Editar Empresa
+          </Typography>
+        )}
         <FormControl>
           <ProfileForm
             avatarType="business"

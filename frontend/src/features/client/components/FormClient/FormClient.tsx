@@ -148,14 +148,25 @@ export default function FormClientComponent(props: Props) {
       alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
-        <Typography
-          variant="h5"
-          align="center"
-          gutterBottom
-          className="text-xl text-center mb-4"
-        >
-          Crear Cliente
-        </Typography>
+        {!isEditing ? (
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            className="text-xl text-center mb-4"
+          >
+            Crear Cliente
+          </Typography>
+        ) : (
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            className="text-xl text-center mb-4"
+          >
+            Editar Cliente
+          </Typography>
+        )}
         <FormControl>
           <ProfileForm
             avatarType="client"

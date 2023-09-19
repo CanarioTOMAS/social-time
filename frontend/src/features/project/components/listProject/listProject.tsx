@@ -48,7 +48,7 @@ export const ListProjectComponent = () => {
           Lista de Proyectos
         </Typography>
         <FormControl sx={{ alignItems: "center" }}>
-          {!loading && data && data.findUserBusiness ? (
+          {!loading && data && data.findUserBusiness? (
             <ListItems
               items={projects}
               renderItem={(item: IProject) => (

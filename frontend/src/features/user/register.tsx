@@ -19,11 +19,12 @@ import {
   Button,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 
 export default function FormRegister() {
+  const formRef = useRef<HTMLFormElement>(null);
   const toastShow = useToast();
   const {
     register,
@@ -37,20 +38,25 @@ export default function FormRegister() {
   const [mutateFunction, { loading, error, data }] = useMutation(
     userMutationService.register
   );
-  const router = useRouter();
+  //const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
-    const response = await mutateFunction({
-      variables: {
-        name: values.name,
-        surname: values.surname,
-        email: values.email,
-        password: values.password,
-      },
-    });
-    reset();
-   await toastShow("Usuario Creado", "info");
-   router.push("/pages/login"); 
-   console.log(values);
+    try {
+      const response = await mutateFunction({
+        variables: {
+          name: values.name,
+          surname: values.surname,
+          email: values.email,
+          password: values.password,
+          deleted: false
+        },
+      });
+      reset();
+      await toastShow("Usuario Creado", "info");
+      //router.push("/pages/login");
+      console.log(response);
+    } catch (error) {
+      console.error("Error al registrar usuario:", error);
+    }
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -66,24 +72,32 @@ export default function FormRegister() {
   return (
     <ToastProvider>
       <Box
+        className="bg-blue-500 text-white p-4"
         component="form"
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
-          textAlign: "center",
-          margin: 5,
         }}
+        alignContent={"center"}
         onSubmit={onSubmit}
       >
-        <Card sx={{ pb: 5, alignItems: "center" }}>
-          <Typography variant="h1">Registro</Typography>
-          <FormControl sx={{ alignItems: "center" }}>
+        <Card>
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            
+          >
+            Registro
+          </Typography>
+          <FormControl>
             <TextField
               id="name"
               label="Name"
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ width: "43ch", m: 1 }}
               type="text"
               {...register("name", {
                 required: true,
@@ -101,7 +115,7 @@ export default function FormRegister() {
             <TextField
               id="surname"
               label="Surname"
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ width: "43ch", m: 1 }}
               type="text"
               {...register("surname", {
                 required: true,
@@ -119,7 +133,7 @@ export default function FormRegister() {
             <TextField
               id="email"
               label="Email"
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ width: "43ch", m: 1 }}
               type="email"
               {...register("email", {
                 required: true,
@@ -137,12 +151,11 @@ export default function FormRegister() {
             />
             <TextField
               id="password"
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ width: "43ch", m: 1 }}
               type={showPassword ? "text" : "password"}
               label="Password"
               {...register("password", {
                 required: true,
-
                 minLength: 2,
               })}
               {...(errors.password?.type === "required" && {
@@ -170,8 +183,8 @@ export default function FormRegister() {
             />
             <TextField
               id="confirmPassword"
-              sx={{ m: 1, width: "25ch" }}
               type={showPassword ? "text" : "password"}
+              sx={{ width: "43ch", m: 1 }}
               label="Confirm Password"
               {...register("confirmPassword", {
                 required: true,
@@ -201,16 +214,16 @@ export default function FormRegister() {
                 ),
               }}
             />
-            <Link href="/pages/login">
               <Button
-                sx={{ m: 1, width: "43ch" }}
-                onClick={onSubmit}
+                className="align-content:flex-start bg-blue-500 text-white"
+                sx={{ width: "47.6ch", m: 1 }}
+                type="submit"
+                //onClick={onSubmit}
                 //className={style.submit}
                 variant="contained"
               >
                 Submit
               </Button>
-            </Link>
           </FormControl>
         </Card>
       </Box>

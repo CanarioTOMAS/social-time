@@ -33,6 +33,7 @@ module.exports = gql`
       address: String
       gender: String
       phone: String
+      deleted: Boolean
     ): User
     login(email: String!, password: String!): Token
     validateToken (token: String!): String

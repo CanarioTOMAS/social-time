@@ -6,7 +6,13 @@ import ItemClient from "../ItemClient/ItemClient";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 import { getSessionServices } from "@/auth/services/session.service";
-import { Box, Card, CircularProgress, FormControl, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CircularProgress,
+  FormControl,
+  Typography,
+} from "@mui/material";
 
 export const ListClientComponent = () => {
   const { data, error, loading, refetch } = useQuery(

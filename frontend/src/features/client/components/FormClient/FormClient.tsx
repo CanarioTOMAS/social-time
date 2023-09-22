@@ -177,10 +177,9 @@ export default function FormClientComponent(props: Props) {
             resetKey={undefined}
           />
           <TextField
-            className="w-1/2 p-2"
+            className="w-43 p-2"
             id="Name"
             label="Name"
-            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("name", {
               required: true,
@@ -347,7 +346,6 @@ export default function FormClientComponent(props: Props) {
           {!isEditing ? (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onSubmit}
               variant="contained"
@@ -357,7 +355,6 @@ export default function FormClientComponent(props: Props) {
           ) : (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
               type="submit"
               onClick={onUpdate}
               variant="contained"

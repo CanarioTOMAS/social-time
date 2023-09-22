@@ -11,6 +11,7 @@ const register = gql`
     $role: String
     $image: String
     $gender: String
+  
   ) {
     createUser(
       name: $name
@@ -22,6 +23,7 @@ const register = gql`
       role: $role
       image: $image
       gender: $gender
+      
     ) {
       surname
       phone

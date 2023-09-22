@@ -1,10 +1,6 @@
 "use client";
 
 import { IUser } from "@/app/model/user";
-import {
-  ToastProvider,
-  useToast,
-} from "@/features/shared/components/toast/ToastProvider";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
@@ -17,14 +13,18 @@ import {
   InputAdornment,
   IconButton,
   Button,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useToast } from "../shared/components/toast/ToastProvider";
 
 export default function FormRegister() {
-  const toastShow = useToast();
+  const [showAlert, setShowAlert] = useState(false);
+  const { toastShow } = useToast();
   const {
     register,
     handleSubmit,
@@ -37,20 +37,20 @@ export default function FormRegister() {
   const [mutateFunction, { loading, error, data }] = useMutation(
     userMutationService.register
   );
-  const router = useRouter();
+  //const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
-    const response = await mutateFunction({
-      variables: {
-        name: values.name,
-        surname: values.surname,
-        email: values.email,
-        password: values.password,
-      },
-    });
-    reset();
-   await toastShow("Usuario Creado", "info");
-   router.push("/pages/login"); 
-   console.log(values);
+      const response = await mutateFunction({
+        variables: {
+          name: values.name,
+          surname: values.surname,
+          email: values.email,
+          password: values.password,
+        },
+      });
+      reset();
+      toastShow("Este es un mensaje de éxito.", "success");
+      //router.push("/pages/login");
+      console.log(response); // Puedes imprimir la respuesta si es útil
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -64,7 +64,7 @@ export default function FormRegister() {
   };
 
   return (
-    <ToastProvider>
+    <>
       <Box
         component="form"
         sx={{
@@ -78,6 +78,7 @@ export default function FormRegister() {
         onSubmit={onSubmit}
       >
         <Card sx={{ pb: 5, alignItems: "center" }}>
+          
           <Typography variant="h1">Registro</Typography>
           <FormControl sx={{ alignItems: "center" }}>
             <TextField
@@ -208,12 +209,12 @@ export default function FormRegister() {
                 //className={style.submit}
                 variant="contained"
               >
-                Submit
+                Mostrar Toast
               </Button>
             </Link>
           </FormControl>
         </Card>
       </Box>
-    </ToastProvider>
+    </>
   );
 }

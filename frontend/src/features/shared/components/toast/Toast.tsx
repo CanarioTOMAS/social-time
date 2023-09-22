@@ -2,53 +2,21 @@
 
 import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
-import { useToast } from "./ToastProvider";
-import { useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useToast } from "./ToastProvider";
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// Componente Alert personalizado
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-export default function Toast() {
+export default function Toast({ open, onClose, severity, message, autoHideDuration = 6000 }: any) {
   const { show } = useToast();
-  const [open, setOpen] = useState<boolean>(false);
-
-  React.useEffect(() => {
-    if (show && show.message != "") {
-      setOpen(true);
-    }
-  }, [show]);
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   return (
-    <Snackbar
-      open={open}
-      autoHideDuration={show.duration ? show.duration : 5000}
-      onClose={handleClose}
-      anchorOrigin={{
-        vertical: show.vertical ? show.vertical : "top",
-        horizontal: show.horizontal ? show.horizontal : "center",
-      }}
-    >
-      <Alert
-        onClose={handleClose}
-        severity={show.severity}
-        sx={{ width: "100%" }}
-      >
-        {show.message}
+    <Snackbar open={open} autoHideDuration={autoHideDuration} onClose={onClose}>
+      <Alert onClose={onClose} severity={severity}>
+        {message}
       </Alert>
     </Snackbar>
   );

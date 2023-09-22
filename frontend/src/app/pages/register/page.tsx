@@ -2,7 +2,7 @@
 
 import FormRegister from "@/features/user/register";
 
-export default function formRegister() {
+export default function register() {
   return (
     <div>
       <FormRegister />

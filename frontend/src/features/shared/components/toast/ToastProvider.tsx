@@ -1,7 +1,8 @@
 "use client"
 
 import { createContext, useContext, useState } from "react";
-import Toast from "./Toast";
+import Snackbar from "@mui/material/Snackbar/Snackbar";
+import { Alert } from "@mui/material";
 
 const ToastContext = createContext<any>({});
 
@@ -9,7 +10,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-type ToastOptions = {
+type ToastProvider = {
+  open: boolean;
+  onClose: () => void;
   message: "";
   severity: "success" | "warning" | "info" | "error";
   duration?: number;
@@ -18,20 +21,32 @@ type ToastOptions = {
 };
 
 export const ToastProvider = ({ children }: Props) => {
-  const [show, toastShow] = useState<ToastOptions>({
-    message: "",
-    severity: "info",
-  });
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState<"error" | "warning" | "info" | "success">("success");
+  
+  const toastShow = (message: string, severity: "error" | "warning" | "info" | "success") => {
+    setMessage(message);
+    setSeverity(severity);
+    setOpen(true);
+  };
 
   const value = {
-    show,
     toastShow,
   };
 
+  const closeToast = () => {
+    setOpen(false);
+  };
+
   return (
-    <ToastContext.Provider value={value}>
-      <Toast />
+    <ToastContext.Provider value={{ toastShow }}>
       {children}
+      <Snackbar open={open} autoHideDuration={6000} onClose={closeToast}>
+        <Alert onClose={closeToast} severity={severity}>
+          {message}
+        </Alert>
+      </Snackbar>
     </ToastContext.Provider>
   );
 };

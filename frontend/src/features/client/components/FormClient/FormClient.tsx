@@ -34,6 +34,8 @@ export default function FormClientComponent(props: Props) {
   const { toastShow } = useToast();
   const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+
+  
   const {
     register,
     handleSubmit,
@@ -84,6 +86,8 @@ export default function FormClientComponent(props: Props) {
   }, []);
 
   const onSubmit = handleSubmit(async (values) => {
+
+   
     await createClient({
       variables: {
         name: values.name,
@@ -104,6 +108,7 @@ export default function FormClientComponent(props: Props) {
       severity: "success",
     });
     reset();
+   
   });
 
   const onUpdate = handleSubmit(async (values) => {

@@ -1,10 +1,6 @@
 "use client";
 
 import { IUser } from "@/app/model/user";
-import {
-  ToastProvider,
-  useToast,
-} from "@/features/shared/components/toast/ToastProvider";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
@@ -17,14 +13,16 @@ import {
   InputAdornment,
   IconButton,
   Button,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useToast } from "../shared/components/toast/ToastProvider";
 
 export default function FormRegister() {
-  const formRef = useRef<HTMLFormElement>(null);
   const toastShow = useToast();
   const {
     register,
@@ -40,23 +38,18 @@ export default function FormRegister() {
   );
   //const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
-    try {
-      const response = await mutateFunction({
-        variables: {
-          name: values.name,
-          surname: values.surname,
-          email: values.email,
-          password: values.password,
-          deleted: false
-        },
-      });
-      reset();
-      await toastShow("Usuario Creado", "info");
-      //router.push("/pages/login");
-      console.log(response);
-    } catch (error) {
-      console.error("Error al registrar usuario:", error);
-    }
+    const response = await mutateFunction({
+      variables: {
+        name: values.name,
+        surname: values.surname,
+        email: values.email,
+        password: values.password,
+      },
+    });
+    reset();
+   await toastShow("Usuario Creado", "info");
+   router.push("/pages/login"); 
+   console.log(values);
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -70,7 +63,7 @@ export default function FormRegister() {
   };
 
   return (
-    <ToastProvider>
+    <>
       <Box
         className="bg-blue-500 text-white p-4"
         component="form"
@@ -84,16 +77,9 @@ export default function FormRegister() {
         alignContent={"center"}
         onSubmit={onSubmit}
       >
-        <Card>
-          <Typography
-            variant="h5"
-            align="center"
-            gutterBottom
-            
-          >
-            Registro
-          </Typography>
-          <FormControl>
+        <Card sx={{ pb: 5, alignItems: "center" }}>
+          <Typography variant="h1">Registro</Typography>
+          <FormControl sx={{ alignItems: "center" }}>
             <TextField
               id="name"
               label="Name"
@@ -222,11 +208,11 @@ export default function FormRegister() {
                 //className={style.submit}
                 variant="contained"
               >
-                Submit
+                Mostrar Toast
               </Button>
           </FormControl>
         </Card>
       </Box>
-    </ToastProvider>
+    </>
   );
 }

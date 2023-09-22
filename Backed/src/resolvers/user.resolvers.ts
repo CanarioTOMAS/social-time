@@ -23,7 +23,7 @@ module.exports = {
         address: args.address,
         gender: args.gender,
         phone: args.phone,
-        deleted: Boolean
+        deleted: false,
       });
 
       return await user.save().catch((error) => {

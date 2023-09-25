@@ -31,10 +31,10 @@ export default function FormClientComponent(props: Props) {
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
   const [createClient] = useMutation(ClientMutationServices.CreateClient);
   const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
-  const { toastShow } = useToast();
   const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
+  const {toastShow} = useToast();
   
   const {
     register,
@@ -57,6 +57,14 @@ export default function FormClientComponent(props: Props) {
       surname: "",
     },
   });
+
+  useEffect(() => {
+    alert("Please enter");
+    toastShow({
+      message: "El cliente ha sido creado correctamente",
+      severity: "success",
+    });
+    },[]);
 
   useEffect(() => {
     if (props && props.client) {
@@ -86,8 +94,9 @@ export default function FormClientComponent(props: Props) {
   }, []);
 
   const onSubmit = handleSubmit(async (values) => {
+    
+    
 
-   
     await createClient({
       variables: {
         name: values.name,
@@ -103,10 +112,11 @@ export default function FormClientComponent(props: Props) {
         image: values.image,
       },
     });
-    toastShow({
-      message: "El cliente ha sido creado correctamente",
-      severity: "success",
-    });
+    await toastShow( 
+       "success",
+       "El cliente ha sido creado correctamente",
+     
+     );
     reset();
    
   });

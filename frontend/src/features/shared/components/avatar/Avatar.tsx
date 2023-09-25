@@ -68,7 +68,7 @@ function ProfileForm({
   const handleSave = () => {
     if (editor) {
       const canvas = editor.getImage();
-      canvas.toBlob((blob) => {
+      canvas.toBlob((blob:any) => {
         console.log(blob);
         if (blob) {
           let reader = new FileReader();

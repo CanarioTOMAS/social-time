@@ -13,17 +13,14 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Alert,
-  Snackbar,
 } from "@mui/material";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
 import { useToast } from "../shared/components/toast/ToastProvider";
 
 export default function FormRegister() {
-  const toastShow = useToast();
+  const { toastShow } = useToast();
   const {
     register,
     handleSubmit,
@@ -47,9 +44,12 @@ export default function FormRegister() {
       },
     });
     reset();
-   await toastShow("Usuario Creado", "info");
-   router.push("/pages/login"); 
-   console.log(values);
+    toastShow({
+      message: "El usuario ha sido creado correctamente",
+      severity: "success",
+    });
+    //router.push("/pages/login");
+    console.log(values);
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -200,16 +200,16 @@ export default function FormRegister() {
                 ),
               }}
             />
-              <Button
-                className="align-content:flex-start bg-blue-500 text-white"
-                sx={{ width: "47.6ch", m: 1 }}
-                type="submit"
-                //onClick={onSubmit}
-                //className={style.submit}
-                variant="contained"
-              >
-                Mostrar Toast
-              </Button>
+            <Button
+              className="align-content:flex-start bg-blue-500 text-white"
+              sx={{ width: "47.6ch", m: 1 }}
+              type="submit"
+              //onClick={onSubmit}
+              //className={style.submit}
+              variant="contained"
+            >
+              Register
+            </Button>
           </FormControl>
         </Card>
       </Box>

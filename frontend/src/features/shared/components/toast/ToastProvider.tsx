@@ -25,7 +25,9 @@ export const ToastProvider = ({ children }: Props) => {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<"error" | "warning" | "info" | "success">("success");
   
-  const toastShow = (message: string, severity: "error" | "warning" | "info" | "success") => {
+  const toastShow = ({message,severity}:{message: string, severity: "error" | "warning" | "info" | "success"}) => {
+
+    console.log(message)
     setMessage(message);
     setSeverity(severity);
     setOpen(true);
@@ -41,12 +43,15 @@ export const ToastProvider = ({ children }: Props) => {
 
   return (
     <ToastContext.Provider value={{ toastShow }}>
+      <>
       {children}
       <Snackbar open={open} autoHideDuration={6000} onClose={closeToast}>
         <Alert onClose={closeToast} severity={severity}>
           {message}
         </Alert>
       </Snackbar>
+      </>
+    
     </ToastContext.Provider>
   );
 };

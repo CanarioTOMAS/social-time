@@ -11,11 +11,11 @@ module.exports = gql`
     phone: String
     deleted: Boolean
     _id: ID!
-    client (idClient: ID): [Client]
+    client (idClient: ID, nameClient: String): [Client]
   }
 
   type Query {
-    findUserBusiness(_id: ID, pageCount: Int, perPage: Int, searchWord: String): [Business],
+    findUserBusiness(_id: ID, pageCount: Int, perPage: Int, nameBusiness: String): [Business],
     findOneBusiness(_id: ID, user:String, name: String): Business,
     
   }

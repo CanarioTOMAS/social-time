@@ -35,8 +35,8 @@ module.exports = {
         query._id = _args._id;
       }
     
-      if (_args.searchWord) {
-        query.name = new RegExp(_args.searchWord, "i");
+      if (_args.nameBusiness) {
+        query.name = new RegExp(_args.nameBusiness, "i");
       }
     
       const business = await Business.find(query)
@@ -57,6 +57,10 @@ module.exports = {
       if (_args.idClient) {
         filter._id = _args.idClient;
       }
+
+      if (_args.nameClient) {
+        filter.name = new RegExp(_args.nameClient, "i");;
+      }
   
       return await Client.find(filter);
     }
@@ -70,13 +74,15 @@ module.exports = {
       if (_args.idProject) {
         filter._id = _args.idProject;
       }
+
+      if (_args.nameProject) {
+        filter.name = new RegExp(_args.nameProject, "i");;
+      }
       return await Project.find(filter);
     }
   },
   Project: {
     activitie: async (project: any, _args: any, context: any) => {
-      console.log ("Project: ",project)
-      console.log ("Args: ",_args)
       const filter: any = {
         project: project._id,
         deleted: { $ne: true }
@@ -84,6 +90,10 @@ module.exports = {
       if (_args.User) {
         filter.user = _args.User
       }
+      if (_args.nameActivitie) {
+        filter.name = new RegExp(_args.nameActivitie, "i");;
+      }
+
       return await Activitie.find (filter)
   },
 },

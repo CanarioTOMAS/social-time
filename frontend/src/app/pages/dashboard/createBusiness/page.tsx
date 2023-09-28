@@ -2,12 +2,9 @@
 
 import DashboardComponent from "@/features/shared/components/dashboard/dashboard";
 
-
-
-export default function Dashboard() {
+export default function listBussinesPage() {
   return (
-    <div>
-      <DashboardComponent/>
+    <div>aaaaa
     </div>
   );
 }

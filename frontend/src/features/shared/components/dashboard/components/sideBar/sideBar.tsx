@@ -6,12 +6,13 @@ import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import HomeIcon from "@mui/icons-material/Home";
-import router from "next/router";
+import SettingsIcon from "@mui/icons-material/Settings";
+
 
 const Sidebar: React.FC = () => {
   return (
     <div className="flex">
-      <div className="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between">
+      <div className="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between sidebar-container">
         <div className="flex flex-col items-center">
           <Avatar />
           <span className="border-b-[1px] border-gray-200 w-full p-2"></span>
@@ -19,9 +20,9 @@ const Sidebar: React.FC = () => {
             <Tooltip title="Home" arrow>
               <div className="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block">
                 <Grid container sx={{ color: "text.primary" }}>
-                  <IconButton>
-                    <HomeIcon />
-                  </IconButton>
+                  <Grid item xs={4}>
+                  <HomeIcon />
+                  </Grid>
                 </Grid>
               </div>
             </Tooltip>
@@ -65,6 +66,17 @@ const Sidebar: React.FC = () => {
                 <Grid container sx={{ color: "text.primary" }}>
                   <Grid item xs={4}>
                     <MoreTimeIcon />
+                  </Grid>
+                </Grid>
+              </div>
+            </Tooltip>
+          </Link>
+          <Link href="/pages/dashboard/settings">
+            <Tooltip title="Settings" arrow>
+              <div className="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block">
+                <Grid container sx={{ color: "text.primary" }}>
+                  <Grid item xs={4}>
+                    <SettingsIcon />
                   </Grid>
                 </Grid>
               </div>

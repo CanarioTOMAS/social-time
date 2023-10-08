@@ -58,7 +58,8 @@ export default function FormLogin() {
 
     if (data && data.login.value) {
       localStorage.setItem("authToken", data.login.value);
-      router.push("/pages/listBusiness");
+      localStorage.setItem("userId", data.login.id);
+      router.push("/pages/dashboard");
     }
     console.log(error);
     console.log(data);

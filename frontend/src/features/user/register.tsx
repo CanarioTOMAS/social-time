@@ -48,7 +48,7 @@ export default function FormRegister() {
       message: "El usuario ha sido creado correctamente",
       severity: "success",
     });
-    //router.push("/pages/login");
+    router.push("/pages/login");
     console.log(values);
   });
 

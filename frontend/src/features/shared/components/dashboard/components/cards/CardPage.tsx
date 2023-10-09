@@ -1,69 +1,67 @@
-import React from "react";
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-const CardPageVisits: React.FC = () => {
+function createData(
+  name: string,
+  calories: number,
+  fat: number,
+  carbs: number,
+  protein: number,
+) {
+  return { name, calories, fat, carbs, protein };
+}
 
-  return (
-    <Box width={900} style={{ marginTop: "0px", marginLeft: "100px", marginBottom:"0px" }}>
-      <Paper elevation={3} style={{ width: "100%", height: "100%" }}>
-        <Box p={3}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h6" fontWeight="bold">
-              Projects
-            </Typography>
-          </Box>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Project Name</TableCell>
-                  <TableCell>Work Hours</TableCell>
-                  <TableCell>Users</TableCell>
-                  <TableCell>Progress</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>/argon/</TableCell>
-                  <TableCell>4,569</TableCell>
-                  <div className="flex items-center"> 
-                      <AvatarGroup max={2}>
-                        <Avatar />
-                        <Avatar />
-                        <Avatar />
-                        <Avatar />
-                      </AvatarGroup>
-                    </div>
-                  <TableCell>
-                    <Typography variant="inherit" color="success">
-                      <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                      46.53%
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-      </Paper>
-    </Box>
-  );
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
+
+const containerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
 };
 
-export default CardPageVisits;
+export default function BasicTable() {
+  return (
+    <div >
+      <TableContainer sx={{ minWidth: 800, display:'flex', justifyContent:'center', marginLeft:"30%" }} component={Paper}>
+        <Table sx={{ minWidth: 800 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Dessert (100g serving)</TableCell>
+              <TableCell align="right">Calories</TableCell>
+              <TableCell align="right">Fat&nbsp;(g)</TableCell>
+              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">{row.protein}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}

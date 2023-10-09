@@ -47,8 +47,8 @@ export default function FormLogin() {
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
-  const onSubmit = handleSubmit((values) => {
-    mutateFunction({
+  const onSubmit = handleSubmit(async (values) => {
+    const response = await mutateFunction({
       variables: {
         email: values.email,
         password: values.password,

@@ -35,7 +35,7 @@ export default function CardProfile() {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     if (data) {
-      const calendarId = {id: data.findUserBusiness[0].googleCalendarId}; 
+      const calendarId = {id: data?.findUserBusiness?.[0]?.googleCalendarId};
       const apiKey = ""; 
       const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`;
 

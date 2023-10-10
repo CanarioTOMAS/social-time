@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
   name: { type: String, required: true, unique: false, minlength: 2 },
   tiempoEstimado: { type: String, required: false, unique: false, minlength: 2 },
   costoHora: { type: String, required: false, unique: false, minlength: 2 },
-  periocidad: { type: String, required: false, unique: false, minlength: 2 }
-  
+  periocidad: { type: String, required: false, unique: false, minlength: 2 },
+  record: [{ type: mongoose.Schema.Types.ObjectId, ref: "Record" }],
 });
 export default mongoose.model("Activities", schema);

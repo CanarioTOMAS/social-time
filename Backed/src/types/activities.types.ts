@@ -9,6 +9,7 @@ module.exports = gql`
     costoHora: String
     periocidad: String
     _id: ID!
+    record: Record
   }
 
 

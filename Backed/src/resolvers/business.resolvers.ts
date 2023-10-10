@@ -97,6 +97,29 @@ module.exports = {
       return await Activitie.find (filter)
   },
 },
+Activitie: {
+  record: async (activitie: any, _args: any, context: any) =>{
+    const filter: any = {
+      activitie: activitie._id,
+      deleted: { $ne: true }
+    };
+    if (_args.user) {
+      filter.user = _args.User
+    }
+    if (_args.dia) {
+      filter.dia = _args.dia
+    }
+    if (_args.desde) {
+      filter.desde = _args.desde
+    }
+    if (_args.hasta) {
+      filter.hasta = _args.hasta
+    }
+    if (_args.project) {
+      filter.project = _args.project
+    }
+  }
+},
 
 
   Mutation: {

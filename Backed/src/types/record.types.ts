@@ -2,8 +2,10 @@ import { gql } from "apollo-server-express";
 
 module.exports = gql`
   type Record {
-    client: Client
+    activities: Activitie
     user: User
+    inicio: String
+    fin: String
     name: String!
     id: ID!
     deleted: Boolean
@@ -11,13 +13,17 @@ module.exports = gql`
 
   type Mutation {
     createRecord(
-      client: String!
+      activities: ID!
+      inicio: String!
+      fin: String!
       user: String!
       name: String!
     ): Record
     updateRecord(
       _id: String!
-      client: String!
+      activities: ID!
+      inicio: String!
+      fin: String!
       user: String!
       name: String!
     ): Record

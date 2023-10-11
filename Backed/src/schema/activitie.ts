@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-//import mongoose from "mongoose";
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Projects" },

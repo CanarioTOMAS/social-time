@@ -12,13 +12,17 @@ module.exports = {
       const client = await Client.findById(_args.client);
       const user = await User.findById(_args.user);
 
-      const project = new Record({
+        console.log (_args)
+      const record = new Record({
         client: client,
         user: user,
         name: _args.name,
+        inicio: _args.inicio,
+        fin: _args.fin,
+        activities: _args.activities
       });
 
-      return project.save().catch((error: any) => {
+      return record.save().catch((error: any) => {
         throw new UserInputError(error.message, {
           invalidArgs: _args,
         });
@@ -26,25 +30,25 @@ module.exports = {
     },
     updateRecord: async (root: any, args: any) => {
       const { _id, ...updates } = args;
-      const project = await Project.findByIdAndUpdate(_id, updates, {
+      const record = await Record.findByIdAndUpdate(_id, updates, {
         new: true,
       });
-      if (!project) {
-        throw new UserInputError("Project not found", {
+      if (!record) {
+        throw new UserInputError("Record not found", {
           invalidArgs: args,
         });
       }
-      return project;
+      return record;
     },
     deleteRecord: async (root: any, args: any) => {
       const { _id } = args;
-      const project = await Project.findByIdAndDelete(_id);
-      if (!project) {
-        throw new UserInputError("Project not found", {
+      const record = await Record.findByIdAndDelete(_id);
+      if (!record) {
+        throw new UserInputError("Record not found", {
           invalidArgs: args,
         });
       }
-      return "Project deleted successfully";
+      return "Record deleted successfully";
     },
   },
 };

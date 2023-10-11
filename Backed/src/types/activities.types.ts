@@ -9,7 +9,7 @@ module.exports = gql`
     costoHora: String
     periocidad: String
     _id: ID!
-    record: Record
+    record (nameRecord: String, User: ID): [Record]
   }
 
 
@@ -17,11 +17,10 @@ module.exports = gql`
     createActivitie(
       project: ID!
       user: ID
-      name: String
+      name: String!
       tiempoEstimado: String
       costoHora: String
       periocidad: String
-      _id: ID!
     ): Activitie
     updateActivitie(
       _id: String!

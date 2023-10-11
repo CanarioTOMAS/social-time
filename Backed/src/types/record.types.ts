@@ -6,7 +6,7 @@ module.exports = gql`
     user: User
     inicio: String
     fin: String
-    name: String!
+    name: String
     id: ID!
     deleted: Boolean
   }
@@ -16,7 +16,7 @@ module.exports = gql`
       activities: ID!
       inicio: String!
       fin: String!
-      user: String!
+      user: ID!
       name: String!
     ): Record
     updateRecord(

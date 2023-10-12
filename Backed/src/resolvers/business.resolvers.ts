@@ -4,6 +4,8 @@ import Client from "../schema/client";
 import Rol from "../schema/rol";
 import Project from "../schema/project";
 import Activitie from "../schema/activitie";
+import Record from "../schema/record";
+
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
@@ -96,6 +98,30 @@ module.exports = {
 
       return await Activitie.find (filter)
   },
+},
+Activitie: {
+  record: async (activities: any, _args: any, context: any) =>{
+    const filter: any = {
+      activities: activities._id,
+      deleted: { $ne: true }
+    };
+    if (_args.user) {
+      filter.user = _args.User
+    }
+    if (_args.dia) {
+      filter.dia = _args.dia
+    }
+    if (_args.desde) {
+      filter.desde = _args.desde
+    }
+    if (_args.hasta) {
+      filter.hasta = _args.hasta
+    }
+    if (_args.project) {
+      filter.project = _args.project
+    }
+    return await Record.find (filter)
+  }
 },
 
 

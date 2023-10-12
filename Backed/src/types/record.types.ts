@@ -1,23 +1,31 @@
 import { gql } from "apollo-server-express";
 
+
 module.exports = gql`
+scalar Date
   type Record {
-    client: Client
+    activities: Activitie
     user: User
-    name: String!
+    inicio: Date
+    fin: Date
+    name: String
     id: ID!
     deleted: Boolean
   }
 
   type Mutation {
     createRecord(
-      client: String!
-      user: String!
+      activities: ID!
+      inicio: Date!
+      fin: Date!
+      user: ID!
       name: String!
     ): Record
     updateRecord(
       _id: String!
-      client: String!
+      activities: ID!
+      inicio: Date!
+      fin: Date!
       user: String!
       name: String!
     ): Record

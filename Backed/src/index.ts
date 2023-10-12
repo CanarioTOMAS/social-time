@@ -46,7 +46,9 @@ interface MyContext {
   user: UserInterface;
 }
 
+
 async function startApolloServer() {
+  
   const server = new ApolloServer<any>({
     typeDefs: typesDefs,
     resolvers: resolvers,

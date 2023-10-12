@@ -105,7 +105,6 @@ Activitie: {
       activities: activities._id,
       deleted: { $ne: true }
     };
-    console.log (filter)
     if (_args.user) {
       filter.user = _args.User
     }

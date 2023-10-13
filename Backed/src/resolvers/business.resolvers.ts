@@ -109,8 +109,25 @@ Activitie: {
       filter.user = _args.User
     }
     if (_args.dia) {
-      filter.dia = _args.dia
+      // Parsear la fecha en formato "dd/MM/yyyy"
+      const [dia, mes, anio] = _args.dia.split('/').map(Number);
+    
+      if (!isNaN(dia) && !isNaN(mes) && !isNaN(anio)) {
+        // Construir un objeto Date en formato ISO
+        const fechaBuscada = new Date(anio, mes - 1, dia);
+        const fechaISO = fechaBuscada.toISOString();
+    
+        // Crear la consulta de filtro
+        filter.inicio = {
+          $gte: fechaISO,
+          $lt: new Date(fechaBuscada.getTime() + 86400000).toISOString(), // Agregar 24 horas para obtener el día completo
+        };
+      } else {
+        // Manejo de error si el formato de fecha es incorrecto
+        console.error('Formato de fecha incorrecto. Debe ser "dd/MM/yyyy".');
+      }
     }
+    
     if (_args.desde) {
       filter.desde = _args.desde
     }
@@ -120,6 +137,7 @@ Activitie: {
     if (_args.project) {
       filter.project = _args.project
     }
+    console.log (filter)
     return await Record.find (filter)
   }
 },

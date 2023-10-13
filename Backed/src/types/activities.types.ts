@@ -9,7 +9,7 @@ module.exports = gql`
     costoHora: String
     periocidad: String
     _id: ID!
-    record (nameRecord: String, User: ID): [Record]
+    record (dia: Date, nameRecord: String, User: ID): [Record]
   }
 
 

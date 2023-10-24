@@ -58,13 +58,13 @@ export default function FormClientComponent(props: Props) {
     },
   });
 
-  useEffect(() => {
-    alert("Please enter");
-    toastShow({
-      message: "El cliente ha sido creado correctamente",
-      severity: "success",
-    });
-    },[]);
+  // useEffect(() => {
+  //   alert("Please enter");
+  //   toastShow({
+  //     message: "El cliente ha sido creado correctamente",
+  //     severity: "success",
+  //   });
+  //   },[]);
 
   useEffect(() => {
     if (props && props.client) {
@@ -112,11 +112,10 @@ export default function FormClientComponent(props: Props) {
         image: values.image,
       },
     });
-    await toastShow( 
-       "success",
-       "El cliente ha sido creado correctamente",
-     
-     );
+    toastShow({
+      message: "El Cliente ha sido creado correctamente",
+      severity: "success",
+    });
     reset();
    
   });
@@ -126,7 +125,6 @@ export default function FormClientComponent(props: Props) {
     console.log(values);
     await updateClient({
       variables: {
-        id: props.client?.id,
         name: values.name,
         surname: values.surname,
         email: values.email,

@@ -17,12 +17,7 @@ import {
 
 export const ListBusiness = (props: IBusiness) => {
   const { data, error, loading, refetch } = useQuery(
-    businessQueryService.FindUserBusiness,
-    {
-      variables: {
-        findOneUserId: localStorage.getItem("authToken"),
-      },
-    }
+    businessQueryService.FindUserBusiness
   );
   const router = useRouter();
 
@@ -63,7 +58,7 @@ export const ListBusiness = (props: IBusiness) => {
               handleItemClick={function (item: IBusiness): IBusiness {
                 if (typeof window !== "undefined")
                   localStorage.setItem("business", item._id);
-                router.push("/pages/createClient"); //redireccionar al dashboard
+                // router.push("/pages/createClient"); //redireccionar al dashboard
                 return item;
                 //handleItemDelete(item.id);
               }}

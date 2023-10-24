@@ -3,6 +3,8 @@ import React from "react";
 import CardPage from "./components/cards/CardPage";
 import CardLineChart from "./components/cards/CardLineChart";
 import CardProfile from "./components/cards/CardProfile";
+import SearchAppBar from "../search/search";
+
 
 export default function DashboardComponent() {
   const style = {
@@ -11,6 +13,8 @@ export default function DashboardComponent() {
   return (
     <>
       <div className="flex flex-wrap" style={style}>
+
+
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <CardLineChart />
         </div>

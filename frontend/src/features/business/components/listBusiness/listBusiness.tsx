@@ -14,8 +14,30 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
+import SearchAppBar from "@/features/shared/components/search/search";
+import { ReactNode, useEffect, useState } from "react";
 
 export const ListBusiness = (props: IBusiness) => {
+  const [searchQuery, setSearchQuery] = useState("");//manejo de busqueda  
+  const [business, setBusiness] = useState<IBusiness[]>([]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    console.log(business);
+
+    if (event.target.value == "") {
+      setBusiness(data.findUserBusiness);
+      return;
+    }
+
+    setBusiness(
+      business.filter((item: IBusiness) => {
+        if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+          return item;
+      })
+    );
+  };
+
   const { data, error, loading, refetch } = useQuery(
     businessQueryService.FindUserBusiness,
     {
@@ -25,6 +47,10 @@ export const ListBusiness = (props: IBusiness) => {
     }
   );
   const router = useRouter();
+
+  useEffect(() => {
+    if (data) setBusiness(data.findUserBusiness); //manejo de busqueda 
+  }, [data]);
 
   return (
     <Box
@@ -45,6 +71,23 @@ export const ListBusiness = (props: IBusiness) => {
           margin: "auto",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
+          <SearchAppBar
+            items={business}
+            renderItem={(item: IBusiness) => (
+              <span key={item._id}>{item.name}</span>
+            )}
+            handleSearchChange={handleSearchChange}
+            handleItemClick={function (item: any): void {}}
+          />
+        </Box>
+
         <Typography
           variant="h5"
           align="center"
@@ -53,10 +96,11 @@ export const ListBusiness = (props: IBusiness) => {
         >
           Lista de Empresas
         </Typography>
+
         <FormControl sx={{ alignItems: "center" }}>
           {data ? (
             <ListItems
-              items={data.findUserBusiness}
+              items={business}
               renderItem={(item: IBusiness) => (
                 <ItemBusiness business={item} buttonAction={true} />
               )}

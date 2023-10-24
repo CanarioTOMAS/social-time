@@ -13,6 +13,7 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
+import SearchAppBar from "@/features/shared/components/search/search";
 
 export const ListClientComponent = () => {
   const { data, error, loading, refetch } = useQuery(
@@ -45,6 +46,15 @@ export const ListClientComponent = () => {
           margin: "auto",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
+          {/* <SearchAppBar /> */}
+        </Box>
         <Typography
           variant="h5"
           align="center"

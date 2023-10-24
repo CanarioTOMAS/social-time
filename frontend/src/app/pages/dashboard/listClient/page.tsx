@@ -5,7 +5,7 @@ import ListClientComponent from "@/features/client/components/ListClient/ListCli
 export default function ListClient() {
   return (
     <div>
-      < ListClientComponent/>
+      < ListClientComponent _id={""} name={""} image={undefined} email={""} business={""} city={""} address={""} phone={""} postCode={""} documentType={""} documentNumber={""} surname={""}/>
     </div>
   );
 }

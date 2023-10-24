@@ -1,3 +1,5 @@
+
+
 export const setSessionService = (key: string, value: any) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
@@ -18,7 +20,7 @@ export const getSessionServices = (key: string) => {
 
     return "no windows";
   } catch (error) {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     console.error("Ocurrió un error:", error);
     return "";
   }

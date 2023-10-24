@@ -13,8 +13,9 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
+import router from "next/router";
 
-export const ListClientComponent = () => {
+export const ListClientComponent = (props: IClient) => {
   const { data, error, loading, refetch } = useQuery(
     QueryClientService.clients,
     {
@@ -54,17 +55,20 @@ export const ListClientComponent = () => {
           Lista de Clientes
         </Typography>
         <FormControl sx={{ alignItems: "center" }}>
-          {!loading && data && data.findUserBusiness ? (
+          {data ? (
+            console.log(data),
             <ListItems
               items={clients}
               renderItem={(item: IClient) => (
-                <div key={item.id}>
+                
                   <ItemClient client={item} buttonAction={true} />
-                </div>
+                
               )}
               handleItemClick={function (item: IClient): IClient {
-                localStorage.setItem("client", item.name);
-                console.log(item);
+                if (typeof window !== "undefined")
+                
+                  localStorage.setItem("clients", item._id);
+                // router.push("/pages/createClient"); //redireccionar al dashboard
                 return item;
                 //handleItemDelete(item.id);
               }}

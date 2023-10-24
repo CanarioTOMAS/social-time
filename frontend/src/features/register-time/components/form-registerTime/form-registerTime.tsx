@@ -1,4 +1,16 @@
-import { Box, Card, Typography, TextField, Button, Grid, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Box,
+  Card,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { IRegisterTime } from "../../model/registerTime";
 import { useForm } from "react-hook-form";
@@ -8,14 +20,20 @@ import {
   TimePicker,
 } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import React from "react";
+import React, { useState } from "react";
+import { businessQueryService } from "@/features/business/services/businessQuery";
+import { useQuery } from "@apollo/client";
+import MultipleSelect from "@/features/shared/components/SelectorList/selectorList";
 
 export default function FormRegisterTime() {
-  const [age, setAge] = React.useState('');
+  const [activity, setActivity] = React.useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setActivity(event.target.value as unknown as string[]);
   };
+  const { data, error, loading, refetch } = useQuery(
+    businessQueryService.FindUserBusiness
+  );
   const [value, setValue] = React.useState<Dayjs | null>(
     dayjs("2022-04-17T15:30")
   );
@@ -32,6 +50,7 @@ export default function FormRegisterTime() {
 
   const onSubmit = handleSubmit((values) => {
     const formData = {
+      proyect: values.proyect,
       activity: values.activity,
       startTime: value?.format(),
       endTime: endTimeValue?.format(),
@@ -59,21 +78,18 @@ export default function FormRegisterTime() {
             Register Time
           </Typography>
           <Box>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+            <MultipleSelect
+              query={businessQueryService.FindUserBusiness}
+              label={"Empresa"}
+              value={[]}
+              handleChange={(event: SelectChangeEvent<string[]>): void => {
+                setActivity(event.target.value as string[]);
+              }}
+            ></MultipleSelect>
           </Box>
+          <Box></Box>
+          <Box></Box>
+          <Box></Box>
           <Box>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker label="Fecha" />

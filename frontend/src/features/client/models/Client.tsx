@@ -1,14 +1,14 @@
 export interface IClient {
-    id?: string;
+    _id: string;
     name: string;
     image: any;
-    city?: string;
-    address?: string;
+    city: string;
+    address: string;
     email: string;
-    phone?: string;
+    phone: string;
     business: string;
-    postCode?: string;
-    documentType?: string;
-    documentNumber?: string;
-    surname?: string;
+    postCode: string;
+    documentType: string;
+    documentNumber: string;
+    surname: string;
   }

@@ -26,7 +26,7 @@ export default function RootLayout({
   const httpLink = createHttpLink({
     uri: "http://localhost:4000/graphql",
     headers: {
-      authorization: getSessionServices("token"),
+      authorization: getSessionServices("authToken"),
       "Content-Type": "application/json",
     },
   });
@@ -36,7 +36,7 @@ export default function RootLayout({
       next: (data: any) => {},
       error: (err: any) => {
         if (err.response.status === 401) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authToken");
           window.location.href = "pages/login";
         }
       },

@@ -3,7 +3,7 @@ export const setSessionService = (key: string, value: string) => {
 };
 
 export const getSessionServices = () => {
-  const auth = localStorage.getItem("token");
+  const auth = localStorage.getItem("authToken");
   if (auth && auth !== "") {
     return true;
   } else {

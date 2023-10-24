@@ -20,7 +20,7 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
       >
         {items.map((item, i) => {
           return (
-            <div key={item.id}> {/* Usar el campo _id como clave */}
+            <div key={i}> {/* Usar el campo _id como clave */}
               <ListItem onClick={() => handleItemClick(item)}>
                 {renderItem(item)}
               </ListItem>

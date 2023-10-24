@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import router from "next/router";
+import SearchAppBar from "@/features/shared/components/search/search";
 
 export const ListClientComponent = (props: IClient) => {
   const { data, error, loading, refetch } = useQuery(
@@ -46,6 +47,15 @@ export const ListClientComponent = (props: IClient) => {
           margin: "auto",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
+          {/* <SearchAppBar /> */}
+        </Box>
         <Typography
           variant="h5"
           align="center"

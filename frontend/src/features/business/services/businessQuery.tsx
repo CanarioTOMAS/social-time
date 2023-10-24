@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const FindUserBusiness = gql`
-  query Client($id: ID) {
+  query FindOneBusiness($id: ID) {
     findUserBusiness(_id: $id) {
       _id
       name
@@ -10,6 +10,9 @@ const FindUserBusiness = gql`
       address
       image
       category
+      client {
+        name
+      }
     }
   }
 `;

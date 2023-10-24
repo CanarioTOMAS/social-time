@@ -87,6 +87,7 @@ export default function FormClientComponent(props: Props) {
       console.log("no hay business");
     } else {
       const business_id = getSessionServices("business");
+      console.log(business_id)
       if (business_id !== null) {
         setIdBusiness(business_id);
       }

@@ -4,12 +4,15 @@ import Client from "../schema/client";
 import Rol from "../schema/rol";
 import Project from "../schema/project";
 import Activitie from "../schema/activitie";
+import Record from "../schema/record";
+
 import { GraphQLError } from "graphql";
 import { UserInputError } from "apollo-server-core";
 
 module.exports = {
   Query: {
     findOneBusiness: async (_: any, _args: any, context: any) => {
+      console.log(_args)
       const business = await Business.findOne({
         user: context.user.id,
         _id: _args._id,
@@ -96,6 +99,48 @@ module.exports = {
 
       return await Activitie.find (filter)
   },
+},
+Activitie: {
+  record: async (activities: any, _args: any, context: any) =>{
+    const filter: any = {
+      activities: activities._id,
+      deleted: { $ne: true }
+    };
+    if (_args.user) {
+      filter.user = _args.User
+    }
+    if (_args.dia) {
+      // Parsear la fecha en formato "dd/MM/yyyy"
+      const [dia, mes, anio] = _args.dia.split('/').map(Number);
+    
+      if (!isNaN(dia) && !isNaN(mes) && !isNaN(anio)) {
+        // Construir un objeto Date en formato ISO
+        const fechaBuscada = new Date(anio, mes - 1, dia);
+        const fechaISO = fechaBuscada.toISOString();
+    
+        // Crear la consulta de filtro
+        filter.inicio = {
+          $gte: fechaISO,
+          $lt: new Date(fechaBuscada.getTime() + 86400000).toISOString(), // Agregar 24 horas para obtener el día completo
+        };
+      } else {
+        // Manejo de error si el formato de fecha es incorrecto
+        console.error('Formato de fecha incorrecto. Debe ser "dd/MM/yyyy".');
+      }
+    }
+    
+    if (_args.desde) {
+      filter.desde = _args.desde
+    }
+    if (_args.hasta) {
+      filter.hasta = _args.hasta
+    }
+    if (_args.project) {
+      filter.project = _args.project
+    }
+    console.log (filter)
+    return await Record.find (filter)
+  }
 },
 
 

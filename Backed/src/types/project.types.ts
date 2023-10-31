@@ -20,6 +20,7 @@ module.exports = gql`
       _id: String!
       client: String!
       name: String!
+      description: String
     ): Project
     deleteProject(_id: String!): String
   }

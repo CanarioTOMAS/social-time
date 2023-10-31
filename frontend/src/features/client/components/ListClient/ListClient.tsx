@@ -15,8 +15,29 @@ import {
 } from "@mui/material";
 import router from "next/router";
 import SearchAppBar from "@/features/shared/components/search/search";
+import { useEffect, useState } from "react";
 
 export const ListClientComponent = (props: IClient) => {
+  const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
+  const [client, setClient] = useState<IClient[]>([]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    console.log(client);
+
+    if (event.target.value == "") {
+      setClient(data.findUserBusiness);
+      return;
+    }
+
+    setClient(
+      client.filter((item: IClient) => {
+        if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+          return item;
+      })
+    );
+  };
+
   const { data, error, loading, refetch } = useQuery(
     QueryClientService.clients,
     {
@@ -25,6 +46,10 @@ export const ListClientComponent = (props: IClient) => {
       },
     }
   );
+  
+  useEffect(() => {
+    if (data) setClient(data.findUserBusiness); //manejo de busqueda
+  }, [data]);
 
   const clients = data?.findUserBusiness[0]?.client;
 
@@ -54,7 +79,14 @@ export const ListClientComponent = (props: IClient) => {
             marginBottom: "16px",
           }}
         >
-          {/* <SearchAppBar /> */}
+          <SearchAppBar
+            items={clients}
+            renderItem={(item: IClient) => (
+              <span key={item._id}>{item.name}</span>
+            )}
+            handleSearchChange={handleSearchChange}
+            handleItemClick={function (item: any): void {}}
+          />
         </Box>
         <Typography
           variant="h5"
@@ -66,23 +98,22 @@ export const ListClientComponent = (props: IClient) => {
         </Typography>
         <FormControl sx={{ alignItems: "center" }}>
           {data ? (
-            console.log(data),
-            <ListItems
-              items={clients}
-              renderItem={(item: IClient) => (
-                
+            (console.log(data),
+            (
+              <ListItems
+                items={clients}
+                renderItem={(item: IClient) => (
                   <ItemClient client={item} buttonAction={true} />
-                
-              )}
-              handleItemClick={function (item: IClient): IClient {
-                if (typeof window !== "undefined")
-                
-                  localStorage.setItem("clients", item._id);
-                // router.push("/pages/createClient"); //redireccionar al dashboard
-                return item;
-                //handleItemDelete(item.id);
-              }}
-            ></ListItems>
+                )}
+                handleItemClick={function (item: IClient): IClient {
+                  if (typeof window !== "undefined")
+                    localStorage.setItem("clients", item._id);
+                  // router.push("/pages/createClient"); //redireccionar al dashboard
+                  return item;
+                  //handleItemDelete(item.id);
+                }}
+              ></ListItems>
+            ))
           ) : (
             <CircularProgress />
           )}

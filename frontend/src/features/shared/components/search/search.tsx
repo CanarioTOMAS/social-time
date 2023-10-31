@@ -58,7 +58,9 @@ export default function SearchAppBar({
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
 
-  const filteredItems = items.filter((item) =>
+  const filteredItems = items.
+  
+  filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

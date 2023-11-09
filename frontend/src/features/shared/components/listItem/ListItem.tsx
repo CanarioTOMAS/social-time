@@ -18,7 +18,7 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
           margin: "auto",
         }}
       >
-        {items.map((item, i) => {
+        {items?items.map((item, i) => {
           return (
             <div key={i}> {/* Usar el campo _id como clave */}
               <ListItem onClick={() => handleItemClick(item)}>
@@ -27,7 +27,7 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
               <Divider />
             </div>
           );
-        })}
+        }):null}
       </List>
     </div>
   );

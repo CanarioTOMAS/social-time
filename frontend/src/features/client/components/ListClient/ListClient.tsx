@@ -17,21 +17,21 @@ import router from "next/router";
 import SearchAppBar from "@/features/shared/components/search/search";
 import { useEffect, useState } from "react";
 
-export const ListClientComponent = (props: IClient) => {
+export const ListClientComponent = () => {
   const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
-  const [client, setClient] = useState<IClient[]>([]);
+  const [clients, setClients] = useState<IClient[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
-    console.log(client);
-
+ 
     if (event.target.value == "") {
-      setClient(data.findUserBusiness);
+      let business = data.findUserBusiness[0]
+      setClients(business.client);
       return;
     }
 
-    setClient(
-      client.filter((item: IClient) => {
+    setClients(
+      clients.filter((item: IClient) => {
         if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
           return item;
       })
@@ -48,10 +48,14 @@ export const ListClientComponent = (props: IClient) => {
   );
   
   useEffect(() => {
-    if (data) setClient(data.findUserBusiness); //manejo de busqueda
+     if (data){
+      let business = data.findUserBusiness[0]
+      console.log(business.client)
+      setClients(business.client); //manejo de busqueda
+     }
+    
   }, [data]);
 
-  const clients = data?.findUserBusiness[0]?.client;
 
   return (
     <Box
@@ -80,13 +84,10 @@ export const ListClientComponent = (props: IClient) => {
           }}
         >
           <SearchAppBar
-            items={clients}
-            renderItem={(item: IClient) => (
-              <span key={item._id}>{item.name}</span>
-            )}
             handleSearchChange={handleSearchChange}
-            handleItemClick={function (item: any): void {}}
           />
+
+
         </Box>
         <Typography
           variant="h5"

@@ -74,12 +74,7 @@ export const ListBusiness = (props: IBusiness) => {
           }}
         >
           <SearchAppBar
-            items={business}
-            renderItem={(item: IBusiness) => (
-              <span key={item._id}>{item.name}</span>
-            )}
             handleSearchChange={handleSearchChange}
-            handleItemClick={function (item: any): void {}}
           />
         </Box>
 

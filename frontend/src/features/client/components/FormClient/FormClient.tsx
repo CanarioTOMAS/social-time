@@ -95,9 +95,6 @@ export default function FormClientComponent(props: Props) {
   }, []);
 
   const onSubmit = handleSubmit(async (values) => {
-    
-    
-
     await createClient({
       variables: {
         name: values.name,
@@ -113,6 +110,7 @@ export default function FormClientComponent(props: Props) {
         image: values.image,
       },
     });
+   
     toastShow({
       message: "El Cliente ha sido creado correctamente",
       severity: "success",

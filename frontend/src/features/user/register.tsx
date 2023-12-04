@@ -4,20 +4,11 @@ import { IUser } from "@/app/model/user";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  Typography,
-  FormControl,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Button,
-} from "@mui/material";
 import router, { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "../shared/components/toast/ToastProvider";
+import { Box, Card, Typography, FormControl, TextField, InputAdornment, IconButton, Button } from "@mui/material";
 
 export default function FormRegister() {
   const { toastShow } = useToast();

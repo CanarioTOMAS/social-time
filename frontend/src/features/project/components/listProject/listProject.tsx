@@ -12,13 +12,36 @@ import { IProject } from "../../model/project";
 import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import ItemProject from "../itemProject/itemProject";
 import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
+import SearchAppBar from "@/features/shared/components/search/search";
+import { ChangeEvent, useState } from "react";
 
 export const ListProjectComponent = () => {
+  const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
+  const [Project, setProject] = useState<IProject[]>([]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+ 
+    if (event.target.value == "") {
+      let business = data.findUserBusiness[0]
+      setProject(business.Project);
+      return;
+    }
+
+    setProject(
+      Project.filter((item: IProject) => {
+        if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+          return item;
+      })
+    );
+  };
   const { data, error, loading, refetch } = useQuery(
     ProjectQueryService.Project
   );
 
-  const projects = data?.findUserBusiness[0]?.client[0]?.project;
+  //const projects = data?.findUserBusiness[0]?.client[0]?.project;
+
+
 
   return (
     <Box
@@ -31,6 +54,7 @@ export const ListProjectComponent = () => {
         margin: "auto",
       }}
     >
+
       <Card
         sx={{
           textAlign: "center",
@@ -39,6 +63,9 @@ export const ListProjectComponent = () => {
           margin: "auto",
         }}
       >
+                        <SearchAppBar
+            handleSearchChange={handleSearchChange}
+          />
         <Typography
           variant="h5"
           align="center"
@@ -50,7 +77,7 @@ export const ListProjectComponent = () => {
         <FormControl sx={{ alignItems: "center" }}>
           {!loading && data && data.findUserBusiness? (
             <ListItems
-              items={projects}
+              items={Project}
               renderItem={(item: IProject) => (
                 <div key={item.id}>
                   <ItemProject project={item} buttonAction={true} />

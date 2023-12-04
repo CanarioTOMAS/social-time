@@ -8,9 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 
 interface IProps {
-  items: any[]; // Cambiar el tipo según tu estructura de datos
-  renderItem: (item: any) => React.ReactNode;
-  handleItemClick: (item: any) => void;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -52,17 +49,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar({
-  items,
   handleSearchChange,
 }: IProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
 
-  const filteredItems = items.
-  
-  filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;

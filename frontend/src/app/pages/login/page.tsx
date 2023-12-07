@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -18,7 +18,6 @@ import { Card } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
-import { ILoginUser } from "@/app/model/user";
 import { useRouter } from "next/navigation";
 
 type Login = {
@@ -47,6 +46,14 @@ export default function FormLogin() {
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    if (data && data.login.value) {
+      localStorage.setItem("authToken", data.login.value);
+      router.push("/pages/dashboard");
+    }
+  }, [data, router]);
+
   const onSubmit = handleSubmit((values) => {
     mutateFunction({
       variables: {
@@ -54,14 +61,6 @@ export default function FormLogin() {
         password: values.password,
       },
     });
-    
-
-    if (data && data.login.value) {
-      localStorage.setItem("authToken", data.login.value);
-      router.push("/pages/dashboard");
-    }
-    console.log(error);
-    console.log(data);
   });
 
   return (

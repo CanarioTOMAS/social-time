@@ -2,10 +2,10 @@
 
 import FormRegister from "@/features/user/register";
 
-export default function register() {
+export default function Register() {
   return (
     <div>
-      <FormRegister />
+      <FormRegister register={undefined} />
     </div>
   );
 }

@@ -1,14 +1,22 @@
-'use client'
+"use client";
 import { IUser } from "@/app/model/user";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "../shared/components/toast/ToastProvider";
-import { Box, Card, Typography, FormControl, TextField, InputAdornment, IconButton, Button } from "@mui/material";
-import { redirect, useRouter } from "next/navigation";
+import {
+  Box,
+  Card,
+  Typography,
+  FormControl,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Button,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
 import ProfileForm from "../shared/components/avatar/Avatar";
 
 type Props = {
@@ -30,7 +38,7 @@ export default function FormRegister(props: Props) {
   const [mutateFunction, { loading, error, data }] = useMutation(
     userMutationService.register
   );
-  const router = useRouter()
+  const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
     const response = await mutateFunction({
       variables: {
@@ -90,7 +98,9 @@ export default function FormRegister(props: Props) {
         onSubmit={onSubmit}
       >
         <Card sx={{ pb: 5, alignItems: "center" }}>
-          <Typography variant="h2" sx={{textAlign:"center"}}>Registro</Typography>
+          <Typography variant="h2" sx={{ textAlign: "center" }}>
+            Registro
+          </Typography>
           <ProfileForm
             avatarType="business"
             onChange={function (data: any): void {

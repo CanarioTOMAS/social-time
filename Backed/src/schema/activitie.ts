@@ -8,5 +8,6 @@ const schema = new mongoose.Schema({
   costoHora: { type: String, required: false, unique: false, minlength: 2 },
   periocidad: { type: String, required: false, unique: false, minlength: 2 },
   record: [{ type: mongoose.Schema.Types.ObjectId, ref: "Record" }],
+  colaboradores: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
 export default mongoose.model("Activities", schema);

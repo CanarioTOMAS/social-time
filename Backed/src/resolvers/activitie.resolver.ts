@@ -12,7 +12,8 @@ module.exports = {
         name: _args.name,
         tiempoEstimado: _args.tiempoEstimado,
         costoHora: _args.costoHora,
-        periocidad: _args.periocidad
+        periocidad: _args.periocidad,
+        colaboradores: _args.colaboradores
       });
       return activitie.save().catch((error: any) => {
         throw new UserInputError(error.message, {

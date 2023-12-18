@@ -1,9 +1,11 @@
 "use client";
-
 import { IUser } from "@/app/model/user";
 import { userMutationService } from "@/features/shared/services/userServices/userMutation";
 import { useMutation } from "@apollo/client";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useToast } from "../shared/components/toast/ToastProvider";
 import {
   Box,
   Card,
@@ -14,12 +16,15 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import router, { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useToast } from "../shared/components/toast/ToastProvider";
+import { useRouter } from "next/navigation";
+import ProfileForm from "../shared/components/avatar/Avatar";
 
-export default function FormRegister() {
+type Props = {
+  register: IUser | undefined;
+  onClose?: () => void;
+};
+
+export default function FormRegister(props: Props) {
   const { toastShow } = useToast();
   const {
     register,
@@ -29,11 +34,11 @@ export default function FormRegister() {
     reset,
     formState: { errors },
   } = useForm<IUser>();
-
+  const [resetKey, setResetKey] = useState(0);
   const [mutateFunction, { loading, error, data }] = useMutation(
     userMutationService.register
   );
-  //const router = useRouter();
+  const router = useRouter();
   const onSubmit = handleSubmit(async (values) => {
     const response = await mutateFunction({
       variables: {
@@ -48,7 +53,22 @@ export default function FormRegister() {
       message: "El usuario ha sido creado correctamente",
       severity: "success",
     });
-    router.push("/pages/login");
+    if (response.data) {
+      // User created successfully
+      reset({
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        image: "",
+      });
+      setResetKey((prevKey) => prevKey + 1);
+      toastShow({
+        message: "El usuario ha sido creado correctamente",
+        severity: "success",
+      });
+      router.push("/pages/login");
+    }
     console.log(values);
   });
 
@@ -78,7 +98,17 @@ export default function FormRegister() {
         onSubmit={onSubmit}
       >
         <Card sx={{ pb: 5, alignItems: "center" }}>
-          <Typography variant="h1">Registro</Typography>
+          <Typography variant="h2" sx={{ textAlign: "center" }}>
+            Registro
+          </Typography>
+          <ProfileForm
+            avatarType="business"
+            onChange={function (data: any): void {
+              setValue("image", data);
+            }}
+            defaultImage={props.register?.image ? props.register.image : ""}
+            resetKey={resetKey}
+          />
           <FormControl sx={{ alignItems: "center" }}>
             <TextField
               id="name"
@@ -120,7 +150,7 @@ export default function FormRegister() {
               id="email"
               label="Email"
               sx={{ width: "43ch", m: 1 }}
-              type="email"
+              type="text"
               {...register("email", {
                 required: true,
                 pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,

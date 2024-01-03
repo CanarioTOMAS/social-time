@@ -1,3 +1,5 @@
+import { User } from "../user/user"
+
 export class Business {
     id: string
     name: string
@@ -6,14 +8,8 @@ export class Business {
     email: string
     image: string
     phone: string
+    user: User
     
     constructor(
-        name:string,
-        email:string,
-        category: string
-        ){
-        this.name = name
-        this.email = email
-        this.category = category
-        }
+    ){}
     }

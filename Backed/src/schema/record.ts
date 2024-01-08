@@ -10,6 +10,6 @@ const schema = new mongoose.Schema({
   fin: { type: Date, required: true, unique: false, minlength: 2 },
   deleted: { type: Boolean, required: false, unique: false },
 });
-export default mongoose.model("Record", schema);
+export default mongoose.model("RecordDB", schema);
 
 

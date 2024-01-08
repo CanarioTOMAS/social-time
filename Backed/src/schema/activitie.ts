@@ -10,4 +10,4 @@ const schema = new mongoose.Schema({
   record: [{ type: mongoose.Schema.Types.ObjectId, ref: "Record" }],
   colaboradores: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
-export default mongoose.model("Activities", schema);
+export default mongoose.model("ActivitiesDB", schema);

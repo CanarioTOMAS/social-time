@@ -22,4 +22,4 @@ const schema = new mongoose.Schema({
   image: { type: String, required: false, unique: false },
   //movement: { type: mongoose.Schema.Types.ObjectId, ref: "Movement" },
 });
-export default mongoose.model("Client", schema);
+export default mongoose.model("ClientDB", schema);

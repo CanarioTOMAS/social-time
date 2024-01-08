@@ -11,4 +11,4 @@ const schema = new mongoose.Schema({
   deleted: { type: Boolean, required: false, unique: false },
   client: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],
 });
-export default mongoose.model("Business", schema);
+export default mongoose.model("BusinessDB", schema);

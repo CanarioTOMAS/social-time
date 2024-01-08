@@ -31,4 +31,4 @@ const schema = new mongoose.Schema({
   businesses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Business" }],
   activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activities" }],
 });
-export default mongoose.model("User", schema);
+export default mongoose.model("UserDB", schema);

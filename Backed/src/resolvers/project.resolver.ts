@@ -1,10 +1,14 @@
 import { UserInputError } from "apollo-server-core";
 import Client from "../schema/client";
-import Project from "../schema/project";
 import { GraphQLError } from "graphql/error/GraphQLError";
+import { Project } from "../domain/entities/project/project";
+import { ClientUseCases } from "../aplication/use-cases/client.use-case";
+import {ProjectUseCases} from "../aplication/use-cases/project.use-cases"
+import { ProjectMongoRepository } from "../infrastructure/repositories/project.repository";
+import { ClientMongoRepository } from "../infrastructure/repositories/client.repository";
 
-import { ProjectRepository } from "../repositories/project-repository";
-let pRepo = new ProjectRepository()
+const projectUseCases = new ProjectUseCases(new ClientUseCases(new ClientMongoRepository()),new ProjectMongoRepository())
+
 
 module.exports = {
  
@@ -12,26 +16,28 @@ module.exports = {
     //create our mutation:
     createProject: async (_: any, _args: any, context: any) => {
 
-       return pRepo.create({
-        client:_args.client,
-        name:_args.name,
-        description:_args.description
-      });
+      return await projectUseCases.createProject(_args.name,_args.description,_args.client)
+
+     
 
      
     },
     updateProject: async (root: any, _args: any) => {
-      return pRepo.update({
-        _id: _args._id,
-        client:_args.client,
-        name:_args.name,
-        description:_args.description
-      });
+      
+
+      const project = new Project(_args.name,_args.description,_args.client);
+      project.id = _args._id
+
+      return await projectUseCases.updateProject(project)
+
     },
     deleteProject: async (_: any, _args: any, context: any) => {
       return pRepo.delete({
         _id: _args._id
       });
+
+      
+
     },
   },
 };

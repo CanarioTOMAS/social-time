@@ -5,4 +5,4 @@ const schema = new mongoose.Schema({
   business: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   roltype: { type: String, required: true, unique: false, minlength: 2 },
 });
-export default mongoose.model("Rol", schema);
+export default mongoose.model("RolDB", schema);

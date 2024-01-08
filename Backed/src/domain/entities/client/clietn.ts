@@ -15,6 +15,6 @@ export class Client {
   image: string
   user: User
   busness: Business
- constructor(
+ constructor(name:string
   ){}
 }

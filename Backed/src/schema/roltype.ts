@@ -5,4 +5,4 @@ const schema = new mongoose.Schema({
   name: { type: String, required: true, unique: false, minlength: 2 },
   description: { type: String, required: false, unique: false, minlength: 2 },
 });
-export default mongoose.model("Roltype", schema);
+export default mongoose.model("RoltypeDB", schema);

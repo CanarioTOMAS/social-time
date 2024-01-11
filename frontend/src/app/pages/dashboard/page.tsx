@@ -1,4 +1,4 @@
-"user client";
+"use client";
 
 import DashboardComponent from "@/features/shared/components/dashboard/dashboard";
 

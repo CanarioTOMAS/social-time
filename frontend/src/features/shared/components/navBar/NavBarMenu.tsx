@@ -47,7 +47,7 @@ function ResponsiveAppBar() {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "white" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -67,7 +67,16 @@ function ResponsiveAppBar() {
             >
               Social Up
             </Typography>
-
+                        <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleOpenNavMenu}
+            >
+              <MenuIcon />
+            </IconButton>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -140,7 +149,11 @@ function ResponsiveAppBar() {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <IconButton>
+              <IconButton  edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                onClick={handleOpenUserMenu}
+                color="inherit">
                 <Avatar
                   onClick={handleOpenUserMenu}
                   aria-label="account of current user"

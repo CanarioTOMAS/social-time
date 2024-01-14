@@ -1,6 +1,7 @@
 import FooterAdmin from "@/features/shared/components/dashboard/components/footers/footerAdmin";
 import Sidebar from "@/features/shared/components/dashboard/components/sideBar/sideBar";
-import DashboardComponent from "@/features/shared/components/dashboard/dashboard";
+import { NavBar } from "@/features/shared/components/navBar/NavBar";
+import ResponsiveAppBar from "@/features/shared/components/navBar/NavBarMenu";
 
 
 export default function MainLayout({
@@ -10,6 +11,7 @@ export default function MainLayout({
   }) {
     return (
         <div>
+        
         <Sidebar />
         {children}
         <FooterAdmin/>

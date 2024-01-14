@@ -92,7 +92,7 @@ export default function CardLineChart() {
 
   return (
     <>
-      <Box width={900} height="500" style={{ marginTop: "60px", marginLeft: "100px" }}>
+      <Box width={900} height="500" >
         <Paper>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
             <div className="rounded-t mb-0 px-4 py-3 bg-transparent">

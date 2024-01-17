@@ -1,6 +1,19 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 //import mongoose from "mongoose";
-
+export interface IClientDB{
+  business: string,
+  name: string,
+  city: string,
+  address: string,
+  email: string,
+  phone: string,
+  postCode: string,
+  documentType: string,
+  documentNumber: string,
+  surname:string,
+  project: string,
+  image: string,
+}
 const schema = new mongoose.Schema({
   business: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   name: { type: String, required: true, unique: false, minlength: 2 },

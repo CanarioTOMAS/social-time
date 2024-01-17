@@ -1,6 +1,7 @@
 import { IClientRepository } from "../../domain/abstracts/client.repository";
 import { Client } from "../../domain/entities/client/clietn";
-import { ClientDB } from "../../schema/client";
+import  {IClientDB} from "../../schema/client"
+import  ClientDB from "../../schema/client"
 
 export class ClientMongoRepository implements IClientRepository {
     
@@ -26,19 +27,20 @@ export class ClientMongoRepository implements IClientRepository {
         throw new Error("Method not implemented.");
     }
 
-    toDatabase(client:Client):Promise<ClientDB>{
-        const clientDB = new ClientDB({
+    toDatabase(client:Client):any{
+        const clientDB:any = new ClientDB({
+            name: client.name,
             
           });
       
           return clientDB;
     }
 
-    toEntity(clientDb:ClientDB):Client{
+    toEntity(clientDB:IClientDB):Client{
 
         const client = new Client("")
 
-        client.name = clientDb.name;
+        client.name = clientDB.name;
 
         return client;
     }

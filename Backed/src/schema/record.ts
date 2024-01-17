@@ -1,5 +1,6 @@
 import { Kind } from "graphql";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
 
 const schema = new mongoose.Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },

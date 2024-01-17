@@ -8,7 +8,8 @@ export class Business {
     email: string
     image: string
     phone: string
-    user: User
+    user: User;
+  client: any
     
     constructor(
     ){}

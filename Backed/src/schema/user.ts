@@ -1,4 +1,17 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+export interface IUserDB {
+  _id: string;
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  role: string;
+  image: string;
+  address: string;
+  gender: string;
+  phone: string;
+}
 
 const schema = new mongoose.Schema({
   name: { type: String, required: true, unique: false },
@@ -31,4 +44,4 @@ const schema = new mongoose.Schema({
   businesses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Business" }],
   activities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activities" }],
 });
-export default mongoose.model("UserDB", schema);
+export default mongoose.model<IUserDB>("UserDB", schema);

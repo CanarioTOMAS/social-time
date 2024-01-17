@@ -1,12 +1,14 @@
 import { Db, Collection, InsertOneResult, Document } from "mongodb";
 
 import mongoose from "mongoose";
-import ProjectDB from "../../schema/project";
+import ProjectDB, { IProjectDB } from "../../schema/project";
 import { UserInputError } from "apollo-server-core";
 import { GraphQLError } from "graphql/error/GraphQLError";
 import { IProjectRepository } from "../../domain/abstracts/project.repository";
 import { Project } from "../../domain/entities/project/project";
 import { User } from "../../domain/entities/user/user";
+import { ClientMongoRepository } from "./client.repository";
+import { Business } from "../../domain/entities/business/business";
 
 export interface ResponseProject {
   pag: number;
@@ -16,10 +18,10 @@ export interface ResponseProject {
 
 // that class only can be extended
 export class ProjectMongoRepository implements IProjectRepository {
-  constructor() {}
+  constructor(private clientMongoRepository:ClientMongoRepository) {}
   public async getById(id: string): Promise<Project | null> {
 
-      const projectDB = await ProjectDB.findById(id);
+      const projectDB: IProjectDB | null = await ProjectDB.findById(id);
 
       if (!projectDB) {
         return null;
@@ -34,32 +36,33 @@ export class ProjectMongoRepository implements IProjectRepository {
       const pageSize = 10;
       const offset = pageSize * (page - 1);
 
-      const projectsDB = await ProjectDB.find().skip(offset).limit(pageSize);
+      const projectsDB: IProjectDB [] = await ProjectDB.find().skip(offset).limit(pageSize);
 
-      const projects = projectsDB.map(this.toEntity);
-      return projects;
+      return  await Promise.all(projectsDB.map((prDb: IProjectDB)=>this.toEntity(prDb)));
 
   }
 
-  public async getByUser(): Promise<Project[]> {
-      const projectsDB = await ProjectDB.find({
-        owner: User,
+  public async getByBusinessUser(user:User, business:Business): Promise<Project[]> {  
+
+      const projectsDB: IProjectDB [] = await ProjectDB.find({
+        user: user.id,
+        business:business.id       
       });
 
-      const projects = projectsDB.map(this.toEntity);
-      return projects;
+      return await Promise.all(projectsDB.map((prDb: IProjectDB)=>this.toEntity(prDb)));
+     
   }
 
   public async getByNameAndDate(name: string, date: Date): Promise<Project[]> {
     
-      const projectsDB = await ProjectDB.find({
+      const projectsDB: IProjectDB [] = await ProjectDB.find({
         name: name,
         createdAt: {
           $gte: date,
         },
       });
 
-      const projects = projectsDB.map(this.toEntity);
+      const projects = await Promise.all(projectsDB.map((prDb: IProjectDB)=>this.toEntity(prDb)));
       return projects;
 
   }
@@ -78,14 +81,14 @@ export class ProjectMongoRepository implements IProjectRepository {
   public async update(project: Project): Promise<Project> {
     const { id, ...updates } = project;
     console.log(project);
-    const projectDB = await ProjectDB.findByIdAndUpdate(id, updates, {
+    const projectDB: IProjectDB | null = await ProjectDB.findByIdAndUpdate(id, updates, {
       new: true,
     });
     return this.toEntity(projectDB);
   }
 
   public async delete(project: Project): Promise<Project> {
-    const projectDB = await ProjectDB.findByIdAndUpdate(project.id, {
+    const projectDB: IProjectDB | null = await ProjectDB.findByIdAndUpdate(project.id, {
       deleted: true,
     });
     if (projectDB) {
@@ -99,7 +102,7 @@ export class ProjectMongoRepository implements IProjectRepository {
 
     
     const projectDB = new ProjectDB({
-      client: project.client,
+      client: project.client?this.clientMongoRepository.getById(project.client.id):null,
       name: project.name,
       description: project.description,
     });
@@ -109,8 +112,7 @@ export class ProjectMongoRepository implements IProjectRepository {
 
   public toEntity(projectDB: any): Project {
 
-    const client = this.clientMongoRepository.toEntity(projectDB.clientDB)
-
+    const client = this.clientMongoRepository.toEntity(projectDB.clientIdDB)
     const project: Project = new Project(projectDB.name,projectDB.description,client);
 
  

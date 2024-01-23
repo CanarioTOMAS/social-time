@@ -20,6 +20,7 @@ import { ProjectMutationServices } from "../../projectService/projectMutation/pr
 import { useMutation, useQuery } from "@apollo/client";
 import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
 import { getSessionServices } from "@/auth/services/session.service";
+import FormControlClient from "@/features/shared/components/FormControl/formControlClient";
 
 type Props = {
   id: any;
@@ -45,7 +46,8 @@ export default function FormProjectComponent(props: Props) {
       idClient: "",
     },
   });
-
+  const [selectedClient, setSelectedClient] = useState<string>("");
+  
   useEffect(() => {
     if (props && props.project) {
       setIsEditing(true);
@@ -58,14 +60,6 @@ export default function FormProjectComponent(props: Props) {
   const [CreateProject] = useMutation(ProjectMutationServices.CreateProject);
   const [UpdateProject] = useMutation(ProjectMutationServices.UpdateProject);
 
-  const { data, error, loading, refetch } = useQuery(
-    QueryClientService.clients,
-    {
-      variables: {
-        id: getSessionServices("business"),
-      },
-    }
-  );
 
   // useEffect(() => {
   //   // getSessionBusiness();
@@ -78,7 +72,7 @@ export default function FormProjectComponent(props: Props) {
       variables: {
         name: values.name,
         description: values.description,
-        client: values.idClient,
+        client: selectedClient,
       },
     });
     toastShow({
@@ -135,26 +129,7 @@ export default function FormProjectComponent(props: Props) {
           Crear Proyecto
         </Typography>
         <FormControl sx={{ textAlign: "center" }}>
-          <FormControl  className="w-1/2 p-2">
-            <InputLabel>Client</InputLabel>
-            <Select
-              className="p-1"
-              label="Client"
-              sx={{ m: 1, width: "41.7ch" }}
-              {...(errors.idClient?.type === "required" && {
-                helperText: "Campo Obligatorio",
-                error: true,
-              })}
-              {...register("idClient")}
-            >
-              {data &&
-                data.findUserBusiness[0].client.map((item: any) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+          <FormControlClient  setSelectedClient={setSelectedClient}/>
           <TextField
             className="w-1/2 p-2 "
             label="Project"

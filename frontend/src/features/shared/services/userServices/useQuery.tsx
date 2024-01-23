@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const getUserById =gql`
-query FindUserBusiness($id: ID) {
-    findUserBusiness(_id: $id) {
+query FindOneBusiness($id: ID) {
+    findOneBusiness(_id: $id) {
       name
       address
       category
@@ -11,5 +11,6 @@ query FindUserBusiness($id: ID) {
       phone
     }
   }`
+  
 
 export default getUserById;

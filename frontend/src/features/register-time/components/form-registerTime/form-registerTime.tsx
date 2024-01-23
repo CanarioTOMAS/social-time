@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { IRegisterTime } from "../../model/registerTime";
-import { useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   DatePicker,
   LocalizationProvider,
@@ -22,120 +22,160 @@ import {
 import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
 import { businessQueryService } from "@/features/business/services/businessQuery";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import MultipleSelect from "@/features/shared/components/SelectorList/selectorList";
+import { RegisterTimeServices } from "../service/registerTimeMutation/registerTimeMutation";
+import { ProjectQueryService } from "@/features/project/projectService/projectQuery/projectQuery.service";
 
-export default function FormRegisterTime() {
-  const [activity, setActivity] = React.useState<string[]>([]);
+export default function FormRegisterTime() { const {
+  register,
+  handleSubmit,
+  formState: { errors },
+  control,
+  setValue,
+} = useForm<IRegisterTime>();
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setActivity(event.target.value as unknown as string[]);
-  };
-  const { data, error, loading, refetch } = useQuery(
-    businessQueryService.FindUserBusiness
-  );
-  const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs("2022-04-17T15:30")
-  );
+const { data, loading, error } = useQuery(ProjectQueryService.Project);
 
-  const [endTimeValue, setEndTimeValue] = React.useState<Dayjs | null>(
-    dayjs("2022-04-17T16:30")
-  );
+const [createRegisterTime] = useMutation(RegisterTimeServices.CreateRegisterTime);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IRegisterTime>();
+const onSubmit: SubmitHandler<IRegisterTime> = async (data) => {
+  // Lógica para calcular totalHours a partir de inicio y fin
+  const totalHours = calcularTotalHoras(data.inicio, data.fin);
 
-  const onSubmit = handleSubmit((values) => {
-    const formData = {
-      proyect: values.proyect,
-      activity: values.activity,
-      startTime: value?.format(),
-      endTime: endTimeValue?.format(),
-      totalHours: values.totalHours,
-    };
-
-    console.log(formData); // Aquí puedes ver los valores antes de enviarlos
+  // Llamar a la mutación GraphQL para crear el registro
+  await createRegisterTime({
+    variables: {
+      proyect: data.proyect,
+      activities: data.activities,
+      date: data.date,
+      inicio: data.inicio,
+      fin: data.fin,
+      descriptions: data.descriptions,
+    },
   });
 
-  return (
-    <div>
-      <Box
-        component="form"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "10vh",
-          marginTop: 10,
-        }}
-        onSubmit={onSubmit}
-      >
-        <Card sx={{ p: 1, minWidth: "20em", textAlign: "center" }}>
-          <Typography variant="h3" sx={{ textAlign: "center" }}>
-            Register Time
-          </Typography>
-          <Box>
-            <MultipleSelect
-              query={businessQueryService.FindUserBusiness}
-              label={"Empresa"}
-              value={[]}
-              handleChange={(event: SelectChangeEvent<string[]>): void => {
-                setActivity(event.target.value as string[]);
-              }}
-            ></MultipleSelect>
-          </Box>
-          <Box></Box>
-          <Box></Box>
-          <Box></Box>
-          <Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Fecha" />
-            </LocalizationProvider>
-          </Box>
-          <br />
-          <Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <TimePicker
-                label="Hora de inicio"
-                defaultValue={dayjs("2022-04-17T15:30")}
-              />
-              <TimePicker
-                label="Hora fin"
-                value={endTimeValue}
-                onChange={(newValue) => setEndTimeValue(newValue)}
-              />
-            </LocalizationProvider>
-          </Box>
-          <Box>
-            <TextField
-              InputProps={{}}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              label="Horas Totales"
-              sx={{ m: 1, width: "25ch" }}
-              type="text"
-              {...register("totalHours", {
-                required: true,
-              })}
-            />
-          </Box>
+  // Limpiar campos del formulario
+  setValue("proyect", "");
+  setValue("activities", "");
+  setValue("date", "");
+  setValue("inicio", "");
+  setValue("fin", "");
+  setValue("descriptions", "");
+  setValue("totalHours", totalHours);
+};
 
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ p: "3%" }}
-          >
-            <Button type="submit" variant="contained">
-              Enviar Registro
-            </Button>
-          </Grid>
-        </Card>
-      </Box>
-    </div>
-  );
-}
+// Función para calcular el total de horas entre dos horas dadas
+const calcularTotalHoras = (inicio: string, fin: string): string => {
+  const inicioDate = dayjs(inicio, "HH:mm");
+  const finDate = dayjs(fin, "HH:mm");
+  const diferenciaHoras = finDate.diff(inicioDate, "hour");
+  const diferenciaMinutos = finDate.diff(inicioDate, "minute") % 60;
+  return `${diferenciaHoras}:${diferenciaMinutos}`;
+};
+
+if (loading) return <p>Loading...</p>;
+if (error) return <p>Error: {error.message}</p>;
+
+return (
+  <Box sx={{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+  }}>
+    <Card>
+      <Typography variant="h3">Register Time</Typography>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box>
+          {/* <FormControl fullWidth>
+            <InputLabel>Proyecto</InputLabel>
+            <Controller
+              render={({ field }) => (
+                <Select {...field}>
+                  {data.projects.map((project: any) => (
+                    <MenuItem key={project.id} value={project.name}>
+                      {project.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+              control={control}
+              name="proyect"
+              rules={{ required: true }}
+            />
+          </FormControl> */}
+        </Box>
+
+        <Box>
+          {/* <FormControl fullWidth>
+            <InputLabel>Actividad</InputLabel>
+            <Controller
+              render={({ field }) => (
+                <Select {...field}>
+                  {data.activities.map((activity: any) => (
+                    <MenuItem key={activity.id} value={activity.name}>
+                      {activity.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+              control={control}
+              name="activities"
+              rules={{ required: true }}
+            />
+          </FormControl> */}
+        </Box>
+
+        <Box>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Fecha"
+              
+            />
+          </LocalizationProvider>
+        </Box>
+
+        <Box>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              label="Hora de inicio"
+              
+            />
+            <TimePicker
+              label="Hora fin"
+             
+            />
+          </LocalizationProvider>
+        </Box>
+
+        <Box>
+          <TextField
+            label="Descripción"
+            fullWidth
+            {...register("descriptions", { required: true })}
+          />
+        </Box>
+
+        <Box>
+          <TextField
+            label="Horas Totales"
+            fullWidth
+            {...register("totalHours", { required: true })}
+            disabled
+          />
+        </Box>
+
+        <Grid container justifyContent="center" alignItems="center" sx={{ p: "3%" }}>
+          <Button type="submit" variant="contained">
+            Enviar Registro
+          </Button>
+        </Grid>
+      </form>
+    </Card>
+  </Box>
+);
+};
+

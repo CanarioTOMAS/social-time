@@ -28,6 +28,7 @@ export default function FormBusinessComponent(props: Props) {
   const [updateBusiness] = useMutation(businessMutationService.updateBusiness);
   const { toastShow } = useToast();
   const [showAlert, setShowAlert] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const {
     register,
     handleSubmit,
@@ -198,6 +199,7 @@ export default function FormBusinessComponent(props: Props) {
             {...register("email", {
               required: true,
               minLength: 2,
+              pattern: emailRegex,
             })}
             {...(errors.email?.type === "required" && {
               helperText: "Campo obligatorio",
@@ -205,6 +207,10 @@ export default function FormBusinessComponent(props: Props) {
             })}
             {...(errors.email?.type === "minLength" && {
               helperText: "El email es demasiado corto",
+              error: true,
+            })}
+            {...(errors.email?.type === "pattern" && {
+              helperText: "Formato de correo electrónico inválido",
               error: true,
             })}
           />
@@ -249,7 +255,7 @@ export default function FormBusinessComponent(props: Props) {
           {!isEditing ? (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
+              sx={{ width: "44.1ch", m: 1 }}
               type="submit"
               onClick={onSubmit}
               variant="contained"
@@ -259,7 +265,7 @@ export default function FormBusinessComponent(props: Props) {
           ) : (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "47.7ch", m: 1 }}
+              sx={{ width: "44.1h", m: 1 }}
               type="submit"
               onClick={onUpdate}
               variant="contained"

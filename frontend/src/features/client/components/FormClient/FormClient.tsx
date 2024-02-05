@@ -19,6 +19,8 @@ import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { getSessionServices } from "@/auth/services/session.service";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
+import { useQuery } from "@apollo/client";
+import { QueryClientService } from "../../services/clientQuery/clientQuery.services";
 
 const documentTypes = ["CUIT", "CUIL", "DNI"];
 
@@ -37,12 +39,11 @@ export default function FormClientComponent(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
   const buttonLabel = isEditing ? "Guardar" : "Register";
-  const [resetImage,setResetImage] = useState(false);
+  const [resetImage, setResetImage] = useState(false);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Hooks
   const { toastShow } = useToast();
-
   const {
     register,
     handleSubmit,
@@ -65,13 +66,14 @@ export default function FormClientComponent(props: Props) {
     },
   });
 
-  // useEffect(() => {
-  //   alert("Please enter");
-  //   toastShow({
-  //     message: "El cliente ha sido creado correctamente",
-  //     severity: "success",
-  //   });
-  //   },[]);
+  const { data: queryData, refetch } = useQuery(
+    QueryClientService.clients,
+    {
+      variables: {
+        id: getSessionServices("business"),
+      },
+    }
+  );
 
   // useEffect para establecer valores del formulario cuando cambia la propiedad del cliente
   useEffect(() => {
@@ -129,17 +131,15 @@ export default function FormClientComponent(props: Props) {
       documentType: "",
     });
     setSelectedDocumentType("");
-    setResetImage(actualValue => !actualValue)
+    setResetImage((actualValue) => !actualValue);
     if (props.onClose) props.onClose();
     setShowAlert(true);
     toastShow({
       message: "El Cliente ha sido creado correctamente",
       severity: "success",
     });
+    refetch();
   });
-
-  
-  
 
   // Manejador de envío del formulario para la actualización de cliente
   const onUpdate = handleSubmit(async (values) => {
@@ -167,6 +167,7 @@ export default function FormClientComponent(props: Props) {
       message: "El cliente ha sido editado correctamente",
       severity: "success",
     });
+    refetch();
   });
 
   return (
@@ -184,13 +185,13 @@ export default function FormClientComponent(props: Props) {
       alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
-          <Typography
-            variant="h5"
-            align="center"
-            gutterBottom
-            className="text-xl text-center mb-4"
-          >
-            {isEditing ? "Editar Cliente" : "Crear Cliente"}
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          className="text-xl text-center mb-4"
+        >
+          {isEditing ? "Editar Cliente" : "Crear Cliente"}
         </Typography>
         <FormControl>
           <ProfileForm

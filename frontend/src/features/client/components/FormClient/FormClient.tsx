@@ -1,11 +1,12 @@
 "use client";
 
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { useEffect, useRef, useState } from "react";
-import Button from "@mui/material/Button";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
 import {
+  Box,
+  TextField,
+  Button,
   Card,
   FormControl,
   InputLabel,
@@ -13,12 +14,13 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
 import { getSessionServices } from "@/auth/services/session.service";
 import { ClientMutationServices } from "../../services/clientMutation/clientMutation";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
+
+const documentTypes = ["CUIT", "CUIL", "DNI"];
 
 type Props = {
   client: IClient | undefined;
@@ -26,16 +28,21 @@ type Props = {
 };
 
 export default function FormClientComponent(props: Props) {
+  // Estado
   const [idBusiness, setIdBusiness] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] = useState("");
   const [createClient] = useMutation(ClientMutationServices.CreateClient);
   const [updateClient] = useMutation(ClientMutationServices.UpdateClient);
   const [showAlert, setShowAlert] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const buttonLabel = isEditing ? "Guardar" : "Register";
+  const [resetImage,setResetImage] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const {toastShow} = useToast();
-  
+  // Hooks
+  const { toastShow } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -66,6 +73,7 @@ export default function FormClientComponent(props: Props) {
   //   });
   //   },[]);
 
+  // useEffect para establecer valores del formulario cuando cambia la propiedad del cliente
   useEffect(() => {
     if (props && props.client) {
       setIsEditing(true);
@@ -79,25 +87,20 @@ export default function FormClientComponent(props: Props) {
       setValue("documentType", props.client.documentType);
       setValue("documentNumber", props.client.documentNumber);
       setValue("image", props.client.image);
+      setSelectedDocumentType(props.client.documentType);
     }
   }, [props.client]);
 
+  // useEffect para establecer el ID del negocio desde la sesión
   useEffect(() => {
-    if (getSessionServices("business") == null) {
-      console.log("no hay business");
-    } else {
-      const business_id = getSessionServices("business");
-      console.log(business_id)
-      if (business_id !== null) {
-        setIdBusiness(business_id);
-      }
+    const businessId = getSessionServices("business");
+    if (businessId !== null) {
+      setIdBusiness(businessId);
     }
   }, []);
 
+  // Manejador de envío del formulario para la creación de cliente
   const onSubmit = handleSubmit(async (values) => {
-    
-    
-
     await createClient({
       variables: {
         name: values.name,
@@ -113,19 +116,37 @@ export default function FormClientComponent(props: Props) {
         image: values.image,
       },
     });
+    reset({
+      name: "",
+      surname: "",
+      email: "",
+      city: "",
+      documentNumber: "",
+      postCode: "",
+      address: "",
+      phone: "",
+      image: "",
+      documentType: "",
+    });
+    setSelectedDocumentType("");
+    setResetImage(actualValue => !actualValue)
+    if (props.onClose) props.onClose();
+    setShowAlert(true);
     toastShow({
       message: "El Cliente ha sido creado correctamente",
       severity: "success",
     });
-    reset();
-   
   });
 
+  
+  
+
+  // Manejador de envío del formulario para la actualización de cliente
   const onUpdate = handleSubmit(async (values) => {
     if (!props.client) return;
-    console.log(values);
     await updateClient({
       variables: {
+        id: props.client.id,
         name: values.name,
         surname: values.surname,
         email: values.email,
@@ -139,6 +160,7 @@ export default function FormClientComponent(props: Props) {
         image: values.image,
       },
     });
+    formRef.current?.reset();
     if (props.onClose) props.onClose();
     setShowAlert(true);
     toastShow({
@@ -162,38 +184,28 @@ export default function FormClientComponent(props: Props) {
       alignContent={"center"}
     >
       <Card sx={{ textAlign: "center", alignItems: "center", pb: 1 }}>
-        {!isEditing ? (
           <Typography
             variant="h5"
             align="center"
             gutterBottom
             className="text-xl text-center mb-4"
           >
-            Crear Cliente
-          </Typography>
-        ) : (
-          <Typography
-            variant="h5"
-            align="center"
-            gutterBottom
-            className="text-xl text-center mb-4"
-          >
-            Editar Cliente
-          </Typography>
-        )}
+            {isEditing ? "Editar Cliente" : "Crear Cliente"}
+        </Typography>
         <FormControl>
           <ProfileForm
             avatarType="client"
-            onChange={function (data: any): void {
+            onChange={(data: any): void => {
               setValue("image", data);
             }}
             defaultImage={props.client?.image ? props.client.image : ""}
-            resetKey={undefined}
+            resetKey={resetImage}
           />
           <TextField
-            className="w-43 p-2"
+            className="w-1/2 p-2"
             id="Name"
             label="Name"
+            sx={{ width: "43ch", m: 1 }}
             type="text"
             {...register("name", {
               required: true,
@@ -230,17 +242,16 @@ export default function FormClientComponent(props: Props) {
           <FormControl {...register("documentType")} className="w-1/2 p-2">
             <InputLabel>Document Type</InputLabel>
             <Select
-              type="text"
-              label="documentType"
-              sx={{ width: "41.7ch", m: 1 }}
-              value={
-                props.client ? props.client.documentType : selectedDocumentType
-              }
+              label="Document Type"
+              sx={{ width: "38.8ch", m: 1 }}
+              value={selectedDocumentType}
               onChange={(e) => setSelectedDocumentType(e.target.value)}
             >
-              <MenuItem value="cuit">CUIT</MenuItem>
-              <MenuItem value="cuil">CUIL</MenuItem>
-              <MenuItem value="dni">DNI</MenuItem>
+              {documentTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField
@@ -290,13 +301,18 @@ export default function FormClientComponent(props: Props) {
             {...register("email", {
               required: true,
               minLength: 2,
+              pattern: emailRegex,
             })}
             {...(errors.email?.type === "required" && {
               helperText: "Campo obligatorio",
               error: true,
             })}
             {...(errors.email?.type === "minLength" && {
-              helperText: "El nombre es demasiado corto",
+              helperText: "El correo electrónico es demasiado corto",
+              error: true,
+            })}
+            {...(errors.email?.type === "pattern" && {
+              helperText: "Formato de correo electrónico inválido",
               error: true,
             })}
           />
@@ -357,25 +373,15 @@ export default function FormClientComponent(props: Props) {
               error: true,
             })}
           />
-          {!isEditing ? (
-            <Button
-              className="bg-blue-500 text-white p-2 mt-4"
-              type="submit"
-              onClick={onSubmit}
-              variant="contained"
-            >
-              Register
-            </Button>
-          ) : (
-            <Button
-              className="bg-blue-500 text-white p-2 mt-4"
-              type="submit"
-              onClick={onUpdate}
-              variant="contained"
-            >
-              Guardar
-            </Button>
-          )}
+          <Button
+            className="bg-blue-500 text-white p-2 mt-4"
+            type="submit"
+            onClick={isEditing ? onUpdate : onSubmit}
+            sx={{ width: "44.1ch", m: 1 }}
+            variant="contained"
+          >
+            {isEditing ? "Guardar" : "Registrar"}
+          </Button>
         </FormControl>
       </Card>
     </Box>

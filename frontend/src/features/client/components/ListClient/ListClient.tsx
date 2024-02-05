@@ -97,7 +97,7 @@ export const ListClientComponent = () => {
         >
           Lista de Clientes
         </Typography>
-        <FormControl sx={{ alignItems: "center" }}>
+        <FormControl sx={{ alignItems: "center" }}> 
           {data ? (
             (console.log(data),
             (
@@ -108,7 +108,7 @@ export const ListClientComponent = () => {
                 )}
                 handleItemClick={function (item: IClient): IClient {
                   if (typeof window !== "undefined")
-                    localStorage.setItem("clients", item._id);
+                    localStorage.setItem("clients", item.id);
                   // router.push("/pages/createClient"); //redireccionar al dashboard
                   return item;
                   //handleItemDelete(item.id);

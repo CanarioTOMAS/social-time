@@ -50,7 +50,7 @@ function ItemClient(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    await deleteClient({ variables: { id: props.client.id } });
+    await deleteClient({ variables: { id: props.client._id } });
     toastShow({
       message: "El cliente se ha sido eliminado correctamente",
       severity: "success",

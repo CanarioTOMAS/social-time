@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-const getUserById =gql`
-query FindUserBusiness($id: ID) {
-    findUserBusiness(_id: $id) {
+const getUserById = gql`
+  query FindOneBusiness($id: ID!) {
+    findOneBusiness(_id: $id) {
       name
       address
       category
@@ -10,6 +10,34 @@ query FindUserBusiness($id: ID) {
       email
       phone
     }
-  }`
+  }
+`;
 
-export default getUserById;
+const getLoggedInUserInfo = gql`
+  query GetLoggedInUserInfo {
+    getLoggedInUserInfo {
+      address
+      image
+      name
+      password
+      phone
+      surname
+      role
+      id
+      gender
+      email
+      business {
+        _id
+      }
+      ativitie {
+        _id
+      }
+      deleted
+    }
+  }
+`;
+
+export const UserQueryServices = {
+  getLoggedInUserInfo,
+  getUserById
+};

@@ -1,11 +1,15 @@
 import { getSessionServices } from "@/auth/services/session.service";
 import { useQuery } from "@apollo/client";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Avatar } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
-import getUserById from "../../services/userServices/useQuery";
+import { UserQueryServices } from "../../services/userServices/useQuery";
 
-export default function FormControlUser() {
+interface FormControlUserProps {
+  setSelectedUser: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function FormControlUser({ setSelectedUser }: FormControlUserProps) {
   const {
     register,
     handleSubmit,
@@ -13,35 +17,36 @@ export default function FormControlUser() {
     formState: { errors },
   } = useForm();
 
-  const {
-    data: userData,
-    loading: userLoading,
-    error: userError,
-  } = useQuery(getUserById, {
+  const { data: userData, loading: userLoading, error: userError } = useQuery(UserQueryServices.getLoggedInUserInfo, {
     variables: {
-      id: getSessionServices("user"),
+      id: getSessionServices("business"),
     },
   });
-  console.log("Datos de la consulta de usuario:", userData);
+
+  const user = userData?.getLoggedInUserInfo;
 
   return (
     <FormControl className="w-1/2 p-2">
-      <InputLabel>Ususario</InputLabel>
+      <InputLabel>Usuario</InputLabel>
       <Select
         className="p-1"
-        label="Proyecto"
+        label="Usuario"
         sx={{ m: 1, width: "41.7ch" }}
         {...(errors.user?.type === "required" && {
           helperText: "Campo Obligatorio",
           error: true,
         })}
         {...register("user")}
+        onChange={(e) => {
+          const selectedValue = e.target.value as string;
+          setSelectedUser(selectedValue);
+        }}
       >
-        {userData?.findOneBusiness?.user.map((item: any) => (
-          <MenuItem key={item.id} value={item.id}>
-            {item.name} {item.surname}
+        {user && (
+          <MenuItem key={user.id} value={user.id}>
+            {`${user.name} ${user.surname}`}
           </MenuItem>
-        ))}
+        )}
       </Select>
     </FormControl>
   );

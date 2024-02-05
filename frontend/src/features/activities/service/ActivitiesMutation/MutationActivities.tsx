@@ -1,21 +1,29 @@
 import { gql } from "@apollo/client";
 
 const createActivitie = gql`
-mutation Mutation($project: ID!, $name: String!, $user: ID, $tiempoEstimado: String, $costoHora: String, $periocidad: String, $colaboradores: [ID]) {
-    createActivitie(project: $project, name: $name, user: $user, tiempoEstimado: $tiempoEstimado, costoHora: $costoHora, periocidad: $periocidad, colaboradores: $colaboradores) {
+  mutation CreateActivitie(
+    $project: ID!
+    $name: String!
+    $user: ID
+    $client: ID
+    $tiempoEstimado: String
+    $costoHora: String
+    $description: String
+  ) {
+    createActivitie(
+      project: $project
+      name: $name
+      user: $user
+      client: $client
+      tiempoEstimado: $tiempoEstimado
+      costoHora: $costoHora
+      description: $description
+    ) {
       name
-      periocidad
-      project {
-        id
-      }
-      tiempoEstimado
-      user {
-        id
-      }
-      costoHora
     }
-  }`
-
-  export const MutationActivitie={
-    createActivitie
   }
+`;
+
+export const MutationActivitie = {
+  createActivitie,
+};

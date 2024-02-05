@@ -1,10 +1,12 @@
-export interface IActivities{
-    Image?: string;
-    id?: string;
-    name: string;
-    client?:string;
-    proyect?:string;
-    description:string;
-    user:string;
-    tiempoEsperado:string;
+export interface IActivities {
+  Image?: string;
+  _id?: string;
+  name: string;
+  client?: string; 
+  project?: string; 
+  description: string;
+  user: string;
+  tiempoEstimado: string;
+  costoHora: string;
+  colaboradores: string;
 }

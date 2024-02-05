@@ -6,11 +6,15 @@ module.exports = {
   Mutation: {
     //create our mutation:
     createActivitie: async (_: any, _args: any, context: any) => {
+      console.log("Datos recibidos en el servidor:", _args);
+
       const activitie = new Activitie({
         user: context.user.id,
         project: _args.project,
+        client: _args.client,
         name: _args.name,
         tiempoEstimado: _args.tiempoEstimado,
+        description: _args.description,
         costoHora: _args.costoHora,
         periocidad: _args.periocidad,
         colaboradores: _args.colaboradores

@@ -4,6 +4,7 @@ module.exports = gql`
 type Query {
   getLoggedInUserId: ID!
   getLoggedInUserInfo: User! # Nueva consulta para obtener la información del usuario logueado
+  getAllUsers: [User]
 }
 
 type User {

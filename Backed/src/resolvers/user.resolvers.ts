@@ -27,7 +27,14 @@ module.exports = {
       const userInfo = await User.findById(context.user.id);
       return userInfo;
     },
-  },
+    getAllUsers: async (_: any, _args: any, context: any) => {
+      try {
+        return await User.find({ deleted: false }); // Filter out deleted users
+      } catch (error) {
+        throw new GraphQLError("Error fetching users: ");
+      }
+  }
+},
   Mutation: {
     //create our mutation:
     createUser: async (root: any, args: any) => {

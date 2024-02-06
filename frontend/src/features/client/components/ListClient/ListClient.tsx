@@ -48,12 +48,7 @@ export const ListClientComponent = () => {
   );
   
   useEffect(() => {
-     if (data){
-      let business = data.findUserBusiness[0]
-      console.log(business.client)
-      setClients(business.client); //manejo de busqueda
-     }
-    
+     if (data) setClients(data.findOneBusiness.client); //manejo de busqueda  
   }, [data]);
 
 

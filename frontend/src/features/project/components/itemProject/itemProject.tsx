@@ -2,12 +2,14 @@
 
 import { Delete, Edit } from "@mui/icons-material";
 import {
+  Avatar,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   IconButton,
+  ListItemAvatar,
   ListItemText,
 } from "@mui/material";
 import { MouseEventHandler, useState } from "react";
@@ -66,23 +68,23 @@ function ItemProject(props: Props) {
     setIsEditDialogOpen(false);
   };
 
-  const clientDetails = data?.findUserBusiness[0]?.client[0];
-  const projectDetails = clientDetails?.project[0];
+  // const clientDetails = data?.findOneBusiness[0]?.client[0];
+  // const projectDetails = clientDetails?.project[0];
 
   return (
     <>
       {" "}
       <Box sx={{ width: "100%" }}>
-        {/* <ListItemAvatar>
-          <Avatar src={image} alt={props.project.Image} />
-        </ListItemAvatar> */}
+        <ListItemAvatar>
+          <Avatar src={props.project?.Image}  />
+        </ListItemAvatar>
         <ListItemText
           primary={`Name: ${props.project?.name}`}
           secondary={
             <>
-              <span>Client: {clientDetails?.name}</span>
+              <span>Client: {props.project?.client}</span>
               <br />
-              <span>Description: {projectDetails?.description}</span>
+              <span>Description: {props.project?.description}</span>
             </>
           }
           primaryTypographyProps={{ sx: { color: "#000" } }}

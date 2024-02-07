@@ -13,7 +13,8 @@ import { ListItems } from "@/features/shared/components/listItem/ListItem";
 import ItemProject from "../itemProject/itemProject";
 import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
 import SearchAppBar from "@/features/shared/components/search/search";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { getSessionServices } from "@/auth/services/session.service";
 
 export const ListProjectComponent = () => {
   const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
@@ -21,9 +22,9 @@ export const ListProjectComponent = () => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
- 
+
     if (event.target.value == "") {
-      let business = data.findUserBusiness[0]
+      let business = data.findUserBusiness[0];
       setProject(business.Project);
       return;
     }
@@ -36,12 +37,19 @@ export const ListProjectComponent = () => {
     );
   };
   const { data, error, loading, refetch } = useQuery(
-    ProjectQueryService.Project
+    ProjectQueryService.Project,
+    {
+      variables: {
+        id: getSessionServices("business"),
+        idClient: getSessionServices("client"),
+      },
+    }
   );
-
+  useEffect(() => {
+    if (data) setProject(data.findOneBusiness?.client[0]?.project);
+    console.log(data); //manejo de busqueda
+  }, [data]);
   //const projects = data?.findUserBusiness[0]?.client[0]?.project;
-
-
 
   return (
     <Box
@@ -54,7 +62,6 @@ export const ListProjectComponent = () => {
         margin: "auto",
       }}
     >
-
       <Card
         sx={{
           textAlign: "center",
@@ -63,9 +70,7 @@ export const ListProjectComponent = () => {
           margin: "auto",
         }}
       >
-                        <SearchAppBar
-            handleSearchChange={handleSearchChange}
-          />
+        <SearchAppBar handleSearchChange={handleSearchChange} />
         <Typography
           variant="h5"
           align="center"
@@ -75,20 +80,23 @@ export const ListProjectComponent = () => {
           Lista de Proyectos
         </Typography>
         <FormControl sx={{ alignItems: "center" }}>
-          {!loading && data && data.findUserBusiness? (
-            <ListItems
-              items={Project}
-              renderItem={(item: IProject) => (
-                <div key={item.id}>
+        {data ? (
+            (console.log(data),
+            (
+              <ListItems
+                items={Project}
+                renderItem={(item: IProject) => (
                   <ItemProject project={item} buttonAction={true} />
-                </div>
-              )}
-              handleItemClick={function (item: IProject): IProject {
-                console.log(item);
-                return item;
-                //handleItemDelete(item.id);
-              }}
-            ></ListItems>
+                )}
+                handleItemClick={function (item: IProject): IProject {
+                  if (typeof window !== "undefined")
+                    localStorage.setItem("projects", item.id);
+                  // router.push("/pages/createClient"); //redireccionar al dashboard
+                  return item;
+                  //handleItemDelete(item.id);
+                }}
+              ></ListItems>
+            ))
           ) : (
             <CircularProgress />
           )}

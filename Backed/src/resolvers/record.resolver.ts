@@ -1,23 +1,31 @@
 import { UserInputError } from "apollo-server-core";
 import Client from "../schema/client";
 import User from "../schema/user";
+import Business from "../schema/business";
+import Project from "../schema/project";
+import Activities from "../schema/activitie";
 import Record from "../schema/record";
-const convertToISO8601 = require('../../src/metodos/dateconverter');
+const convertToISO8601 = require("../../src/metodos/dateconverter");
 
 module.exports = {
-
-  
   Mutation: {
     createRecord: async (_: any, _args: any, context: any) => {
-      const client = await Client.findById(_args.client);
       const user = await User.findById(_args.user);
+      const client = await Client.findById(_args.client);
+      const business = await Business.findById(_args.business);
+      const project = await Project.findById(_args.proyect);
+      const activities = await Activities.findById(_args.activities);
       const record = new Record({
-        client: client,
         user: user,
+        business: business,
+        client: client,
+        project: project,
+        activities: activities,
+        totalHours: _args.totalHours,
         name: _args.name,
         inicio: convertToISO8601(_args.inicio),
         fin: convertToISO8601(_args.fin),
-        activities: _args.activities
+        descriptions: _args.descriptions,
       });
 
       return record.save().catch((error: any) => {

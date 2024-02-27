@@ -1,6 +1,6 @@
 export interface IProject {
   Image?: string;
-  id?: string;
+  id: string;
   name: string;
   idClient?: string;
   client?:string

@@ -10,6 +10,31 @@ module.exports = {
       return await Business.find({ user: context.user.id });
     },
   },
+  Query: {
+    getLoggedInUserId: async (_: any, _args: any, context: any) => {
+      // Verifica si el usuario está autenticado en el contexto
+      if (!context.user || !context.user.id) {
+        throw new GraphQLError("Usuario no autenticado");
+      }
+      return context.user.id;
+    },
+    getLoggedInUserInfo: async (_: any, _args: any, context: any) => {
+      // Verifica si el usuario está autenticado en el contexto
+      if (!context.user || !context.user.id) {
+        throw new GraphQLError("Usuario no autenticado");
+      }
+      // Utiliza el ID del usuario en el contexto para buscar la información completa del usuario
+      const userInfo = await User.findById(context.user.id);
+      return userInfo;
+    },
+    getAllUsers: async (_: any, _args: any, context: any) => {
+      try {
+        return await User.find({ deleted: false }); // Filter out deleted users
+      } catch (error) {
+        throw new GraphQLError("Error fetching users: ");
+      }
+  }
+},
   Mutation: {
     //create our mutation:
     createUser: async (root: any, args: any) => {

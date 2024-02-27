@@ -1,12 +1,11 @@
 export interface IRegisterTime {
     id: string;
-    idUser:string;
-    idActivity:string;
+    activities:string;
     proyect:string;
     client:string
-    activity:string;
     date:string;
-    startTime: string;
-    endTime: string;
+    inicio: string;
+    fin: string;
+    descriptions:string;
     totalHours:string;
 }

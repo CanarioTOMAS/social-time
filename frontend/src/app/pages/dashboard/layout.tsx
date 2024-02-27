@@ -1,21 +1,18 @@
 import FooterAdmin from "@/features/shared/components/dashboard/components/footers/footerAdmin";
 import Sidebar from "@/features/shared/components/dashboard/components/sideBar/sideBar";
-import { NavBar } from "@/features/shared/components/navBar/NavBar";
-import ResponsiveAppBar from "@/features/shared/components/navBar/NavBarMenu";
-
 
 export default function MainLayout({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
-    return (
-        <div>
-        
-        <Sidebar />
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <Sidebar open={false} />
+      <div style={{ display: "flex", justifyContent: "center",padding:"5vh", marginTop: "15vh" }} >
         {children}
-        <FooterAdmin/>
       </div>
-    );
-  }
-  
+      <FooterAdmin  />
+    </>
+  );
+}

@@ -1,6 +1,7 @@
 "use client";
 
-import DashboardComponent from "@/features/shared/components/dashboard/dashboard";
+import DashboardComponent from "@/features/shared/components/dashboard/components/Dashboard";
+import NavigationComponent from "@/features/shared/components/dashboard/navigationComponent";
 
 
 

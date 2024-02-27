@@ -5,7 +5,6 @@ import {
   Grid,
   Paper,
   Typography,
-  makeStyles,
 } from "@mui/material";
 import { businessQueryService } from "@/features/business/services/businessQuery";
 import { useQuery } from "@apollo/client";
@@ -21,8 +20,8 @@ export default function CardProfile() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    border: "1px solid #ccc", // Agrega un borde
-    borderRadius: "10px", // Bordes redondeados
+    border: "1px solid #ccc",
+    borderRadius: "10px",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Sombra
   };
   const { data, error, loading } = useQuery(
@@ -76,25 +75,16 @@ export default function CardProfile() {
 
   return (
     <>
-      <Box width={400}
-          sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    }}>
+      <Box
+        width={400}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Paper elevation={1}>
-          <div style={{ textAlign: 'center' }}>
-            <Avatar
-              alt="Profile Image"
-              src={data?.findUserBusiness[0]?.image}
-              sx={{
-                width: "30vh",
-
-                
-
-                height: "30vh",
-              }}
-            ></Avatar>
+          <div style={{ textAlign: "center" }}>
             <div>
               <Grid container>
                 <Grid item xs={4}>

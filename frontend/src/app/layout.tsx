@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const hideBar = ["/pages/login", "/pages/register", "/pages/forgotPassword"];
+  const hideBar = ["/pages/login", "/pages/register", "/pages/forgotPassword, /pages/dashboard/listClients"];
 
   
   const httpLink = createHttpLink({
@@ -52,6 +52,7 @@ export default function RootLayout({
   });
  
   return (
+    
     <html lang="en">
       <ApolloProvider client={client}>
         <body>

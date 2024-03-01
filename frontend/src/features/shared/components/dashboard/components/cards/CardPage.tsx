@@ -16,7 +16,7 @@ import {
 const CardPageVisits: React.FC = () => {
 
   return (
-    <Box width={900} style={{ marginTop: "0px", marginLeft: "100px", marginBottom:"0px" }}>
+    <Box width={900} >
       <Paper elevation={3} style={{ width: "100%", height: "100%" }}>
         <Box p={3}>
           <Box

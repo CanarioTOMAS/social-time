@@ -6,7 +6,8 @@ import ActivityForm from "@/features/activities/components/formActivitie/formAct
 
 export default function activities() {
 
-    return(
-        <ActivityForm/>
-    )
+    return <ActivityForm/>
+ 
+        
+    
 }

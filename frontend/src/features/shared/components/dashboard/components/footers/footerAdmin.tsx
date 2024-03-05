@@ -17,7 +17,7 @@ import {
 
 export default function FooterAdmin() {
  const footerStyle = {
-    backgroundColor: "#3b82f6",
+    backgroundColor: "#3f51b5",
     paddingTop: "20px",
     paddingBottom: "20px",
  };

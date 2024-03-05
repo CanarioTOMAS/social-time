@@ -8,8 +8,8 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <Sidebar open={false} />
-      <div style={{ display: "flex", justifyContent: "center",padding:"5vh", marginTop: "15vh" }} >
+      <Sidebar/>
+      <div style={{ display: "flex", justifyContent: "center",padding:"5vh", marginTop: "-15vh" }} >
         {children}
       </div>
       <FooterAdmin  />

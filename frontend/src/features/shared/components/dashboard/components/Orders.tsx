@@ -20,7 +20,10 @@ function createData(
   return { projectName, name, workHours, users, progress };
 }
 
-const rows = [createData("social-time", "John Smith", 30, "social-time", 100)];
+const rows = [createData("social-time", "Dustin Henderson", 1450, "social-Contable", 100), 
+              createData("social-time", "John McClane", 130, "social-time", 50),
+              createData("social-time", "Michail Sergeevič Gorbačëv", 95, "Atomico", 100),
+              createData("social-time", "John Wick", 70, "Prime", 60)];
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
@@ -34,9 +37,9 @@ export default function Orders() {
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Work Hours</TableCell>
-            <TableCell>Project Name</TableCell>
+            <TableCell>Work Hours</TableCell>           
             <TableCell>Progress</TableCell>
+            <TableCell>Project Name</TableCell>
             <TableCell>Users</TableCell>
           </TableRow>
         </TableHead>

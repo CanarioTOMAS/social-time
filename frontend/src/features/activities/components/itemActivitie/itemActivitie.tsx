@@ -1,48 +1,64 @@
 "use client";
 
-import { Delete, Edit, PowerInputSharp } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   IconButton,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { MouseEventHandler, useState } from "react";
+
+
+import { QueryActivities } from "../../service/ActivitiesQuery/QueryActivitie";
 import { useMutation, useQuery } from "@apollo/client";
-import { IProject } from "../../model/project";
-import { useToast } from "@/features/shared/components/toast/ToastProvider";
+import { IActivities } from "../../model/Activitie";
+import { MutationActivitie } from "../../service/ActivitiesMutation/MutationActivities";
+import ActivityForm from "../formActivitie/formActivities";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
-import FormProjectComponent from "../formProject/formProject";
-import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
-import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
+import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
 type Props = {
-  project: IProject;
+  activity: IActivities;
   buttonAction?: boolean;
 };
 
-function ItemProject(props: Props) {
-  const { data, error, loading, refetch } = useQuery(
-    ProjectQueryService.Project,
-    {
-      variables: {
-        idClient: props.project.clientId,
-      },
-    }
-  );
+function ItemActivitie(props: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
+  const [deleteActivitie] = useMutation(MutationActivitie.deleteActivitie);
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
 
+  const { data, error, loading, refetch } = useQuery(
+    QueryActivities.GetActivities,
+    {
+      variables: {
+        idClient: props.activity.client,
+        idProject: props.activity.project,
+      },
+    }
+  );
+  console.log(data);
+  if (loading) {
+    return <CircularProgress />; // Muestra un indicador de carga
+  }
+
+  if (error) {
+    return <Typography>Error al cargar los datos</Typography>; // Muestra un mensaje de error
+  }
+
+  const clientDetails = data?.findUserBusiness[0].client[0];
+  const projectDetails = data?.findUserBusiness[0].client[0].project[0];
   const handleDelete: MouseEventHandler<HTMLButtonElement> = () => {
     setIsDeleteDialogOpen(true);
   };
@@ -55,9 +71,9 @@ function ItemProject(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    await DeleteProject({ variables: { id: props.project.id } });
+    await deleteActivitie({ variables: { id: props.activity._id} });
     toastShow({
-      message: "El proyecto ha sido eliminado correctamente",
+      message: "Actividad se ha eliminado correctamente",
       severity: "success",
     });
     refetch();
@@ -68,26 +84,24 @@ function ItemProject(props: Props) {
     setIsEditDialogOpen(false);
   };
 
-  const clientDetails = data?.findUserBusiness[0].client[0];
-console.log(clientDetails)
-  // if (!clientDetails) return <p>No se encontraron datos del cliente</p>;
-  // console.log(clientDetails)
-  // const projectDetails = clientDetails?.project[0];
-
   return (
     <>
       {" "}
       <Box sx={{ width: "100%" }}>
-        <ListItemAvatar>
-          <Avatar src={props.project?.Image}  />
-        </ListItemAvatar>
+        {/* <ListItemAvatar>
+          <Avatar src={props.activity.image} alt={props.activity.name} />
+        </ListItemAvatar> */}
         <ListItemText
-          primary={`Name: ${props.project?.name}`}
+          primary={`Name: ${props.activity.name} `}
           secondary={
             <>
-              <span>Cliente: {clientDetails.name} {clientDetails.surname}</span>
+              <span>Descripción: {props.activity.description}</span>
               <br />
-              <span>Description: {props.project?.description}</span>
+              <span>Proyecto: {projectDetails.name}</span>
+              <br />
+              <span>
+                Cliente:{clientDetails.name} {clientDetails.surname}
+              </span>
             </>
           }
           primaryTypographyProps={{ sx: { color: "#000" } }}
@@ -114,16 +128,15 @@ console.log(clientDetails)
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirmed}
-        title="¿Está seguro que desea eliminar este proyecto?"
+        title="¿Está seguro que desea eliminar Actividad?"
         message="Se eliminará de forma permanente "
         confirmText="Eliminar"
         cancelText="Cancelar"
       />
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
-          <FormProjectComponent
-            project={props.project}
-            client={clientDetails}
+          <ActivityForm
+            activitie={props.activity}
             id={undefined}
             onClose={() => {
               setIsEditDialogOpen(false);
@@ -137,4 +150,4 @@ console.log(clientDetails)
     </>
   );
 }
-export default ItemProject;
+export default ItemActivitie;

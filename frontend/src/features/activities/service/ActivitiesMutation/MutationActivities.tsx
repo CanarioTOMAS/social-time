@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const createActivitie = gql`
-  mutation CreateActivitie(
+  mutation Mutation(
     $project: ID!
     $name: String!
     $user: ID
@@ -20,10 +20,40 @@ const createActivitie = gql`
       description: $description
     ) {
       name
+      description
+      tiempoEstimado
     }
   }
 `;
-
+const deleteActivitie = gql`
+  mutation deleteActivitie($id: String!) {
+    deleteActivitie(_id: $id)
+  }
+`;
+const updateActivitie = gql`
+  mutation Mutation(
+    $id: String!
+    $user: String!
+    $project: String!
+    $client: String!
+    $name: String
+  ) {
+    updateActivitie(
+      _id: $id
+      user: $user
+      project: $project
+      client: $client
+      name: $name
+    ) {
+      _id
+      name
+      description
+      tiempoEstimado
+    }
+  }
+`;
 export const MutationActivitie = {
   createActivitie,
+  updateActivitie,
+  deleteActivitie,
 };

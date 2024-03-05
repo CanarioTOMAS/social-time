@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Card,
@@ -10,82 +10,117 @@ import {
   Button,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import FormControlClient from "@/features/shared/components/FormControl/formControlClient";
-import FormControlProject from "@/features/shared/components/FormControl/formControlProject";
 import { IActivities } from "../../model/Activitie";
 import { useMutation } from "@apollo/client";
 import { MutationActivitie } from "../../service/ActivitiesMutation/MutationActivities";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
-import FormControlUser from "@/features/shared/components/FormControl/formControlUser";
+import FormControlUser from "@/features/shared/components/FormControl/UserSelector";
+import BusinessClientSelector from "@/features/shared/components/FormControl/BusinessClientSelector";
+import BusinessClientProjectSelector from "@/features/shared/components/FormControl/BusinessClientProjectSelector";
+import { IClient } from "@/features/client/models/Client";
+import { IProject } from "@/features/project/model/project";
 
-export default function ActivityForm() {
+type Props = {
+  id: any;
+  activitie: IActivities | undefined;
+  project: IProject | undefined;
+  client: IClient | undefined;
+  onClose?: () => void;
+};
+export default function ActivityForm(props: Props) {
+  const [isEditing, setIsEditing] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const {
     register,
     handleSubmit,
     setValue,
     reset,
     formState: { errors },
-  } = useForm<IActivities>();
-  const [createActivitie, { error }] = useMutation(
-    MutationActivitie.createActivitie
-  );
+  } = useForm<IActivities>({
+    defaultValues: {
+      name: "",
+      description: "",
+      projectId: "",
+      clienId: "",
+      tiempoEstimado: "",
+    },
+  });
+
   const { toastShow } = useToast();
+  useEffect(() => {
+    if (props && props.activitie) {
+      setIsEditing(true);
+      setValue("name", props.activitie.name);
+      setValue("description", props.activitie.description);
+      setValue("tiempoEstimado", props.activitie.tiempoEstimado);
+      setSelectedUser(props.activitie.user);
+      setSelectedClientId(props.client!.id);
+      setSelectedProjectId(props.project!.id);
+    }
+  }, [props.activitie]);
+
+  const [CreateAvtivitie] = useMutation(MutationActivitie.createActivitie);
+  const [UpdateActivitie] = useMutation(MutationActivitie.updateActivitie);
 
   const onSubmit = handleSubmit(async (values) => {
-    try {
-      console.log("Datos a enviar:", {
+    await CreateAvtivitie({
+      variables: {
         name: values.name,
         description: values.description,
-        project: selectedProject,
-        client: selectedClient,
-        user: selectedUser,
+        project: selectedProjectId,
+        client:selectedClientId,
+        user: selectedUser.toString(),
         tiempoEstimado: values.tiempoEstimado,
-      });
-      
-      await createActivitie({
-        variables: {
-          name: values.name,
-          description: values.description,
-          project: selectedProject.toString(),
-          client: selectedClient.toString(),
-          user: selectedUser.toString(),
-          tiempoEstimado: values.tiempoEstimado,
-        },
-      });
-  
-      toastShow({
-        message: "Actividad ha sido creado correctamente",
-        severity: "success",
-      });
-      reset();
-    } catch (error: any) {
-      console.error("Error during mutation:", error);
-  
-      // Añade esta parte para identificar errores específicos
-      if (error.graphQLErrors) {
-        error.graphQLErrors.forEach((graphQLError: { message: any; extensions: any; }) => {
-          console.error("GraphQL Error:", graphQLError.message);
-          if (graphQLError.extensions) {
-            console.error("Extensions:", graphQLError.extensions);
-          }
-        });
-      }
-  
-      toastShow({
-        message: "Error al crear la actividad",
-        severity: "error",
-      });
-    }
+      },
+    });
+
+    toastShow({
+      message: "Actividad ha sido creado correctamente",
+      severity: "success",
+    });
+    reset();
+
+    toastShow({
+      message: "Error al crear la actividad",
+      severity: "error",
+    });
   });
-  
-  const [selectedClient, setSelectedClient] = useState<string>("");
-  const [selectedProject, setSelectedProject] = useState<string>("");
+  const onUpdate = handleSubmit(async (values) => {
+    if (!props.activitie) return;
+    await UpdateActivitie({
+      variables: {
+        id: props.activitie._id,
+        name: values.name,
+        description: values.description,
+        project:selectedProjectId,
+        client: selectedClientId,
+        user: selectedUser.toString(),
+        tiempoEstimado: values.tiempoEstimado,
+      },
+    });
+    console.log(values);
+    if (props.onClose) props.onClose();
+    setShowAlert(true);
+    toastShow({
+      message: "Actividad ha sido editado correctamente",
+      severity: "success",
+    });
+
+    toastShow({
+      message: "Error al crear la actividad",
+      severity: "error",
+    });
+  });
+
+  const [selectedClientId, setSelectedClientId] = useState<string>("");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<string>("");
 
   const handleProjectChange = (projectId: string) => {
     // Puedes realizar acciones adicionales al cambiar el proyecto, si es necesario
     console.log("Proyecto seleccionado:", projectId);
-    setSelectedProject(projectId);
+    setSelectedProjectId(projectId);
   };
   return (
     <Box
@@ -118,11 +153,12 @@ export default function ActivityForm() {
             {...register("name", { required: true })}
           />
           {errors.name && <span>Este campo es obligatorio</span>}
-          <FormControlClient setSelectedClient={setSelectedClient} />
-          <FormControlProject
-            setSelectedProject={setSelectedProject}
-            onProjectChange={handleProjectChange} // Pasa la función como prop
-          />
+         <BusinessClientSelector onSelectedChange={(value)=>{
+            setSelectedClientId(value)
+          } }/>
+          <BusinessClientProjectSelector onSelectedChange={(value)=> {
+            setSelectedProjectId(value)
+          } }/>
           <FormControlUser setSelectedUser={setSelectedUser} />
           <TextField
             className="w-1/2 p-2"
@@ -148,15 +184,27 @@ export default function ActivityForm() {
               error: true,
             })}
           />
-          
-          <Button
-            className="bg-blue-500 text-white p-2 mt-4"
-            type="submit"
-            onClick={onSubmit}
-            variant="contained"
-          >
-            Enviar
-          </Button>
+          {!isEditing ? (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onSubmit}
+              variant="contained"
+            >
+              Register
+            </Button>
+          ) : (
+            <Button
+              className="bg-blue-500 text-white p-2 mt-4"
+              sx={{ width: "47.7ch", m: 1 }}
+              type="submit"
+              onClick={onUpdate}
+              variant="contained"
+            >
+              Guardar
+            </Button>
+          )}
         </FormControl>
       </Card>
     </Box>

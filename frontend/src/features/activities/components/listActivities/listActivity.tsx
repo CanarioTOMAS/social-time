@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
+import { getSessionServices } from "@/auth/services/session.service";
 import {
   Box,
   Card,
@@ -8,41 +9,51 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
-import { IProject } from "../../model/project";
-import { ListItems } from "@/features/shared/components/listItem/ListItem";
-import ItemProject from "../itemProject/itemProject";
-import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
+import router from "next/router";
 import SearchAppBar from "@/features/shared/components/search/search";
-import { ChangeEvent, useEffect, useState } from "react";
-import { getSessionServices } from "@/auth/services/session.service";
+import { useEffect, useState } from "react";
+import { IActivities } from "../../model/Activitie";
+import { QueryActivities } from "../../service/ActivitiesQuery/QueryActivitie";
+import { ListItems } from "@/features/shared/components/listItem/ListItem";
+import ItemActivitie from "../itemActivitie/itemActivitie";
+import activities from "@/app/pages/dashboard/activities/page";
 
-export const ListProjectComponent = () => {
+export const ListActivitiesComponent = () => {
   const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
-  const [Project, setProject] = useState<IProject[]>([]);
+  const [Activities, setActivities] = useState<IActivities[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
 
     if (event.target.value == "") {
       let business = data.findUserBusiness[0];
-      setProject(business.Project);
+      setActivities(business.Activities);
       return;
     }
 
-    setProject(
-      Project.filter((item: IProject) => {
-        return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    setActivities(
+      Activities.filter((item: IActivities) => {
+        if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+          return item;
       })
     );
   };
+
   const { data, error, loading, refetch } = useQuery(
-    ProjectQueryService.Project
+    QueryActivities.GetActivities,
+    {
+      onError: (error) => {
+        console.log("Error al obtener las actividades:", error);
+      },
+    }
   );
+
   useEffect(() => {
-    if (data) setProject(data.findUserBusiness?.client?.project);
+    if (data) setActivities(data.findUserBusiness?.client?.project?.activitie);
     console.log(data); //manejo de busqueda
   }, [data]);
-  const projects = data?.findUserBusiness?.[0].client?.[0].project;
+  const activities =
+    data?.findUserBusiness?.[0]?.client?.[0]?.project?.[0]?.activitie;
 
   return (
     <Box
@@ -63,27 +74,35 @@ export const ListProjectComponent = () => {
           margin: "auto",
         }}
       >
-        <SearchAppBar handleSearchChange={handleSearchChange} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
+          <SearchAppBar handleSearchChange={handleSearchChange} />
+        </Box>
         <Typography
           variant="h5"
           align="center"
           gutterBottom
           className="text-xl text-center mb-4"
         >
-          Lista de Proyectos
+          Lista de Actividades
         </Typography>
         <FormControl sx={{ alignItems: "center" }}>
           {data ? (
             (console.log(data),
             (
               <ListItems
-                items={projects}
-                renderItem={(item: IProject) => (
-                  <ItemProject project={item} buttonAction={true} />
+                items={activities}
+                renderItem={(item: IActivities) => (
+                  <ItemActivitie activity={item} buttonAction={true} />
                 )}
-                handleItemClick={function (item: IProject): IProject {
+                handleItemClick={function (item: IActivities): IActivities {
                   if (typeof window !== "undefined")
-                    localStorage.setItem("projects", item.id);
+                    localStorage.setItem("activities", item._id);
                   // router.push("/pages/createClient"); //redireccionar al dashboard
                   return item;
                   //handleItemDelete(item.id);
@@ -99,4 +118,4 @@ export const ListProjectComponent = () => {
   );
 };
 
-export default ListProjectComponent;
+export default ListActivitiesComponent;

@@ -2,28 +2,30 @@ import { getSessionServices } from '@/auth/services/session.service';
 import { QueryClientService } from '@/features/client/services/clientQuery/clientQuery.services';
 import { useQuery } from '@apollo/client';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface FormControlClientProps {
-  setSelectedClient: React.Dispatch<React.SetStateAction<string>>;
+  defaultSelectedClienId?:string;
+  onSelectedChange:(value:any)=>void
 }
 
-export default function FormControlClient({ setSelectedClient }: FormControlClientProps) {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+export default function BusinessClientSelector({ defaultSelectedClienId, onSelectedChange }: FormControlClientProps) {
+  const [selectedClientLocal, setSelectedClientLocal] = useState<string | undefined>(defaultSelectedClienId);
 
-  const { data:clietnData, error:clientError, loading:clientLoading, refetch } = useQuery(QueryClientService.clients, {
+  useEffect(()=>{
+    console.log(defaultSelectedClienId)
+    setSelectedClientLocal(defaultSelectedClienId)
+  },[defaultSelectedClienId])
+
+  const { data: clientData, error: clientError, loading: clientLoading, refetch } = useQuery(QueryClientService.clients, {
     variables: {
       id: getSessionServices("business"),
     },
   });
 
-  const clients = clietnData?.findOneBusiness?.client || [];
+  const clients= clientData?.findUserBusiness?.[0].client || [];
+  console.log("clientData:", clientData);
 
   return (
     <FormControl className="w-1/2 p-2">
@@ -32,14 +34,11 @@ export default function FormControlClient({ setSelectedClient }: FormControlClie
         className="p-1"
         label="Cliente"
         sx={{ m: 1, width: "41.7ch" }}
-        {...(errors.client?.type === "required" && {
-          helperText: "Campo Obligatorio",
-          error: true,
-        })}
-        {...register("client")}
+        value={selectedClientLocal}
         onChange={(e) => {
           const selectedValue = e.target.value as string;
-          setSelectedClient(selectedValue);
+          onSelectedChange(selectedValue);
+          setSelectedClientLocal(selectedValue) // Llama a la función para establecer el valor en el componente padre
         }}
       >
         {clients.map((item: any) => (

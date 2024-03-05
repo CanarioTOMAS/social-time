@@ -5,10 +5,6 @@ import {
   Button,
   Card,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,13 +14,14 @@ import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import { IProject } from "../../model/project";
 import { ProjectMutationServices } from "../../projectService/projectMutation/projectMutation.service";
 import { useMutation, useQuery } from "@apollo/client";
-import { QueryClientService } from "@/features/client/services/clientQuery/clientQuery.services";
-import { getSessionServices } from "@/auth/services/session.service";
-import FormControlClient from "@/features/shared/components/FormControl/formControlClient";
+import FormControlClient from "@/features/shared/components/FormControl/BusinessClientSelector";
+import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
+import { IClient } from "@/features/client/models/Client";
 
 type Props = {
   id: any;
   project: IProject | undefined;
+  client:IClient  | undefined;
   onClose?: () => void;
 };
 
@@ -43,43 +40,44 @@ export default function FormProjectComponent(props: Props) {
     defaultValues: {
       name: "",
       description: "",
-      idClient: "",
+      clientId: "",
     },
   });
-  const [selectedClient, setSelectedClient] = useState<string>("");
-  
+  const [selectedClientId, setSelectedClientId] = useState<string>("");
+
   useEffect(() => {
     if (props && props.project) {
       setIsEditing(true);
       setValue("name", props.project.name);
       setValue("description", props.project.description);
-      setValue("idClient", props.project.idClient);
+      setSelectedClientId(props.client!.id);
+      console.log(props.project);
     }
   }, [props.project]);
 
   const [CreateProject] = useMutation(ProjectMutationServices.CreateProject);
   const [UpdateProject] = useMutation(ProjectMutationServices.UpdateProject);
-
-
-  // useEffect(() => {
-  //   // getSessionBusiness();
-  //   setIdBusiness(getSessionServices("business"));
-  // }, []);
-
   const onSubmit = handleSubmit(async (values) => {
     console.log(values);
     await CreateProject({
       variables: {
         name: values.name,
         description: values.description,
-        client: selectedClient,
+        client: selectedClientId,
       },
     });
+    reset({
+      name:"",
+      description:"",
+      clientId:"",
+    });
+    setSelectedClientId("");
     toastShow({
       message: "El proyecto ha sido creado correctamente",
       severity: "success",
     });
-    reset();
+   
+    refetch();
   });
 
   const onUpdate = handleSubmit(async (values) => {
@@ -88,8 +86,8 @@ export default function FormProjectComponent(props: Props) {
       variables: {
         name: values.name,
         description: values.description,
-        client: values.idClient,
-      }
+        client: selectedClientId,
+      },
     });
     if (props.onClose) props.onClose();
     setShowAlert(true);
@@ -97,15 +95,9 @@ export default function FormProjectComponent(props: Props) {
       message: "El cliente ha sido editado correctamente",
       severity: "success",
     });
+    refetch();
   });
-
-  const [client, setClient] = useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
-    setClient(event.target.value as string);
-  };
-
+  const {data,refetch}=useQuery(ProjectQueryService.Project)
   return (
     <Box
       className="bg-blue-500 text-white p-4"
@@ -129,12 +121,14 @@ export default function FormProjectComponent(props: Props) {
           Crear Proyecto
         </Typography>
         <FormControl sx={{ textAlign: "center" }}>
-          <FormControlClient  setSelectedClient={setSelectedClient}/>
+          <FormControlClient defaultSelectedClienId={selectedClientId} onSelectedChange={(value)=>{
+            setSelectedClientId(value)
+          }} />
           <TextField
             className="w-1/2 p-2 "
             label="Project"
             variant="outlined"
-            sx={{ m: 1, width: "43ch", }}
+            sx={{ m: 1, width: "43ch" }}
             type="text"
             {...register("name", {
               required: true,

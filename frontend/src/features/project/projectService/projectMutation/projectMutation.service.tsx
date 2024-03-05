@@ -21,15 +21,19 @@ const UpdateProject = gql`
     $id: String!
     $client: String!
     $name: String!
+    $description: String
   ) {
     updateProject(
       _id: $id
       client: $client
       name: $name
+      description: $description
     ) {
       id
       client
       name
+      description
+      
     }
   }
 `;

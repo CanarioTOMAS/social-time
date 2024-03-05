@@ -1,23 +1,24 @@
 import { gql } from "@apollo/client";
 
 const clients = gql`
-  query FindOneBusiness($id: ID!) {
-    findOneBusiness(_id: $id) {
-      client {
-        id
-        name
-        surname
-        email
-        phone
-        documentType
-        documentNumber
-        address
-        city
-        postCode
-        image
-      }
+query FindUserBusiness {
+  findUserBusiness {
+    client {
+      id
+      name
+      surname
+      address
+      city
+      documentNumber
+      documentType
+      email
+      image
+      phone
+      postCode
+      deleted
     }
   }
+}
 `;
 
 export const QueryClientService = {

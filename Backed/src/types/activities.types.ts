@@ -31,6 +31,8 @@ module.exports = gql`
     updateActivitie(
       _id: String!
       user: String!
+      project: String!
+      client: String!
       name: String
       tiempoEstimado: String
       costoHora: String

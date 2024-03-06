@@ -21,6 +21,7 @@ import { ClientMutationServices } from "../../services/clientMutation/clientMuta
 import FormClientComponent from "../FormClient/FormClient";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 
+
 type Props = {
   client: IClient;
   buttonAction?: boolean;
@@ -50,7 +51,7 @@ function ItemClient(props: Props) {
     setIsDeleteDialogOpen(false);
     setShowAlert(true);
     console.log(props);
-    await deleteClient({ variables: { id: props.client._id } });
+    await deleteClient({ variables: { id: props.client.id } });
     toastShow({
       message: "El cliente se ha sido eliminado correctamente",
       severity: "success",

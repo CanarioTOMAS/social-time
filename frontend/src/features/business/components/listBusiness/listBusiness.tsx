@@ -26,7 +26,8 @@ export const ListBusiness = (props: IBusiness) => {
     console.log(business);
 
     if (event.target.value == "") {
-      setBusiness(data.findUserBusiness);
+      let business = data.findUserBusiness[0]
+      setBusiness(business.findUserBusiness);
       return;
     }
 

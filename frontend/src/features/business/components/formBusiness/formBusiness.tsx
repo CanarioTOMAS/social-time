@@ -3,7 +3,7 @@
 
 
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { IBusiness } from "../../model/business";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import ProfileForm from "@/features/shared/components/avatar/Avatar";
@@ -14,17 +14,18 @@ import {
 } from "@/auth/services/session.service";
 import { useEffect, useState } from "react";
 import { Box, Card, Typography, FormControl, TextField, Button } from "@mui/material";
+import { businessQueryService } from "../../services/businessQuery";
 
 type Props = {
   business: IBusiness | undefined;
   onClose?: () => void;
 };
 
-export default function FormBusinessComponent(props: Props) {
+export default function FormBusinessComponent(props: Props ) {
   const [isEditing, setIsEditing] = useState(false);
   const idBusiness = getSessionServices("business");
   const [resetKey, setResetKey] = useState(0);
-  const [createBusiness] = useMutation(businessMutationService.createBusiness);
+  const [createBusiness]= useMutation(businessMutationService.createBusiness);
   const [updateBusiness] = useMutation(businessMutationService.updateBusiness);
   const { toastShow } = useToast();
   const [showAlert, setShowAlert] = useState(false);
@@ -59,7 +60,8 @@ export default function FormBusinessComponent(props: Props) {
       setValue("touched", props.business.touched);
     }
   }, [props.business]);
-
+ 
+const {data,refetch}=useQuery(businessQueryService.FindUserBusiness)
   const onSubmit = handleSubmit(async (values) => {
     const response = await createBusiness({
       variables: {
@@ -85,6 +87,7 @@ export default function FormBusinessComponent(props: Props) {
       image: "",
     });
     setResetKey((prevKey) => prevKey + 1);
+    refetch();
   });
 
   const onUpdate = handleSubmit(async (values) => {
@@ -278,3 +281,4 @@ export default function FormBusinessComponent(props: Props) {
     </Box>
   );
 }
+

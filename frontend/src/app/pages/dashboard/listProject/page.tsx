@@ -10,7 +10,7 @@ export default function ListProject() {
       <div>
         <FloatingActionButtons
           modalContent={
-            <FormProjectComponent id={undefined} project={undefined} />
+            <FormProjectComponent id={undefined} project={undefined} client={undefined} />
           }
         />
       </div>

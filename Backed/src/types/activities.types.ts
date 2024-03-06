@@ -19,7 +19,7 @@ module.exports = gql`
   type Mutation {
     createActivitie(
       client: ID
-      project:  ID!
+      project:  ID
       user:  ID
       name: String!
       tiempoEstimado: String
@@ -31,6 +31,8 @@ module.exports = gql`
     updateActivitie(
       _id: String!
       user: String!
+      project: String!
+      client: String!
       name: String
       tiempoEstimado: String
       costoHora: String

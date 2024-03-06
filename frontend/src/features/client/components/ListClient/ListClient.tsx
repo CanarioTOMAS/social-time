@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 
 export const ListClientComponent = () => {
   const [searchQuery, setSearchQuery] = useState(""); //manejo de busqueda
-  const [clients, setClients] = useState<IClient[]>([]);
+  const [Clients, setClients] = useState<IClient[]>([]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -31,7 +31,7 @@ export const ListClientComponent = () => {
     }
 
     setClients(
-      clients.filter((item: IClient) => {
+      Clients.filter((item: IClient) => {
         if (item.name.toLowerCase().includes(searchQuery.toLowerCase()))
           return item;
       })
@@ -48,9 +48,10 @@ export const ListClientComponent = () => {
   );
   
   useEffect(() => {
-     if (data) setClients(data.findOneBusiness.client); //manejo de busqueda  
+     if (data) setClients(data.findUserBusiness?.client);
+     console.log(data); //manejo de busqueda  
   }, [data]);
-
+const clients= data?.findUserBusiness?.[0].client
 
   return (
     <Box

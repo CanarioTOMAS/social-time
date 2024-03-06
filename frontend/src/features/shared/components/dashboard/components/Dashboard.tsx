@@ -10,6 +10,7 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import CardProfile from "./cards/CardProfile";
 
+
 export default function DashboardComponent() {
   return (
     <Box sx={{ display: "flex" }}>

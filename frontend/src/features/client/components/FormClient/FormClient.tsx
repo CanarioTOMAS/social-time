@@ -244,7 +244,7 @@ export default function FormClientComponent(props: Props) {
             <InputLabel>Document Type</InputLabel>
             <Select
               label="Document Type"
-              sx={{ width: "38.8ch", m: 1 }}
+              sx={{ width: "43ch", m: 1 }}
               value={selectedDocumentType}
               onChange={(e) => setSelectedDocumentType(e.target.value)}
             >
@@ -378,7 +378,7 @@ export default function FormClientComponent(props: Props) {
             className="bg-blue-500 text-white p-2 mt-4"
             type="submit"
             onClick={isEditing ? onUpdate : onSubmit}
-            sx={{ width: "44.1ch", m: 1 }}
+            sx={{ width: "49.1ch", m: 1 }}
             variant="contained"
           >
             {isEditing ? "Guardar" : "Registrar"}

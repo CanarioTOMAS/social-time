@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { IBusiness } from "../../model/business";
@@ -13,7 +11,14 @@ import {
   setSessionService,
 } from "@/auth/services/session.service";
 import { useEffect, useState } from "react";
-import { Box, Card, Typography, FormControl, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Card,
+  Typography,
+  FormControl,
+  TextField,
+  Button,
+} from "@mui/material";
 
 type Props = {
   business: IBusiness | undefined;
@@ -72,7 +77,7 @@ export default function FormBusinessComponent(props: Props) {
       },
     });
     toastShow({
-      message: "La empresa ha sido creado correctamente",
+      message: "La empresa ha sido creada correctamente",
       severity: "success",
     });
     setSessionService("business", response.data.addBusiness._id);
@@ -89,6 +94,8 @@ export default function FormBusinessComponent(props: Props) {
 
   const onUpdate = handleSubmit(async (values) => {
     if (!props.business) return;
+    const field: keyof IBusiness = "image";
+    setValue(field, values.image);
     console.log(values);
     await updateBusiness({
       variables: {
@@ -147,7 +154,8 @@ export default function FormBusinessComponent(props: Props) {
           <ProfileForm
             avatarType="business"
             onChange={function (data: any): void {
-              setValue("image", data);
+              const field: keyof IBusiness = "image";
+              setValue(field, data);
             }}
             defaultImage={props.business?.image ? props.business.image : ""}
             resetKey={resetKey}
@@ -155,7 +163,7 @@ export default function FormBusinessComponent(props: Props) {
           <TextField
             className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
-            label="Business Name"
+            label="Name"
             variant="outlined"
             type="text"
             {...register("name", {
@@ -229,14 +237,14 @@ export default function FormBusinessComponent(props: Props) {
               error: true,
             })}
             {...(errors.address?.type === "minLength" && {
-              helperText: "El dirección es demasiado corto",
+              helperText: "La dirección es demasiado corta",
               error: true,
             })}
           />
           <TextField
             className="w-1/2 p-2"
             sx={{ m: 1, width: "43ch" }}
-            label="Business Category"
+            label="Category"
             variant="outlined"
             type="text"
             {...register("category", {
@@ -255,7 +263,7 @@ export default function FormBusinessComponent(props: Props) {
           {!isEditing ? (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "44.1ch", m: 1 }}
+              sx={{ width: "49.2ch", m: 1 }}
               type="submit"
               onClick={onSubmit}
               variant="contained"
@@ -265,7 +273,7 @@ export default function FormBusinessComponent(props: Props) {
           ) : (
             <Button
               className="bg-blue-500 text-white p-2 mt-4"
-              sx={{ width: "44.1h", m: 1 }}
+              sx={{ width: "49.2ch", m: 1 }}
               type="submit"
               onClick={onUpdate}
               variant="contained"

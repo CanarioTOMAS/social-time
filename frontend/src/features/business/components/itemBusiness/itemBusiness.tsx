@@ -52,7 +52,7 @@ function ItemBusiness(props: Props) {
     console.log(props);
     await DeleteBusiness({ variables: { id: props.business._id } });
     toastShow({
-      message: "La empresa se ha sido eliminado correctamente",
+      message: "La empresa se ha sido eliminada correctamente",
       severity: "success",
     });
     refetch();

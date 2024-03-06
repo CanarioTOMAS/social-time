@@ -2,7 +2,7 @@ export interface IActivities {
   Image?: string;
   _id: string;
   name: string;
-  clienId: string; 
+  clientId: string; 
   projectId: string; 
   description: string;
   user: string;

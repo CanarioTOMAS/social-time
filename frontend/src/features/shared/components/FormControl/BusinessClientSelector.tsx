@@ -3,20 +3,19 @@ import { QueryClientService } from '@/features/client/services/clientQuery/clien
 import { useQuery } from '@apollo/client';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 interface FormControlClientProps {
-  defaultSelectedClienId?:string;
+  defaultSelectedClientId?:string;
   onSelectedChange:(value:any)=>void
 }
 
-export default function BusinessClientSelector({ defaultSelectedClienId, onSelectedChange }: FormControlClientProps) {
-  const [selectedClientLocal, setSelectedClientLocal] = useState<string | undefined>(defaultSelectedClienId);
+export default function BusinessClientSelector({ defaultSelectedClientId, onSelectedChange }: FormControlClientProps) {
+  const [selectedClientLocal, setSelectedClientLocal] = useState<string | undefined>(defaultSelectedClientId);
 
   useEffect(()=>{
-    console.log(defaultSelectedClienId)
-    setSelectedClientLocal(defaultSelectedClienId)
-  },[defaultSelectedClienId])
+    console.log(defaultSelectedClientId)
+    setSelectedClientLocal(defaultSelectedClientId)
+  },[defaultSelectedClientId])
 
   const { data: clientData, error: clientError, loading: clientLoading, refetch } = useQuery(QueryClientService.clients, {
     variables: {

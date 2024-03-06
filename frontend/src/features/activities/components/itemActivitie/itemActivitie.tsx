@@ -43,22 +43,17 @@ function ItemActivitie(props: Props) {
     QueryActivities.GetActivities,
     {
       variables: {
-        idClient: props.activity.client,
-        idProject: props.activity.project,
+        idClient: props.activity.clientId,
+        idProject: props.activity.projectId,
       },
     }
   );
-  console.log(data);
-  if (loading) {
-    return <CircularProgress />; // Muestra un indicador de carga
-  }
-
-  if (error) {
-    return <Typography>Error al cargar los datos</Typography>; // Muestra un mensaje de error
-  }
+  
 
   const clientDetails = data?.findUserBusiness[0].client[0];
+  console.log(clientDetails)
   const projectDetails = data?.findUserBusiness[0].client[0].project[0];
+  console.log(projectDetails)
   const handleDelete: MouseEventHandler<HTMLButtonElement> = () => {
     setIsDeleteDialogOpen(true);
   };
@@ -137,6 +132,8 @@ function ItemActivitie(props: Props) {
         <DialogContent>
           <ActivityForm
             activitie={props.activity}
+            client={clientDetails}
+            project={projectDetails}
             id={undefined}
             onClose={() => {
               setIsEditDialogOpen(false);

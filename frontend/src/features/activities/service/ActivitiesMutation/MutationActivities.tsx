@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 const createActivitie = gql`
   mutation Mutation(
-    $project: ID!
+    $project: ID
     $name: String!
     $user: ID
     $client: ID
@@ -49,6 +49,7 @@ const updateActivitie = gql`
       name
       description
       tiempoEstimado
+      client
     }
   }
 `;

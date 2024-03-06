@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { IActivities } from "../../model/Activitie";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { MutationActivitie } from "../../service/ActivitiesMutation/MutationActivities";
 import { useToast } from "@/features/shared/components/toast/ToastProvider";
 import FormControlUser from "@/features/shared/components/FormControl/UserSelector";
@@ -19,6 +19,7 @@ import BusinessClientSelector from "@/features/shared/components/FormControl/Bus
 import BusinessClientProjectSelector from "@/features/shared/components/FormControl/BusinessClientProjectSelector";
 import { IClient } from "@/features/client/models/Client";
 import { IProject } from "@/features/project/model/project";
+import { QueryActivities } from "../../service/ActivitiesQuery/QueryActivitie";
 
 type Props = {
   id: any;
@@ -28,6 +29,12 @@ type Props = {
   onClose?: () => void;
 };
 export default function ActivityForm(props: Props) {
+
+  const [selectedClientId, setSelectedClientId] = useState<string>("");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+  const [selectedUser, setSelectedUser] = useState<string>("");
+
+
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -42,14 +49,16 @@ export default function ActivityForm(props: Props) {
       name: "",
       description: "",
       projectId: "",
-      clienId: "",
+      clientId: "",
       tiempoEstimado: "",
     },
   });
 
+  const { data, refetch } = useQuery(QueryActivities.GetActivities);
   const { toastShow } = useToast();
   useEffect(() => {
     if (props && props.activitie) {
+      console.log(props)
       setIsEditing(true);
       setValue("name", props.activitie.name);
       setValue("description", props.activitie.description);
@@ -57,6 +66,7 @@ export default function ActivityForm(props: Props) {
       setSelectedUser(props.activitie.user);
       setSelectedClientId(props.client!.id);
       setSelectedProjectId(props.project!.id);
+      
     }
   }, [props.activitie]);
 
@@ -64,27 +74,26 @@ export default function ActivityForm(props: Props) {
   const [UpdateActivitie] = useMutation(MutationActivitie.updateActivitie);
 
   const onSubmit = handleSubmit(async (values) => {
+    console.log(values);
     await CreateAvtivitie({
       variables: {
         name: values.name,
         description: values.description,
         project: selectedProjectId,
-        client:selectedClientId,
+        client: selectedClientId,
         user: selectedUser.toString(),
         tiempoEstimado: values.tiempoEstimado,
       },
     });
-
+    reset({});
+    setSelectedClientId("");
+    setSelectedProjectId("");
     toastShow({
       message: "Actividad ha sido creado correctamente",
       severity: "success",
     });
-    reset();
-
-    toastShow({
-      message: "Error al crear la actividad",
-      severity: "error",
-    });
+   
+    refetch();
   });
   const onUpdate = handleSubmit(async (values) => {
     if (!props.activitie) return;
@@ -93,7 +102,7 @@ export default function ActivityForm(props: Props) {
         id: props.activitie._id,
         name: values.name,
         description: values.description,
-        project:selectedProjectId,
+        project: selectedProjectId,
         client: selectedClientId,
         user: selectedUser.toString(),
         tiempoEstimado: values.tiempoEstimado,
@@ -111,11 +120,9 @@ export default function ActivityForm(props: Props) {
       message: "Error al crear la actividad",
       severity: "error",
     });
+    refetch();
   });
 
-  const [selectedClientId, setSelectedClientId] = useState<string>("");
-  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
-  const [selectedUser, setSelectedUser] = useState<string>("");
 
   const handleProjectChange = (projectId: string) => {
     // Puedes realizar acciones adicionales al cambiar el proyecto, si es necesario
@@ -153,12 +160,16 @@ export default function ActivityForm(props: Props) {
             {...register("name", { required: true })}
           />
           {errors.name && <span>Este campo es obligatorio</span>}
-         <BusinessClientSelector onSelectedChange={(value)=>{
-            setSelectedClientId(value)
-          } }/>
-          <BusinessClientProjectSelector onSelectedChange={(value)=> {
-            setSelectedProjectId(value)
-          } }/>
+          <BusinessClientSelector
+            onSelectedChange={(value) => {
+              setSelectedClientId(value);
+            }}
+          />
+          <BusinessClientProjectSelector
+            onSelectedChange={(value) => {
+              handleProjectChange(value);
+            }}
+          />
           <FormControlUser setSelectedUser={setSelectedUser} />
           <TextField
             className="w-1/2 p-2"

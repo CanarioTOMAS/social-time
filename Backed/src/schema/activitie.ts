@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
   client: { type: mongoose.Schema.Types.ObjectId, ref: "Client" },
-  project: { type: mongoose.Schema.Types.ObjectId, ref: "Projects" },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   name: { type: String, required: false, unique: false, minlength: 2 },
   description: { type: String, required: false, unique: false, minlength: 2 },

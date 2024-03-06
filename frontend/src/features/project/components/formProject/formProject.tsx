@@ -17,11 +17,12 @@ import { useMutation, useQuery } from "@apollo/client";
 import FormControlClient from "@/features/shared/components/FormControl/BusinessClientSelector";
 import { ProjectQueryService } from "../../projectService/projectQuery/projectQuery.service";
 import { IClient } from "@/features/client/models/Client";
+import BusinessClientSelector from "@/features/shared/components/FormControl/BusinessClientSelector";
 
 type Props = {
   id: any;
   project: IProject | undefined;
-  client:IClient  | undefined;
+  client: IClient | undefined;
   onClose?: () => void;
 };
 
@@ -67,16 +68,16 @@ export default function FormProjectComponent(props: Props) {
       },
     });
     reset({
-      name:"",
-      description:"",
-      clientId:"",
+      name: "",
+      description: "",
+      clientId: "",
     });
-    setSelectedClientId("");
+
     toastShow({
       message: "El proyecto ha sido creado correctamente",
       severity: "success",
     });
-   
+
     refetch();
   });
 
@@ -97,7 +98,7 @@ export default function FormProjectComponent(props: Props) {
     });
     refetch();
   });
-  const {data,refetch}=useQuery(ProjectQueryService.Project)
+  const { data, refetch } = useQuery(ProjectQueryService.Project);
   return (
     <Box
       className="bg-blue-500 text-white p-4"
@@ -121,9 +122,13 @@ export default function FormProjectComponent(props: Props) {
           Crear Proyecto
         </Typography>
         <FormControl sx={{ textAlign: "center" }}>
-          <FormControlClient defaultSelectedClienId={selectedClientId} onSelectedChange={(value)=>{
-            setSelectedClientId(value)
-          }} />
+          <BusinessClientSelector
+            defaultSelectedClientId={selectedClientId}
+            onSelectedChange={(value) => {
+              setSelectedClientId(value);
+            }}
+          />
+
           <TextField
             className="w-1/2 p-2 "
             label="Project"

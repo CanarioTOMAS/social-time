@@ -12,7 +12,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useCallback, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { IClient } from "../../models/Client";
 import DeleteDialog from "@/features/shared/components/dialog/DelectDialog";
@@ -25,6 +25,7 @@ import { useToast } from "@/features/shared/components/toast/ToastProvider";
 type Props = {
   client: IClient;
   buttonAction?: boolean;
+  // handleItemClick: (item: any) => void;
 };
 
 function ItemClient(props: Props) {
@@ -38,7 +39,7 @@ function ItemClient(props: Props) {
   const handleEdit = async () => {
     setIsEditDialogOpen(true);
   };
-
+ 
   const handleDelete: MouseEventHandler<HTMLButtonElement> = () => {
     setIsDeleteDialogOpen(true);
   };
@@ -58,6 +59,7 @@ function ItemClient(props: Props) {
     });
     refetch();
   };
+  
 
   const handleCloseEditDialog = async () => {
     console.log(props);
@@ -67,7 +69,7 @@ function ItemClient(props: Props) {
   return (
     <>
       {" "}
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%"}}>
         <ListItemAvatar>
           <Avatar src={props.client.image} alt={props.client.name} />
         </ListItemAvatar>

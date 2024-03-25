@@ -85,6 +85,7 @@ export default function FormProjectComponent(props: Props) {
     if (!props.project) return;
     await UpdateProject({
       variables: {
+        id:props.project.id,
         name: values.name,
         description: values.description,
         client: selectedClientId,

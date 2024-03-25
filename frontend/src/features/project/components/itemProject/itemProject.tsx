@@ -1,6 +1,6 @@
 "use client";
 
-import { Delete, Edit, PowerInputSharp } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -26,16 +26,15 @@ type Props = {
   buttonAction?: boolean;
 };
 
-function ItemProject(props: Props) {
+function ItemProject({ project, buttonAction }: Props) {
   const { data, error, loading, refetch } = useQuery(
     ProjectQueryService.Project,
     {
       variables: {
-        idClient: props.project.clientId,
+        idClient: project.clientId,
       },
     }
   );
-  const [showAlert, setShowAlert] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [DeleteProject] = useMutation(ProjectMutationServices.DeleteProject);
@@ -53,58 +52,51 @@ function ItemProject(props: Props) {
     HTMLButtonElement
   > = async () => {
     setIsDeleteDialogOpen(false);
-    setShowAlert(true);
-    console.log(props);
-    await DeleteProject({ variables: { id: props.project.id } });
     toastShow({
       message: "El proyecto ha sido eliminado correctamente",
       severity: "success",
     });
+    await DeleteProject({ variables: { id: project.id } });
     refetch();
   };
 
   const handleCloseEditDialog = async () => {
-    console.log(props);
     setIsEditDialogOpen(false);
   };
 
-  const clientDetails = data?.findUserBusiness[0].client[0];
-console.log(clientDetails)
-  // if (!clientDetails) return <p>No se encontraron datos del cliente</p>;
-  // console.log(clientDetails)
-  // const projectDetails = clientDetails?.project[0];
+  const clientDetails = data?.findUserBusiness[0]?.client[0];
 
   return (
     <>
-      {" "}
       <Box sx={{ width: "100%" }}>
         <ListItemAvatar>
-          <Avatar src={props.project?.Image}  />
+          <Avatar src={project?.Image} />
         </ListItemAvatar>
         <ListItemText
-          primary={`Name: ${props.project?.name}`}
+          primary={`Name: ${project?.name}`}
           secondary={
             <>
-              <span>Cliente: {clientDetails.name} {clientDetails.surname}</span>
+              <span>
+                Cliente: {clientDetails?.name} {clientDetails?.surname}
+              </span>
               <br />
-              <span>Description: {props.project?.description}</span>
+              <span>Description: {project?.description}</span>
             </>
           }
           primaryTypographyProps={{ sx: { color: "#000" } }}
         />
-        {props.buttonAction == true ? (
+        {buttonAction ? (
           <Box
             sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
           >
-            {" "}
-            <IconButton
-              edge="end"
-              aria-label="editar"
-              onClick={() => handleEdit()}
-            >
+            <IconButton edge="end" aria-label="editar" onClick={handleEdit}>
               <Edit />
             </IconButton>
-            <IconButton edge="end" aria-label="eliminar" onClick={handleDelete}>
+            <IconButton
+              edge="end"
+              aria-label="eliminar"
+              onClick={handleDelete}
+            >
               <Delete />
             </IconButton>
           </Box>
@@ -122,7 +114,7 @@ console.log(clientDetails)
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog}>
         <DialogContent>
           <FormProjectComponent
-            project={props.project}
+            project={project}
             client={clientDetails}
             id={undefined}
             onClose={() => {
@@ -137,4 +129,5 @@ console.log(clientDetails)
     </>
   );
 }
+
 export default ItemProject;

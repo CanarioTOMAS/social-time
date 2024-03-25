@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
 const CreateClient = gql`
-  mutation CreateClient(
+  mutation Mutation(
     $business: String!
     $name: String!
-    $image: String
-    $city: String
-    $address: String
     $email: String!
+    $city: String
+    $image: String
+    $address: String
     $phone: String
     $postCode: String
     $documentType: String
@@ -17,17 +17,31 @@ const CreateClient = gql`
     createClient(
       business: $business
       name: $name
-      image: $image
-      city: $city
-      address: $address
       email: $email
+      city: $city
+      image: $image
+      address: $address
       phone: $phone
       postCode: $postCode
       documentType: $documentType
       documentNumber: $documentNumber
       surname: $surname
     ) {
+      business {
+        _id
+      }
+      address
+      city
+      deleted
+      documentNumber
+      documentType
+      email
       id
+      image
+      name
+      phone
+      postCode
+      surname
     }
   }
 `;

@@ -6,34 +6,19 @@ const CreateProject = gql`
     $name: String!
     $description: String
   ) {
-    createProject(
-      client: $client
-      name: $name
-      description: $description
-    ) {
+    createProject(client: $client, name: $name, description: $description) {
       id
     }
   }
 `;
 
 const UpdateProject = gql`
-  mutation UpdateProject(
-    $id: String!
-    $client: String!
-    $name: String!
-    $description: String
-  ) {
-    updateProject(
-      _id: $id
-      client: $client
-      name: $name
-      description: $description
-    ) {
+  mutation Mutation($id: String!, $client: String!, $name: String!) {
+    updateProject(_id: $id, client: $client, name: $name) {
       id
-      client
       name
+      deleted
       description
-      
     }
   }
 `;

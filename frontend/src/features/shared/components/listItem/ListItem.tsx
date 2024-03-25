@@ -5,7 +5,7 @@ interface IProps {
   items: any[]; // Cambiar el tipo según tu estructura de datos
   renderItem: (item: any) => React.ReactNode;
   handleItemClick: (item: any) => void;
-}
+  }
 
 export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
   return (
@@ -21,7 +21,10 @@ export const ListItems = ({ items, renderItem, handleItemClick }: IProps) => {
         {items?items.map((item, i) => {
           return (
             <div key={i}> {/* Usar el campo _id como clave */}
-              <ListItem onClick={() => handleItemClick(item)}>
+                 <ListItem onClick={() => {
+                handleItemClick(item);
+                // Llama al manejador de selección si está definido
+              }}>
                 {renderItem(item)}
               </ListItem>
               <Divider />

@@ -38,6 +38,7 @@ module.exports = {
   Mutation: {
     //create our mutation:
     createUser: async (root: any, args: any) => {
+      console.log("Hola")
       const user = new User({
         name: args.name,
         surname: args.surname,

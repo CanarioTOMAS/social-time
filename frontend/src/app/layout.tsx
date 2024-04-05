@@ -24,7 +24,7 @@ export default function RootLayout({
 
   
   const httpLink = createHttpLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "http://186.124.201.14:4000/graphql",
     headers: {
       authorization: getSessionServices("authToken"),
       "Content-Type": "application/json",

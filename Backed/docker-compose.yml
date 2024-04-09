@@ -8,7 +8,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_USER: 'admin'
+      DB_USER: 'Admin'
       DB_PWD: 'SocialUP'
       DB_TDB: 'mongodb'
       DB_HOST: '10.17.0.20'

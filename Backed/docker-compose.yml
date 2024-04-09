@@ -8,13 +8,20 @@ services:
     depends_on:
       - db
     environment:
-     - db
+      DB_USER: 'admin'
+      DB_PWD: 'SocialUP'
+      DB_TDB: 'mongodb'
+      DB_HOST: 'db'
+      DB_PORT: 27017
+      DB_NAME: 'socialup-time'
+      APP_PORT: 3977
+      SECRET: 'SocialUp'
 
   db:
     image: mongo:latest
     ports:
       - "27017:27017"
     environment:
-       - MONGO_INITDB_ROOT_USERNAME=admin
-       - MONGO_INITDB_ROOT_PASSWORD=SocialUP
-       - MONGO_INITDB_DATABASE=socialup-time
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: SocialUP
+      MONGO_INITDB_DATABASE: socialup-time

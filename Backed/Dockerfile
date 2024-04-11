@@ -13,4 +13,4 @@ ENV MONGO_INITDB_DATABASE=socialup-time
 
 COPY . .
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "devdiego"]

@@ -2,15 +2,14 @@ version: "3"
 
 services:
   backend:
-    build: ./src
+    build: .
     ports:
       - "4000:4000"
     depends_on:
       - db
     environment:
-       NODE_ENV: production
+      - NODE_ENV=production
   db:
     image: mongo:latest
     ports:
       - "27017:27017"
-    

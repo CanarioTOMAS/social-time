@@ -2,26 +2,15 @@ version: "3"
 
 services:
   backend:
-    build: .
+    build:
+      contex: ./src
     ports:
       - "4000:4000"
     depends_on:
       - db
     environment:
-      DB_USER: 'admin'
-      DB_PWD: 'SocialUP'
-      DB_TDB: 'mongodb'
-      DB_HOST: '10.17.0.20'
-      DB_PORT: 27017
-      DB_NAME: 'socialup-time'
-      APP_PORT: 3977
-      SECRET: 'SocialUp'
-
+      NODE_ENV: production
   db:
     image: mongo:latest
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: SocialUP
-      MONGO_INITDB_DATABASE: socialup-time

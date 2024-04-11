@@ -10,12 +10,9 @@ import { GraphQLError } from "graphql/error/GraphQLError";
 mongoose.set("strictQuery", true);
 
 // Objeto de opciones para la conexión a MongoDB
-const dbOptions: mongoose.ConnectOptions = {
-  
-};
+const dbOptions: mongoose.ConnectOptions = {};
 
- console.log(process.env.DB_TDB +"://" + process.env.DB_USER +":" + process.env.DB_PWD +"@" + process.env.DB_HOST +":" + process.env.DB_PORT +"/" + process.env.DB_NAME);
-mongoose.connect(
+console.log(
   process.env.DB_TDB +
     "://" +
     process.env.DB_USER +
@@ -26,9 +23,13 @@ mongoose.connect(
     ":" +
     process.env.DB_PORT +
     "/" +
-    process.env.DB_NAME,
-  dbOptions // Pasa el objeto de opciones aquí
-)
+    process.env.DB_NAME
+);
+mongoose
+  .connect(
+    `${process.env.DB_TDB}://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+    dbOptions
+  )
   .then(() => {
     console.log("La base de datos esta corriendo correctamente");
   })
@@ -47,9 +48,7 @@ interface MyContext {
   user: UserInterface;
 }
 
-
 async function startApolloServer() {
-  
   const server = new ApolloServer<any>({
     typeDefs: typesDefs,
     resolvers: resolvers,

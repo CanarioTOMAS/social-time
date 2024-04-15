@@ -38,6 +38,7 @@ module.exports = {
   Mutation: {
     //create our mutation:
     createUser: async (root: any, args: any) => {
+      console.log("Hola")
       const user = new User({
         name: args.name,
         surname: args.surname,
@@ -52,7 +53,7 @@ module.exports = {
       });
 
       return await user.save().catch((error) => {
-        throw new GraphQLError("Error creando el usuario. " + error, {
+        throw new GraphQLError("Error creando el usuario y la puta madres que los pario. " + error, {
           extensions: {
             code: "ERROR_CREATING_USER",
           },

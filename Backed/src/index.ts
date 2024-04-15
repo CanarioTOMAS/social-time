@@ -13,6 +13,7 @@ mongoose.set("strictQuery", true);
 const dbOptions: mongoose.ConnectOptions = {
   
 };
+
  console.log(process.env.DB_TDB +"://" + process.env.DB_USER +":" + process.env.DB_PWD +"@" + process.env.DB_HOST +":" + process.env.DB_PORT +"/" + process.env.DB_NAME);
 mongoose.connect(
   process.env.DB_TDB +
